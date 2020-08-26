@@ -1,5 +1,4 @@
-import imio
-
+import tifffile
 import numpy as np
 
 from pathlib import Path
@@ -121,7 +120,7 @@ def save_regions_to_file(
     name = label_layer.name
 
     filename = destination_directory / (name + image_extension)
-    imio.to_tiff(data.astype(np.int16), filename)
+    tifffile.imsave(filename, data.astype(np.int16))
 
 
 def export_regions_to_file(image, filename, voxel_size, ignore_empty=True):
