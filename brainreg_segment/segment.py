@@ -426,6 +426,7 @@ class SegmentationWidget(QWidget):
         self.track_panel.setVisible(True)
         self.region_panel.setVisible(True)
         self.splines = None
+        self.spline_names = None
 
     def add_track(self):
         print("Adding a new track\n")
@@ -545,7 +546,7 @@ def export_all(
     max_axis_2,
 ):
     if label_layers:
-        export_label_layers(regions_directory, label_layers)
+        export_label_layers(regions_directory, label_layers, resolution)
 
     if splines:
         export_splines(
