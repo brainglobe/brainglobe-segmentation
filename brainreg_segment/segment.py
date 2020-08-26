@@ -426,6 +426,7 @@ class SegmentationWidget(QWidget):
         self.track_panel.setVisible(True)
         self.region_panel.setVisible(True)
         self.splines = None
+        self.spline_names = None
 
     def add_track(self):
         print("Adding a new track\n")
