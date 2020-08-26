@@ -10,7 +10,7 @@ def save_track_layers(
     for points_layer in points_layers:
         save_single_track(
             points_layer.data,
-            points_layers.name,
+            points_layer.name,
             tracks_directory,
             track_file_extension=track_file_extension,
         )
