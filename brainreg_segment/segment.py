@@ -51,7 +51,7 @@ from brainreg_segment.atlas.utils import (
 )
 
 
-class ManualSegmentationWidget(QWidget):
+class SegmentationWidget(QWidget):
     def __init__(
         self,
         viewer,
@@ -70,7 +70,7 @@ class ManualSegmentationWidget(QWidget):
         summarise_volumes_default=True,
         boundaries_string="Boundaries",
     ):
-        super(ManualSegmentationWidget, self).__init__()
+        super(SegmentationWidget, self).__init__()
         self.point_size = point_size
         self.spline_size = spline_size
         self.brush_size = brush_size
@@ -579,7 +579,7 @@ def main():
     with napari.gui_qt():
 
         viewer = napari.Viewer(title="Manual segmentation")
-        general = ManualSegmentationWidget(viewer)
+        general = SegmentationWidget(viewer)
         viewer.window.add_dock_widget(general, name="General", area="right")
 
 
