@@ -36,7 +36,11 @@ setup(
     },
     python_requires=">=3.6, <3.8",
     packages=find_namespace_packages(exclude=("docs", "tests*")),
-    entry_points={"console_scripts": ["brainreg_segment = brainreg_segment.segment:main", ]},
+    entry_points={
+        "console_scripts": [
+            "brainreg_segment = brainreg_segment.segment:main",
+        ]
+    },
     include_package_data=True,
     author="Adam Tyson",
     author_email="adam.tyson@ucl.ac.uk",
