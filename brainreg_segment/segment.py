@@ -546,7 +546,7 @@ def export_all(
     max_axis_2,
 ):
     if label_layers:
-        export_label_layers(regions_directory, label_layers)
+        export_label_layers(regions_directory, label_layers, resolution)
 
     if splines:
         export_splines(
