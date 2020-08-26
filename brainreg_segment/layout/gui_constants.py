@@ -1,0 +1,4 @@
+# Layout constants  
+WINDOW_HEIGHT = 750
+WINDOW_WIDTH  = 1500 
+COLUMN_WIDTH = 150
