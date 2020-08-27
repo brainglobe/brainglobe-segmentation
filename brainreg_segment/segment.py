@@ -332,17 +332,17 @@ class SegmentationWidget(QWidget):
             self.atlas_menu_label.setVisible(True)
 
     def load_brainreg_directory_sample(self):
-        self.load_brainreg_directory(standard_space=False)
+        self.get_brainreg_directory(standard_space=False)
 
     def load_brainreg_directory_standard(self):
-        self.load_brainreg_directory(standard_space=True)
+        self.get_brainreg_directory(standard_space=True)
 
-    def load_brainreg_directory(self, standard_space=True):
+    def get_brainreg_directory(self, standard_space=True):
         if standard_space:
-            plugin = "brainreg_standard"
+            self.plugin = "brainreg_standard"
             self.standard_space = True
         else:
-            plugin = "brainreg"
+            self.plugin = "brainreg"
             self.standard_space = False
 
         self.status_label.setText("Loading...")
@@ -353,20 +353,21 @@ class SegmentationWidget(QWidget):
         )
         if self.directory != "":
             try:
-                self.directory = Path(self.directory)
-                # self.remove_existing_data()
+                self.load_brainreg_directory()
 
-                self.viewer.open(str(self.directory), plugin=plugin)
-                self.paths = Paths(
-                    self.directory, standard_space=standard_space,
-                )
-
-                self.initialise_loaded_data()
             except ValueError:
                 print(
                     f"The directory ({self.directory}) does not appear to be "
                     f"a brainreg directory, please try again."
                 )
+
+    def load_brainreg_directory(self):
+        self.directory = Path(self.directory)
+        # self.remove_existing_data()
+
+        self.viewer.open(str(self.directory), plugin=self.plugin)
+        self.paths = Paths(self.directory, standard_space=self.standard_space,)
+        self.initialise_loaded_data()
 
     def remove_existing_data(self):
         if len(self.viewer.layers) != 0:
@@ -574,16 +575,12 @@ def save_all(
     print("Finished!\n")
 
 
-def start_gui(viewer):
-    general = SegmentationWidget(viewer)
-    viewer.window.add_dock_widget(general, name="General", area="right")
-
-
 def main():
     print("Loading manual segmentation GUI.\n ")
     with napari.gui_qt():
         viewer = napari.Viewer(title="Manual segmentation")
-        start_gui(viewer)
+        widget = SegmentationWidget(viewer)
+        viewer.window.add_dock_widget(widget, name="General", area="right")
 
 
 if __name__ == "__main__":
