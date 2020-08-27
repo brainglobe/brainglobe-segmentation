@@ -24,30 +24,31 @@ def track_analysis(
     spline_names = []
 
     for track_layer in track_layers:
-        spline = run_track_analysis(
-            track_layer.data,
-            track_layer.name,
-            tracks_directory,
-            atlas,
-            summarise_track=summarise_track,
-            spline_smoothing=spline_smoothing,
-            spline_points=spline_points,
-            fit_degree=fit_degree,
-        )
+        if len(track_layer.data) != 0:
+            spline = run_track_analysis(
+                track_layer.data,
+                track_layer.name,
+                tracks_directory,
+                atlas,
+                summarise_track=summarise_track,
+                spline_smoothing=spline_smoothing,
+                spline_points=spline_points,
+                fit_degree=fit_degree,
+            )
 
-        splines.append(spline)
+            splines.append(spline)
 
-        viewer.add_points(
-            spline,
-            size=napari_spline_size,
-            edge_color="cyan",
-            face_color="cyan",
-            blending="additive",
-            opacity=0.7,
-            name=track_layer.name + "_fit",
-        )
+            viewer.add_points(
+                spline,
+                size=napari_spline_size,
+                edge_color="cyan",
+                face_color="cyan",
+                blending="additive",
+                opacity=0.7,
+                name=track_layer.name + "_fit",
+            )
 
-        spline_names.append(track_layer.name)
+            spline_names.append(track_layer.name)
     return splines, spline_names
 
 

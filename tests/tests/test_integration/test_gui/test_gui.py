@@ -72,6 +72,9 @@ def test_tracks(make_test_viewer):
     assert len(widget.track_layers) == 2
     assert widget.track_layers[0].name == "test_track"
     assert widget.track_layers[1].name == "track_1"
+    assert len(widget.track_layers[0].data) == 5
+    widget.add_surface_points()
+    assert len(widget.track_layers[0].data) == 6
 
 
 def test_regions(make_test_viewer):
