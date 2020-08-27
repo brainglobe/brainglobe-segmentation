@@ -14,7 +14,7 @@ def test_load_sample_space(make_test_viewer):
     widget.plugin = "brainreg"
     widget.directory = brainreg_dir
     widget.load_brainreg_directory()
-    check_loaded_layers(widget)
+    check_loaded_layers(widget, 6)
 
 
 def test_load_standard_space(make_test_viewer):
@@ -25,7 +25,7 @@ def test_load_standard_space(make_test_viewer):
     widget.plugin = "brainreg_standard"
     widget.directory = brainreg_dir
     widget.load_brainreg_directory()
-    check_loaded_layers(widget)
+    check_loaded_layers(widget, 4)
 
 
 def test_load_atlas(tmpdir, make_test_viewer):
@@ -52,10 +52,48 @@ def test_general(make_test_viewer):
     assert widget.mean_voxel_size == 50
     check_defaults(widget)
     check_paths(widget)
+    widget.remove_existing_data()
+    assert len(widget.viewer.layers) == 0
 
 
-def check_loaded_layers(widget):
-    assert len(widget.viewer.layers) == 2
+def test_tracks(make_test_viewer):
+    viewer = make_test_viewer()
+    widget = SegmentationWidget(viewer)
+    viewer.window.add_dock_widget(widget, name="General", area="right")
+    widget.standard_space = True
+    widget.plugin = "brainreg_standard"
+    widget.directory = brainreg_dir
+    widget.load_brainreg_directory()
+
+    assert len(widget.viewer.layers) == 4
+    assert len(widget.track_layers) == 1
+    widget.add_track()
+    assert len(widget.viewer.layers) == 5
+    assert len(widget.track_layers) == 2
+    assert widget.track_layers[0].name == "test_track"
+    assert widget.track_layers[1].name == "track_1"
+
+
+def test_regions(make_test_viewer):
+    viewer = make_test_viewer()
+    widget = SegmentationWidget(viewer)
+    viewer.window.add_dock_widget(widget, name="General", area="right")
+    widget.standard_space = True
+    widget.plugin = "brainreg_standard"
+    widget.directory = brainreg_dir
+    widget.load_brainreg_directory()
+
+    assert len(widget.viewer.layers) == 4
+    assert len(widget.label_layers) == 1
+    widget.add_new_region()
+    assert len(widget.viewer.layers) == 5
+    assert len(widget.label_layers) == 2
+    assert widget.label_layers[0].name == "test_region"
+    assert widget.label_layers[1].name == "region_1"
+
+
+def check_loaded_layers(widget, num_layers):
+    assert len(widget.viewer.layers) == num_layers
     assert widget.base_layer.name == "Registered image"
     assert widget.atlas.atlas_name == "allen_mouse_50um"
     assert widget.metadata["orientation"] == "psl"
