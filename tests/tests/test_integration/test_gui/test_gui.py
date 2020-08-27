@@ -1,4 +1,5 @@
 import shutil
+import numpy as np
 from pathlib import Path
 from brainreg_segment.segment import SegmentationWidget
 import pandas as pd
@@ -56,8 +57,14 @@ def test_general(make_test_viewer):
     check_paths(widget)
 
 
-def test_tracks(tmpdir, make_test_viewer):
+def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
     tmp_input_dir = tmpdir / "brainreg_output"
+    test_tracks_dir = (
+        tmp_input_dir / "manual_segmentation" / "standard_space" / "tracks"
+    )
+    validate_tracks_dir = (
+        brainreg_dir / "manual_segmentation" / "standard_space" / "tracks"
+    )
     shutil.copytree(brainreg_dir, tmp_input_dir)
     viewer = make_test_viewer()
     widget = SegmentationWidget(viewer)
@@ -76,25 +83,25 @@ def test_tracks(tmpdir, make_test_viewer):
     assert widget.track_layers[1].name == "track_1"
     assert len(widget.track_layers[0].data) == 5
 
+    # analysis
     widget.run_track_analysis()
+    regions_validate = pd.read_csv(validate_tracks_dir / "test_track.csv")
+    regions_test = pd.read_csv(test_tracks_dir / "test_track.csv")
+    pd.testing.assert_frame_equal(regions_validate, regions_test)
 
-    regions_validate = pd.read_csv(
-        brainreg_dir
-        / "manual_segmentation"
-        / "standard_space"
-        / "tracks"
-        / "test_track.csv"
-    )
-    regions_test = pd.read_csv(
-        tmp_input_dir
-        / "manual_segmentation"
-        / "standard_space"
-        / "tracks"
-        / "test_track.csv"
-    )
+    # saving
+    widget.save()
+    points_validate = pd.read_hdf(validate_tracks_dir / "test_track.points")
+    points_test = pd.read_hdf(test_tracks_dir / "test_track.points")
+    np.testing.assert_allclose(points_validate, points_test, rtol=rtol)
 
-    pd.testing.assert_frame_equal(regions_test, regions_validate)
+    # export
+    widget.export_to_brainrender()
+    spline_validate = pd.read_hdf(validate_tracks_dir / "test_track.h5")
+    spline_test = pd.read_hdf(test_tracks_dir / "test_track.h5")
+    pd.testing.assert_frame_equal(spline_test, spline_validate)
 
+    # surface points
     widget.add_surface_points()
     assert len(widget.track_layers[0].data) == 6
 
