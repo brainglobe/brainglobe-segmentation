@@ -74,7 +74,6 @@ class SegmentationWidget(QWidget):
         self.point_size = point_size
         self.spline_size = spline_size
         self.brush_size = brush_size
-
         # general variables
         self.viewer = viewer
 
@@ -156,28 +155,25 @@ class SegmentationWidget(QWidget):
         self.load_data_panel.setVisible(True)
 
     def setup_atlas(self):
-        self.atlas_menu, self.atlas_menu_label = self.add_atlas_menu(
-            self.load_data_layout
-        )
+        self.add_atlas_menu()
         self.set_output_directory()
 
-    def add_atlas_menu(self, layout):
+    def add_atlas_menu(self):
         list_of_atlasses = [""]
         available_atlases = get_available_atlases()
         for atlas in available_atlases.keys():
             atlas_desc = f"{atlas} v{available_atlases[atlas]}"
             list_of_atlasses.append(atlas_desc)
-        atlas_menu, atlas_menu_label = add_combobox(
-            layout,
+        self.atlas_menu, self.atlas_menu_label = add_combobox(
+            self.load_data_layout,
             "Choose atlas",
             list_of_atlasses,
             4,
             label_stack=True,
             callback=self.initialise_atlas,
         )
-        atlas_menu.setVisible(False)
-        atlas_menu_label.setVisible(False)
-        return atlas_menu, atlas_menu_label
+        self.atlas_menu.setVisible(False)
+        self.atlas_menu_label.setVisible(False)
 
     def add_track_panel(self, row):
         self.track_panel = QGroupBox("Track tracing")
@@ -289,6 +285,9 @@ class SegmentationWidget(QWidget):
     def initialise_atlas(self, i):
         atlas_string = self.atlas_menu.currentText()
         atlas_name = atlas_string.split(" ")[0].strip()
+        self.load_atlas(atlas_name)
+
+    def load_atlas(self, atlas_name):
         atlas = BrainGlobeAtlas(atlas_name)
         self.directory = self.directory / atlas_name
         self.paths = Paths(self.directory, atlas_space=True)
@@ -333,17 +332,17 @@ class SegmentationWidget(QWidget):
             self.atlas_menu_label.setVisible(True)
 
     def load_brainreg_directory_sample(self):
-        self.load_brainreg_directory(standard_space=False)
+        self.get_brainreg_directory(standard_space=False)
 
     def load_brainreg_directory_standard(self):
-        self.load_brainreg_directory(standard_space=True)
+        self.get_brainreg_directory(standard_space=True)
 
-    def load_brainreg_directory(self, standard_space=True):
+    def get_brainreg_directory(self, standard_space=True):
         if standard_space:
-            plugin = "brainreg_standard"
+            self.plugin = "brainreg_standard"
             self.standard_space = True
         else:
-            plugin = "brainreg"
+            self.plugin = "brainreg"
             self.standard_space = False
 
         self.status_label.setText("Loading...")
@@ -354,20 +353,21 @@ class SegmentationWidget(QWidget):
         )
         if self.directory != "":
             try:
-                self.directory = Path(self.directory)
-                # self.remove_existing_data()
+                self.load_brainreg_directory()
 
-                self.viewer.open(str(self.directory), plugin=plugin)
-                self.paths = Paths(
-                    self.directory, standard_space=standard_space,
-                )
-
-                self.initialise_loaded_data()
             except ValueError:
                 print(
                     f"The directory ({self.directory}) does not appear to be "
                     f"a brainreg directory, please try again."
                 )
+
+    def load_brainreg_directory(self):
+        self.directory = Path(self.directory)
+        # self.remove_existing_data()
+
+        self.viewer.open(str(self.directory), plugin=self.plugin)
+        self.paths = Paths(self.directory, standard_space=self.standard_space,)
+        self.initialise_loaded_data()
 
     def remove_existing_data(self):
         if len(self.viewer.layers) != 0:
@@ -439,9 +439,12 @@ class SegmentationWidget(QWidget):
                 self.create_brain_surface_tree()
 
             for track_layer in self.track_layers:
-                _, index = self.tree.query(track_layer.data[0])
-                surface_point = self.tree.data[index]
-                track_layer.data = np.vstack((surface_point, track_layer.data))
+                if len(track_layer.data) != 0:
+                    _, index = self.tree.query(track_layer.data[0])
+                    surface_point = self.tree.data[index]
+                    track_layer.data = np.vstack(
+                        (surface_point, track_layer.data)
+                    )
             print("Finished!\n")
         else:
             print("No tracks found.")
@@ -578,10 +581,9 @@ def save_all(
 def main():
     print("Loading manual segmentation GUI.\n ")
     with napari.gui_qt():
-
         viewer = napari.Viewer(title="Manual segmentation")
-        general = SegmentationWidget(viewer)
-        viewer.window.add_dock_widget(general, name="General", area="right")
+        widget = SegmentationWidget(viewer)
+        viewer.window.add_dock_widget(widget, name="General", area="right")
 
 
 if __name__ == "__main__":
