@@ -52,8 +52,8 @@ def test_general(make_test_viewer):
     assert widget.mean_voxel_size == 50
     check_defaults(widget)
     check_paths(widget)
-    widget.remove_existing_data()
-    assert len(widget.viewer.layers) == 0
+    # widget.remove_existing_data()
+    # assert len(widget.viewer.layers) == 0
 
 
 def test_tracks(make_test_viewer):
