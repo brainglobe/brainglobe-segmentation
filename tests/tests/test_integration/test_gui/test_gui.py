@@ -1,5 +1,7 @@
+import shutil
 from pathlib import Path
 from brainreg_segment.segment import SegmentationWidget
+import pandas as pd
 
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
 
@@ -52,17 +54,17 @@ def test_general(make_test_viewer):
     assert widget.mean_voxel_size == 50
     check_defaults(widget)
     check_paths(widget)
-    # widget.remove_existing_data()
-    # assert len(widget.viewer.layers) == 0
 
 
-def test_tracks(make_test_viewer):
+def test_tracks(tmpdir, make_test_viewer):
+    tmp_input_dir = tmpdir / "brainreg_output"
+    shutil.copytree(brainreg_dir, tmp_input_dir)
     viewer = make_test_viewer()
     widget = SegmentationWidget(viewer)
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.directory = brainreg_dir
+    widget.directory = tmp_input_dir
     widget.load_brainreg_directory()
 
     assert len(widget.viewer.layers) == 4
@@ -73,17 +75,39 @@ def test_tracks(make_test_viewer):
     assert widget.track_layers[0].name == "test_track"
     assert widget.track_layers[1].name == "track_1"
     assert len(widget.track_layers[0].data) == 5
+
+    widget.run_track_analysis()
+
+    regions_validate = pd.read_csv(
+        brainreg_dir
+        / "manual_segmentation"
+        / "standard_space"
+        / "tracks"
+        / "test_track.csv"
+    )
+    regions_test = pd.read_csv(
+        tmp_input_dir
+        / "manual_segmentation"
+        / "standard_space"
+        / "tracks"
+        / "test_track.csv"
+    )
+
+    pd.testing.assert_frame_equal(regions_test, regions_validate)
+
     widget.add_surface_points()
     assert len(widget.track_layers[0].data) == 6
 
 
-def test_regions(make_test_viewer):
+def test_regions(tmpdir, make_test_viewer):
+    tmp_input_dir = tmpdir / "brainreg_output"
+    shutil.copytree(brainreg_dir, tmp_input_dir)
     viewer = make_test_viewer()
     widget = SegmentationWidget(viewer)
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.directory = brainreg_dir
+    widget.directory = tmp_input_dir
     widget.load_brainreg_directory()
 
     assert len(widget.viewer.layers) == 4
