@@ -1,5 +1,11 @@
-services:
-  - xvfb
+addons:
+  apt:
+    packages:
+    - x11-utils
+    - libxkbcommon-x11-0
+services: xvfb
+dist: xenial
+
 after_success:
   - pip install coveralls
   - coveralls
