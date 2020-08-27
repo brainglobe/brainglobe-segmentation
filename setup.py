@@ -34,10 +34,6 @@ setup(
             "bump2version",
             "pre-commit",
             "flake8",
-            "pytest-faulthandler",
-            "pytest-qt",
-            "pytest-ordering",
-            "pytest-timeout",
         ]
     },
     python_requires=">=3.6, <3.8",
