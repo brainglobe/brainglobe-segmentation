@@ -29,6 +29,7 @@ setup(
             "black",
             "pytest-cov",
             "pytest",
+            "pytest-qt",
             "coverage",
             "bump2version",
             "pre-commit",

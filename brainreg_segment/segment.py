@@ -74,7 +74,6 @@ class SegmentationWidget(QWidget):
         self.point_size = point_size
         self.spline_size = spline_size
         self.brush_size = brush_size
-
         # general variables
         self.viewer = viewer
 
@@ -575,13 +574,16 @@ def save_all(
     print("Finished!\n")
 
 
+def start_gui(viewer):
+    general = SegmentationWidget(viewer)
+    viewer.window.add_dock_widget(general, name="General", area="right")
+
+
 def main():
     print("Loading manual segmentation GUI.\n ")
     with napari.gui_qt():
-
         viewer = napari.Viewer(title="Manual segmentation")
-        general = SegmentationWidget(viewer)
-        viewer.window.add_dock_widget(general, name="General", area="right")
+        start_gui(viewer)
 
 
 if __name__ == "__main__":
