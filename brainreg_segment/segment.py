@@ -155,28 +155,25 @@ class SegmentationWidget(QWidget):
         self.load_data_panel.setVisible(True)
 
     def setup_atlas(self):
-        self.atlas_menu, self.atlas_menu_label = self.add_atlas_menu(
-            self.load_data_layout
-        )
+        self.add_atlas_menu()
         self.set_output_directory()
 
-    def add_atlas_menu(self, layout):
+    def add_atlas_menu(self):
         list_of_atlasses = [""]
         available_atlases = get_available_atlases()
         for atlas in available_atlases.keys():
             atlas_desc = f"{atlas} v{available_atlases[atlas]}"
             list_of_atlasses.append(atlas_desc)
-        atlas_menu, atlas_menu_label = add_combobox(
-            layout,
+        self.atlas_menu, self.atlas_menu_label = add_combobox(
+            self.load_data_layout,
             "Choose atlas",
             list_of_atlasses,
             4,
             label_stack=True,
             callback=self.initialise_atlas,
         )
-        atlas_menu.setVisible(False)
-        atlas_menu_label.setVisible(False)
-        return atlas_menu, atlas_menu_label
+        self.atlas_menu.setVisible(False)
+        self.atlas_menu_label.setVisible(False)
 
     def add_track_panel(self, row):
         self.track_panel = QGroupBox("Track tracing")
@@ -288,6 +285,9 @@ class SegmentationWidget(QWidget):
     def initialise_atlas(self, i):
         atlas_string = self.atlas_menu.currentText()
         atlas_name = atlas_string.split(" ")[0].strip()
+        self.load_atlas(atlas_name)
+
+    def load_atlas(self, atlas_name):
         atlas = BrainGlobeAtlas(atlas_name)
         self.directory = self.directory / atlas_name
         self.paths = Paths(self.directory, atlas_space=True)
