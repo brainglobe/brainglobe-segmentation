@@ -1,11 +1,13 @@
 import shutil
-import tifffile
+
+# import tifffile
 
 import numpy as np
 import pandas as pd
 
 from pathlib import Path
-from filecmp import cmp
+
+# from filecmp import cmp
 from brainreg_segment.segment import SegmentationWidget
 
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
@@ -110,54 +112,54 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
     assert len(widget.track_layers[0].data) == 6
 
 
-def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
-    tmp_input_dir = tmpdir / "brainreg_output"
-    test_regions_dir = (
-        tmp_input_dir / "manual_segmentation" / "standard_space" / "regions"
-    )
-    validate_regions_dir = (
-        brainreg_dir / "manual_segmentation" / "standard_space" / "regions"
-    )
-    shutil.copytree(brainreg_dir, tmp_input_dir)
-    viewer = make_test_viewer()
-    widget = SegmentationWidget(viewer)
-    viewer.window.add_dock_widget(widget, name="General", area="right")
-    widget.standard_space = True
-    widget.plugin = "brainreg_standard"
-    widget.directory = tmp_input_dir
-    widget.load_brainreg_directory()
-
-    assert len(widget.viewer.layers) == 4
-    assert len(widget.label_layers) == 1
-    widget.add_new_region()
-    assert len(widget.viewer.layers) == 5
-    assert len(widget.label_layers) == 2
-    assert widget.label_layers[0].name == "test_region"
-    assert widget.label_layers[1].name == "region_1"
-
-    # analysis
-    widget.run_region_analysis()
-    region_csv_validate = pd.read_csv(validate_regions_dir / "test_region.csv")
-    region_csv_test = pd.read_csv(test_regions_dir / "test_region.csv")
-    pd.testing.assert_frame_equal(region_csv_test, region_csv_validate)
-
-    summary_csv_validate = pd.read_csv(validate_regions_dir / "summary.csv")
-    summary_csv_test = pd.read_csv(test_regions_dir / "summary.csv")
-    pd.testing.assert_frame_equal(summary_csv_test, summary_csv_validate)
-
-    # saving
-    widget.save()
-
-    image_validate = tifffile.imread(validate_regions_dir / "test_region.tiff")
-    image_test = tifffile.imread(test_regions_dir / "test_region.tiff")
-    np.testing.assert_allclose(image_validate, image_test, rtol=rtol)
-
-    # export
-    widget.export_to_brainrender()
-    cmp(
-        validate_regions_dir / "test_region.obj",
-        test_regions_dir / "test_region.obj",
-    )
+# def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
+#     tmp_input_dir = tmpdir / "brainreg_output"
+#     test_regions_dir = (
+#         tmp_input_dir / "manual_segmentation" / "standard_space" / "regions"
+#     )
+#     validate_regions_dir = (
+#         brainreg_dir / "manual_segmentation" / "standard_space" / "regions"
+#     )
+#     shutil.copytree(brainreg_dir, tmp_input_dir)
+#     viewer = make_test_viewer()
+#     widget = SegmentationWidget(viewer)
+#     viewer.window.add_dock_widget(widget, name="General", area="right")
+#     widget.standard_space = True
+#     widget.plugin = "brainreg_standard"
+#     widget.directory = tmp_input_dir
+#     widget.load_brainreg_directory()
+#
+#     assert len(widget.viewer.layers) == 4
+#     assert len(widget.label_layers) == 1
+#     widget.add_new_region()
+#     assert len(widget.viewer.layers) == 5
+#     assert len(widget.label_layers) == 2
+#     assert widget.label_layers[0].name == "test_region"
+#     assert widget.label_layers[1].name == "region_1"
+#
+#     # analysis
+#     widget.run_region_analysis()
+#     region_csv_validate = pd.read_csv(validate_regions_dir / "test_region.csv")
+#     region_csv_test = pd.read_csv(test_regions_dir / "test_region.csv")
+#     pd.testing.assert_frame_equal(region_csv_test, region_csv_validate)
+#
+#     summary_csv_validate = pd.read_csv(validate_regions_dir / "summary.csv")
+#     summary_csv_test = pd.read_csv(test_regions_dir / "summary.csv")
+#     pd.testing.assert_frame_equal(summary_csv_test, summary_csv_validate)
+#
+#     # saving
+#     widget.save()
+#
+#     image_validate = tifffile.imread(validate_regions_dir / "test_region.tiff")
+#     image_test = tifffile.imread(test_regions_dir / "test_region.tiff")
+#     np.testing.assert_allclose(image_validate, image_test, rtol=rtol)
+#
+#     # export
+#     widget.export_to_brainrender()
+#     cmp(
+#         validate_regions_dir / "test_region.obj",
+#         test_regions_dir / "test_region.obj",
+#     )
 
 
 def check_loaded_layers(widget, num_layers):
