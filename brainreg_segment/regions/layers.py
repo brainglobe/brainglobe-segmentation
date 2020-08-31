@@ -1,4 +1,4 @@
-import imio
+import tifffile
 
 import numpy as np
 
@@ -61,7 +61,7 @@ def add_existing_label_layers(
     :return label_layer: napari labels layer
     """
     label_file = Path(label_file)
-    labels = imio.load_any(label_file)
+    labels = tifffile.imread(label_file)
     label_layer = viewer.add_labels(
         labels, num_colors=num_colors, name=label_file.stem
     )

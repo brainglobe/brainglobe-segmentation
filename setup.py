@@ -7,6 +7,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 requirements = [
     "numpy",
+    "tables",
     "scikit-image>=0.14.0,<0.17.0",
     "pandas>=0.25.1,<=0.25.3",
     "napari[pyqt5]",
@@ -18,7 +19,7 @@ requirements = [
 
 setup(
     name="brainreg-segment",
-    version="0.0.1",
+    version="0.0.2",
     description="Manual segmentation of 3D brain structures in a common anatomical space",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -28,6 +29,7 @@ setup(
             "black",
             "pytest-cov",
             "pytest",
+            "pytest-qt",
             "coverage",
             "bump2version",
             "pre-commit",

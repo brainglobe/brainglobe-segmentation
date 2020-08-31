@@ -24,43 +24,83 @@ def track_analysis(
     spline_names = []
 
     for track_layer in track_layers:
-        spline = spline_fit(
-            track_layer.data,
-            smoothing=spline_smoothing,
-            k=fit_degree,
-            n_points=spline_points,
-        )
-        splines.append(spline)
-        if summarise_track:
-            summary_csv_file = tracks_directory / (track_layer.name + ".csv")
-            analyse_track_anatomy(atlas, spline, summary_csv_file)
+        if len(track_layer.data) != 0:
+            spline = run_track_analysis(
+                track_layer.data,
+                track_layer.name,
+                tracks_directory,
+                atlas,
+                summarise_track=summarise_track,
+                spline_smoothing=spline_smoothing,
+                spline_points=spline_points,
+                fit_degree=fit_degree,
+            )
 
-        viewer.add_points(
-            spline,
-            size=napari_spline_size,
-            edge_color="cyan",
-            face_color="cyan",
-            blending="additive",
-            opacity=0.7,
-            name=track_layer.name + "_fit",
-        )
+            splines.append(spline)
 
-        spline_names.append(track_layer.name)
+            viewer.add_points(
+                spline,
+                size=napari_spline_size,
+                edge_color="cyan",
+                face_color="cyan",
+                blending="additive",
+                opacity=0.7,
+                name=track_layer.name + "_fit",
+            )
+
+            spline_names.append(track_layer.name)
     return splines, spline_names
 
 
-def analyse_track_anatomy(atlas, spline, file_path, verbose=True):
+def run_track_analysis(
+    points,
+    track_name,
+    tracks_directory,
+    atlas,
+    spline_smoothing=0.05,
+    spline_points=100,
+    fit_degree=3,
+    summarise_track=True,
+):
     """
-    For a given spline, and brainrender scene, find the brain region that each
+    For each set of points, run a spline fit, and (if required) determine which
+     atlas region each part of the spline fit is within
+    :param points: 3D numpy array of points
+    :param track_name: Name of the set of points (used for saving results)
+    :param tracks_directory: Where to save the results to
+    :param atlas: brainglobe atlas class
+    :param spline_smoothing: spline fit smoothing factor
+    :param spline_points: How many points used to define the resulting
+    interpolated path
+    :param fit_degree: spline fit degree
+    :param summarise_track: If True, save a csv with the atlas region for
+    all parts of the spline fit
+    :return np.array: spline fit
+    """
+
+    spline = spline_fit(
+        points,
+        smoothing=spline_smoothing,
+        k=fit_degree,
+        n_points=spline_points,
+    )
+    if summarise_track:
+        summary_csv_file = tracks_directory / (track_name + ".csv")
+        analyse_track_anatomy(atlas, spline, summary_csv_file)
+
+    return spline
+
+
+def analyse_track_anatomy(atlas, spline, file_path):
+    """
+    For a given spline, find the atlas region that each
     "segment" is in, and save to csv.
 
-    :param scene: brainrender scene object
+    :param atlas: brainglobe atlas class
     :param spline: numpy array defining the spline interpolation
     :param file_path: path to save the results to
     :param bool verbose: Whether to print the progress
     """
-    if verbose:
-        print("Determining the brain region for each segment of the spline")
     spline_regions = []
     for p in spline.tolist():
         try:
@@ -94,6 +134,4 @@ def analyse_track_anatomy(atlas, spline, file_path, verbose=True):
                 },
                 ignore_index=True,
             )
-    if verbose:
-        print(f"Saving results to: {file_path}")
     df.to_csv(file_path, index=False)
