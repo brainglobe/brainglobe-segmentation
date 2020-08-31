@@ -3,4 +3,4 @@ source activate test-environment
 
 pip install -e .[dev]
 
-pytest --cov brainreg-segment
+pytest

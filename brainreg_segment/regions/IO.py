@@ -1,5 +1,4 @@
-import imio
-
+import tifffile
 import numpy as np
 
 from pathlib import Path
@@ -90,11 +89,14 @@ def save_label_layers(regions_directory, label_layers):
         save_regions_to_file(label_layer, regions_directory)
 
 
-def export_label_layers(regions_directory, label_layers):
+def export_label_layers(
+    regions_directory, label_layers, voxel_size, obj_ext=".obj"
+):
     print(f"Exporting regions to: {regions_directory}")
     regions_directory.mkdir(parents=True, exist_ok=True)
     for label_layer in label_layers:
-        export_regions_to_file(label_layer, regions_directory)
+        filename = regions_directory / (label_layer.name + obj_ext)
+        export_regions_to_file(label_layer.data, filename, voxel_size)
 
 
 def save_regions_to_file(
@@ -118,28 +120,16 @@ def save_regions_to_file(
     name = label_layer.name
 
     filename = destination_directory / (name + image_extension)
-    imio.to_tiff(data.astype(np.int16), filename)
+    tifffile.imsave(filename, data.astype(np.int16))
 
 
-def export_regions_to_file(
-    label_layer, destination_directory, ignore_empty=True, obj_ext=".obj",
-):
+def export_regions_to_file(image, filename, voxel_size, ignore_empty=True):
     """
     Export regions as .obj for brainrender
-    :param label_layer: napari labels layer (with segmented regions)
-    :param destination_directory: Where to save files to
-    :param ignore_empty: If True, don't attempt to save empty images
-    :param obj_ext: File extension for the obj files
-    :param image_extension: File extension fo the image files
+
     """
-    data = label_layer.data
     if ignore_empty:
-        if data.sum() == 0:
+        if image.sum() == 0:
             return
 
-    name = label_layer.name
-
-    filename = destination_directory / (name + obj_ext)
-    volume_to_vector_array_to_obj_file(
-        data, filename,
-    )
+    volume_to_vector_array_to_obj_file(image, filename, voxel_size=voxel_size)
