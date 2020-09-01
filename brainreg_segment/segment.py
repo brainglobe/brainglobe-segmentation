@@ -30,10 +30,7 @@ from brainreg_segment.atlas.utils import (
 
 # LAYOUT HELPERS ################################################################################
 
-from brainreg_segment.layout.utils import (
-    disable_napari_btns,
-    disable_napari_key_bindings,
-)
+from brainreg_segment.layout.utils import disable_napari_key_bindings
 from brainreg_segment.layout.gui_constants import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
@@ -63,7 +60,7 @@ class SegmentationWidget(QWidget):
 
         # Disable / overwrite napari viewer functions
         # that either do not make sense or should be avoided by the user
-        disable_napari_btns(self.viewer)
+        # disable_napari_btns(self.viewer)
         disable_napari_key_bindings()
 
         # track variables
@@ -73,7 +70,7 @@ class SegmentationWidget(QWidget):
         self.label_layers = []
 
         # atlas variables
-        self.current_atlas_string = ""
+        self.current_atlas_name = ""
 
         self.boundaries_string = boundaries_string
 
@@ -218,19 +215,36 @@ class SegmentationWidget(QWidget):
 
         self.atlas_menu = atlas_menu
 
-    def initialise_atlas(self, i):
+    def initialise_atlas(self):
         atlas_string = self.atlas_menu.currentText()
-        if atlas_string != self.current_atlas_string:
+        atlas_name = atlas_string.split(" ")[0].strip()
+        if atlas_name != self.current_atlas_name:
             self.remove_layers()
         else:
             print(f"{atlas_string} already selected for segmentation.")
             self.reset_atlas_menu()
             return
-        self.current_atlas_string = atlas_string
+        self.current_atlas_name = atlas_name
 
-        atlas_name = atlas_string.split(" ")[0].strip()
-        atlas = BrainGlobeAtlas(atlas_name)
+        # Instantiate atlas layers
+        self.load_atlas_layers()
 
+        # Get / set output directory
+        self.set_output_directory()
+        self.directory = self.directory / atlas_name
+        self.paths = Paths(self.directory, atlas_space=True)
+
+        self.status_label.setText("Ready")
+        # Set window title
+        self.viewer.title = f"Atlas: {self.current_atlas_name}"
+
+        # Check / load previous regions and tracks
+        self.region_seg.check_saved_region()
+        self.track_seg.check_saved_track()
+        self.reset_atlas_menu()
+
+    def load_atlas_layers(self):
+        atlas = BrainGlobeAtlas(self.current_atlas_name)
         self.atlas = atlas
         self.base_layer = self.viewer.add_image(
             self.atlas.reference, name="Reference"
@@ -243,22 +257,7 @@ class SegmentationWidget(QWidget):
             visible=False,
         )
         self.standard_space = True
-
         self.initialise_segmentation_interface()
-
-        # Get / set directory
-        self.set_output_directory()
-        self.directory = self.directory / atlas_name
-        self.paths = Paths(self.directory, atlas_space=True)
-
-        self.status_label.setText("Ready")
-        # Set window title
-        self.viewer.title = f"Atlas: {self.current_atlas_string}"
-
-        # Check / load previous regions and tracks
-        self.region_seg.check_saved_region()
-        self.track_seg.check_saved_track()
-        self.reset_atlas_menu()
 
     def reset_atlas_menu(self):
         # Reset menu for atlas - show initial description
@@ -274,7 +273,7 @@ class SegmentationWidget(QWidget):
     def load_brainreg_directory_standard(self):
         self.get_brainreg_directory(standard_space=True)
 
-    def get_brainreg_directory(self, standard_space=True):
+    def get_brainreg_directory(self, standard_space):
         if standard_space:
             self.plugin = "brainreg_standard"
             self.standard_space = True
@@ -288,34 +287,25 @@ class SegmentationWidget(QWidget):
         self.directory = QFileDialog.getExistingDirectory(
             self, "Select brainreg directory", options=options,
         )
-        if self.directory != "":
-            try:
-                self.load_brainreg_directory()
-                self.remove_layers()
-                self.load_brainreg_directory()
-
-                self.viewer.open(str(self.directory), plugin=self.plugin)
-                self.paths = Paths(
-                    self.directory, standard_space=standard_space,
-                )
-
-                self.initialise_loaded_data()
-
-                # Check / load previous regions and tracks
-                self.region_seg.check_saved_region()
-                self.track_seg.check_saved_track()
-
-            except ValueError:
-                print(
-                    f"The directory ({self.directory}) does not appear to be "
-                    f"a brainreg directory, please try again."
-                )
+        self.load_brainreg_directory()
 
     def load_brainreg_directory(self):
         self.directory = Path(self.directory)
-        self.viewer.open(str(self.directory), plugin=self.plugin)
-        self.paths = Paths(self.directory, standard_space=self.standard_space,)
-        self.initialise_loaded_data()
+        try:
+            self.viewer.open(str(self.directory), plugin=self.plugin)
+            self.paths = Paths(
+                self.directory, standard_space=self.standard_space,
+            )
+            self.initialise_loaded_data()
+        except ValueError:
+            print(
+                f"The directory ({self.directory}) does not appear to be "
+                f"a brainreg directory, please try again."
+            )
+
+        # Check / load previous regions and tracks
+        self.region_seg.check_saved_region()
+        self.track_seg.check_saved_track()
 
     def initialise_loaded_data(self):
         # for consistency, don't load this
@@ -331,7 +321,10 @@ class SegmentationWidget(QWidget):
         self.initialise_segmentation_interface()
 
         # Set window title
-        self.viewer.title = f"Brainreg: {str(self.paths)}"
+        self.viewer.title = (
+            f"Brainreg: {self.metadata['atlas']} ({self.plugin})"
+        )
+        self.status_label.setText("Ready")
 
     # MORE LAYOUT COMPONENTS ###########################################
 
