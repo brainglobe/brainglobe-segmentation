@@ -1,17 +1,11 @@
 from qtpy.QtWidgets import (
-    QLabel,
-    QFileDialog,
     QGridLayout,
     QGroupBox,
-    QWidget,
 )
 
 from brainreg_segment.layout.gui_elements import (
     add_button,
     add_checkbox,
-    add_float_box,
-    add_int_box,
-    add_combobox,
 )
 
 from brainreg_segment.regions.layers import (
@@ -20,22 +14,31 @@ from brainreg_segment.regions.layers import (
 )
 
 from brainreg_segment.regions.analysis import region_analysis
-from brainreg_segment.layout.gui_constants import *
+from brainreg_segment.layout.gui_constants import (
+    COLUMN_WIDTH,
+    CALCULATE_VOLUMES_DEFAULT,
+    SUMMARIZE_VOLUMES_DEFAULT,
+    BRUSH_SIZE,
+    IMAGE_FILE_EXT,
+    NUM_COLORS,
+)
 
 
 class RegionSeg(QGroupBox):
-    '''
+    """
     Region segmentation method panel
 
-    '''
+    """
 
-    def __init__(self, parent,
-            calculate_volumes_default=CALCULATE_VOLUMES_DEFAULT,
-            summarise_volumes_default=SUMMARIZE_VOLUMES_DEFAULT,
-            brush_size=BRUSH_SIZE,
-            image_file_extension=IMAGE_FILE_EXT,
-            num_colors=NUM_COLORS
-                 ):
+    def __init__(
+        self,
+        parent,
+        calculate_volumes_default=CALCULATE_VOLUMES_DEFAULT,
+        summarise_volumes_default=SUMMARIZE_VOLUMES_DEFAULT,
+        brush_size=BRUSH_SIZE,
+        image_file_extension=IMAGE_FILE_EXT,
+        num_colors=NUM_COLORS,
+    ):
 
         super(RegionSeg, self).__init__()
         self.parent = parent
@@ -43,13 +46,12 @@ class RegionSeg(QGroupBox):
         self.calculate_volumes_default = calculate_volumes_default
         self.summarise_volumes_default = summarise_volumes_default
 
-        # Brushes / ... 
+        # Brushes / ...
         self.brush_size = brush_size
         self.num_colors = num_colors
 
-        # File formats 
+        # File formats
         self.image_file_extension = image_file_extension
-
 
     def add_region_panel(self, row):
         self.region_panel = QGroupBox("Region analysis")
@@ -60,7 +62,7 @@ class RegionSeg(QGroupBox):
         )
 
         add_button(
-            "Analyse regions", region_layout, self.run_region_analysis, 2,1,
+            "Analyse regions", region_layout, self.run_region_analysis, 2, 1,
         )
 
         self.calculate_volumes_checkbox = add_checkbox(
@@ -96,10 +98,9 @@ class RegionSeg(QGroupBox):
             self.image_file_extension,
         )
 
-
     def add_region(self):
         print("Adding a new region\n")
-        self.region_panel.setVisible(True) # Should be visible by default!
+        self.region_panel.setVisible(True)  # Should be visible by default!
         add_new_region_layer(
             self.parent.viewer,
             self.parent.label_layers,
@@ -109,17 +110,17 @@ class RegionSeg(QGroupBox):
         )
 
     def run_region_analysis(self):
-            if self.parent.label_layers:
-                print("Running region analysis")
-                worker = region_analysis(
-                    self.parent.label_layers,
-                    self.parent.atlas_layer.data,
-                    self.parent.atlas,
-                    self.parent.paths.regions_directory,
-                    output_csv_file=self.parent.paths.region_summary_csv,
-                    volumes=self.calculate_volumes_checkbox.isChecked(),
-                    summarise=self.summarise_volumes_checkbox.isChecked(),
-                )
-                worker.start()
-            else:
-                print("No regions found")
+        if self.parent.label_layers:
+            print("Running region analysis")
+            worker = region_analysis(
+                self.parent.label_layers,
+                self.parent.atlas_layer.data,
+                self.parent.atlas,
+                self.parent.paths.regions_directory,
+                output_csv_file=self.parent.paths.region_summary_csv,
+                volumes=self.calculate_volumes_checkbox.isChecked(),
+                summarise=self.summarise_volumes_checkbox.isChecked(),
+            )
+            worker.start()
+        else:
+            print("No regions found")

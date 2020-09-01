@@ -1,12 +1,9 @@
 from glob import glob
-import numpy as np 
+import numpy as np
 
 from qtpy.QtWidgets import (
-    QLabel,
-    QFileDialog,
     QGridLayout,
     QGroupBox,
-    QWidget,
 )
 
 from brainreg_segment.layout.gui_elements import (
@@ -14,7 +11,6 @@ from brainreg_segment.layout.gui_elements import (
     add_checkbox,
     add_float_box,
     add_int_box,
-    add_combobox,
 )
 from brainreg_segment.tracks.layers import (
     add_new_track_layer,
@@ -23,29 +19,41 @@ from brainreg_segment.tracks.layers import (
 from brainreg_segment.image.utils import create_KDTree_from_image
 
 from brainreg_segment.tracks.analysis import track_analysis
-from brainreg_segment.layout.gui_constants import *
+from brainreg_segment.layout.gui_constants import (
+    COLUMN_WIDTH,
+    POINT_SIZE,
+    SPLINE_SIZE,
+    TRACK_FILE_EXT,
+    SPLINE_POINTS_DEFAULT,
+    SPLINE_SMOOTHING_DEFAULT,
+    FIT_DEGREE_DEFAULT,
+    SUMMARISE_TRACK_DEFAULT,
+    ADD_SURFACE_POINT_DEFAULT,
+)
 
 
 class TrackSeg(QGroupBox):
-    '''
+    """
     Track segmentation method panel
 
-    '''
+    """
 
-    def __init__(self, parent,
-            point_size=POINT_SIZE,
-            spline_size=SPLINE_SIZE,
-            track_file_extension=TRACK_FILE_EXT,
-            spline_points_default=SPLINE_POINTS_DEFAULT,
-            spline_smoothing_default=SPLINE_SMOOTHING_DEFAULT,
-            fit_degree_default=FIT_DEGREE_DEFAULT,
-            summarise_track_default=SUMMARISE_TRACK_DEFAULT,
-            add_surface_point_default=ADD_SURFACE_POINT_DEFAULT,
-                 ):
+    def __init__(
+        self,
+        parent,
+        point_size=POINT_SIZE,
+        spline_size=SPLINE_SIZE,
+        track_file_extension=TRACK_FILE_EXT,
+        spline_points_default=SPLINE_POINTS_DEFAULT,
+        spline_smoothing_default=SPLINE_SMOOTHING_DEFAULT,
+        fit_degree_default=FIT_DEGREE_DEFAULT,
+        summarise_track_default=SUMMARISE_TRACK_DEFAULT,
+        add_surface_point_default=ADD_SURFACE_POINT_DEFAULT,
+    ):
 
         super(TrackSeg, self).__init__()
         self.parent = parent
-        self.tree = None 
+        self.tree = None
 
         self.summarise_track_default = summarise_track_default
         self.add_surface_point_default = add_surface_point_default
@@ -57,18 +65,17 @@ class TrackSeg(QGroupBox):
         self.spline_smoothing_default = spline_points_default
         self.fit_degree_default = fit_degree_default
 
-        # File formats 
+        # File formats
         self.track_file_extension = track_file_extension
 
-        # Initialise spline and spline names 
+        # Initialise spline and spline names
         self.splines = None
         self.spline_names = None
 
-   
     def add_track_panel(self, row):
         self.track_panel = QGroupBox("Track tracing")
         track_layout = QGridLayout()
-       
+
         add_button(
             "Add surface points", track_layout, self.add_surface_points, 5, 1,
         )
@@ -120,16 +127,17 @@ class TrackSeg(QGroupBox):
         self.parent.layout.addWidget(self.track_panel, row, 0, 1, 2)
         self.track_panel.setVisible(False)
 
-
     def toggle_track_panel(self):
         if self.track_panel.isVisible():
             self.track_panel.setVisible(False)
-        else: 
+        else:
             self.track_panel.setVisible(True)
 
     def check_saved_track(self):
         track_files = glob(
-            str(self.parent.paths.tracks_directory) + "/*" + self.track_file_extension
+            str(self.parent.paths.tracks_directory)
+            + "/*"
+            + self.track_file_extension
         )
         if self.parent.paths.tracks_directory.exists() and track_files != []:
             for track_file in track_files:
@@ -143,12 +151,10 @@ class TrackSeg(QGroupBox):
         print("Adding a new track\n")
         self.splines = None
         self.spline_names = None
-        self.track_panel.setVisible(True) # Should be visible by default!
+        self.track_panel.setVisible(True)  # Should be visible by default!
         add_new_track_layer(
-            self.parent.viewer, 
-            self.parent.track_layers, 
-            self.point_size,
-            )
+            self.parent.viewer, self.parent.track_layers, self.point_size,
+        )
 
     def add_surface_points(self):
         if self.parent.track_layers:
@@ -174,26 +180,26 @@ class TrackSeg(QGroupBox):
         self.tree = create_KDTree_from_image(self.parent.atlas_layer.data)
 
     def run_track_analysis(self):
-            if self.parent.track_layers:
-                print("Running track analysis")
-                try:
-                    self.splines, self.spline_names = track_analysis(
-                        self.parent.viewer,
-                        self.parent.atlas,
-                        self.parent.paths.tracks_directory,
-                        self.parent.track_layers,
-                        self.spline_size,
-                        spline_points=self.spline_points.value(),
-                        fit_degree=self.fit_degree.value(),
-                        spline_smoothing=self.spline_smoothing.value(),
-                        summarise_track=self.summarise_track_checkbox.isChecked(),
-                    )
-                    print("Finished!\n")
-                except TypeError:
-                    print(
-                        "The number of points must be greater "
-                        "than the fit degree. \n"
-                        "Please add points, or reduce the fit degree."
-                    )
-            else:
-                print("No tracks found.")
+        if self.parent.track_layers:
+            print("Running track analysis")
+            try:
+                self.splines, self.spline_names = track_analysis(
+                    self.parent.viewer,
+                    self.parent.atlas,
+                    self.parent.paths.tracks_directory,
+                    self.parent.track_layers,
+                    self.spline_size,
+                    spline_points=self.spline_points.value(),
+                    fit_degree=self.fit_degree.value(),
+                    spline_smoothing=self.spline_smoothing.value(),
+                    summarise_track=self.summarise_track_checkbox.isChecked(),
+                )
+                print("Finished!\n")
+            except TypeError:
+                print(
+                    "The number of points must be greater "
+                    "than the fit degree. \n"
+                    "Please add points, or reduce the fit degree."
+                )
+        else:
+            print("No tracks found.")
