@@ -1,5 +1,5 @@
 import napari
-
+import numpy as np
 from pathlib import Path
 from napari.qt.threading import thread_worker
 from qtpy import QtCore
@@ -368,14 +368,18 @@ class SegmentationWidget(QWidget):
             self.directory = Path(self.directory)
 
     def reset_variables(self):
-        # TODO: Re-implement this method
-
-        # self.mean_voxel_size = int(
-        #    np.sum(self.atlas.resolution) / len(self.atlas.resolution)
-        # )
-        # self.point_size = self.point_size / self.mean_voxel_size
-        # self.spline_size = self.spline_size / self.mean_voxel_size
-        # self.brush_size = self.brush_size / self.mean_voxel_size
+        self.mean_voxel_size = int(
+            np.sum(self.atlas.resolution) / len(self.atlas.resolution)
+        )
+        self.track_seg.point_size = (
+            self.track_seg.point_size / self.mean_voxel_size
+        )
+        self.track_seg.spline_size = (
+            self.track_seg.spline_size / self.mean_voxel_size
+        )
+        self.region_seg.brush_size = (
+            self.region_seg.brush_size / self.mean_voxel_size
+        )
         return
 
     def remove_layers(self):

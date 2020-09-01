@@ -1,5 +1,4 @@
 import numpy as np
-
 from brainreg_segment.image.utils import create_KDTree_from_image
 
 image = np.array(([0, 0, 0, 0], [0, 0, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0],))

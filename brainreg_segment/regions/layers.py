@@ -1,5 +1,4 @@
 import tifffile
-
 import numpy as np
 
 from glob import glob

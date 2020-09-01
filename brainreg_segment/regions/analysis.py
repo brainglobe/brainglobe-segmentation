@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+
 from napari.qt.threading import thread_worker
 from skimage.measure import regionprops_table
 
