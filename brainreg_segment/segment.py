@@ -239,9 +239,12 @@ class SegmentationWidget(QWidget):
 
     def initialise_atlas(self, i):
         atlas_string = self.atlas_menu.currentText()
-
         if atlas_string != self.current_atlas_string: 
             self.remove_layers() 
+        else:
+            print(f'{atlas_string} already selected for segmentation.')
+            self.reset_atlas_menu()
+            return
         self.current_atlas_string = atlas_string
 
         atlas_name = atlas_string.split(" ")[0].strip()
@@ -267,31 +270,36 @@ class SegmentationWidget(QWidget):
         self.directory = self.directory / atlas_name
         self.paths = Paths(self.directory, atlas_space=True)
 
-
-        #self.atlas_menu.setEnabled(False)
         self.status_label.setText("Ready")
+        # Set window title 
+        self.viewer.title = f'Atlas: {self.current_atlas_string}'
 
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
         self.track_seg.check_saved_track()
+        self.reset_atlas_menu()
 
-
+    def reset_atlas_menu(self):
+        # Reset menu for atlas - show initial description 
+        self.atlas_menu.blockSignals(True)
+        self.atlas_menu.setCurrentIndex(0)
+        self.atlas_menu.blockSignals(False)
 
     #################################################### BRAINREG INTERACTION #################################################
 
 
     def load_brainreg_directory_sample(self):
-        self.load_brainreg_directory(standard_space=False)
+        self.get_brainreg_directory(standard_space=False)
 
     def load_brainreg_directory_standard(self):
-        self.load_brainreg_directory(standard_space=True)
+        self.get_brainreg_directory(standard_space=True)
 
-    def load_brainreg_directory(self, standard_space=True):
+    def get_brainreg_directory(self, standard_space=True):
         if standard_space:
-            plugin = "brainreg_standard"
+            self.plugin = "brainreg_standard"
             self.standard_space = True
         else:
-            plugin = "brainreg"
+            self.plugin = "brainreg"
             self.standard_space = False
 
         self.status_label.setText("Loading...")
@@ -302,10 +310,11 @@ class SegmentationWidget(QWidget):
         )
         if self.directory != "":
             try:
-                self.directory = Path(self.directory)
+                self.load_brainreg_directory()
                 self.remove_layers()
+                self.load_brainreg_directory()
 
-                self.viewer.open(str(self.directory), plugin=plugin)
+                self.viewer.open(str(self.directory), plugin=self.plugin)
                 self.paths = Paths(
                     self.directory, standard_space=standard_space,
                 )
@@ -322,6 +331,13 @@ class SegmentationWidget(QWidget):
                     f"a brainreg directory, please try again."
                 )
 
+    def load_brainreg_directory(self):
+        self.directory = Path(self.directory)
+        self.viewer.open(str(self.directory), plugin=self.plugin)
+        self.paths = Paths(self.directory, standard_space=self.standard_space,)
+        self.initialise_loaded_data()
+
+
     def initialise_loaded_data(self):
         # for consistency, don't load this
         try:
@@ -335,7 +351,8 @@ class SegmentationWidget(QWidget):
         self.atlas_layer = self.viewer.layers[self.metadata["atlas"]]
         self.initialise_segmentation_interface()
 
-
+        # Set window title 
+        self.viewer.title = f'Brainreg: {str(self.paths)}'
 
     #################################################### MORE LAYOUT COMPONENTS ###########################################
     
@@ -387,14 +404,16 @@ class SegmentationWidget(QWidget):
     def remove_layers(self):
         '''
         TODO: This needs work. Runs into an error currently 
-        when switching from a freshly annotated project to another one 
+        when switching from a annotated project to another one 
 
         '''
         if len(self.viewer.layers) != 0:
             # Remove old layers
             for layer in list(self.viewer.layers):
-                self.viewer.layers.remove(layer)
-
+                try:
+                    self.viewer.layers.remove(layer)
+                except IndexError: # no idea why this happens
+                    pass 
         self.track_layers = []
         self.label_layers = []
 
@@ -418,8 +437,8 @@ class SegmentationWidget(QWidget):
             self.paths.regions_directory,
             self.paths.tracks_directory,
             self.label_layers,
-            self.splines,
-            self.spline_names,
+            self.track_seg.splines,
+            self.track_seg.spline_names,
             self.atlas.resolution[0],
             max_axis_2,
         )
@@ -438,7 +457,7 @@ def export_all(
 ):
     if label_layers:
         # TODO: this function does not exist
-        export_label_layers(regions_directory, label_layers)
+        export_label_layers(regions_directory, label_layers, resolution)
 
     if splines:
         export_splines(
@@ -465,9 +484,6 @@ def save_all(
             track_file_extension=track_file_extension,
         )
     print("Finished!\n")
-
-
-
 
 
 

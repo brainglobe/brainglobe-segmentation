@@ -60,6 +60,10 @@ class TrackSeg(QGroupBox):
         # File formats 
         self.track_file_extension = track_file_extension
 
+        # Initialise spline and spline names 
+        self.splines = None
+        self.spline_names = None
+
    
     def add_track_panel(self, row):
         self.track_panel = QGroupBox("Track tracing")
@@ -138,6 +142,7 @@ class TrackSeg(QGroupBox):
     def add_track(self):
         print("Adding a new track\n")
         self.splines = None
+        self.spline_names = None
         self.track_panel.setVisible(True) # Should be visible by default!
         add_new_track_layer(
             self.parent.viewer, 
@@ -155,6 +160,12 @@ class TrackSeg(QGroupBox):
                 _, index = self.tree.query(track_layer.data[0])
                 surface_point = self.tree.data[index]
                 track_layer.data = np.vstack((surface_point, track_layer.data))
+                if len(track_layer.data) != 0:
+                    _, index = self.tree.query(track_layer.data[0])
+                    surface_point = self.tree.data[index]
+                    track_layer.data = np.vstack(
+                        (surface_point, track_layer.data)
+                    )
             print("Finished!\n")
         else:
             print("No tracks found.")

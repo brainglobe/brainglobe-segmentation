@@ -2,7 +2,6 @@ import pandas as pd
 
 from brainreg_segment.tracks.fit import spline_fit
 
-
 def track_analysis(
     viewer,
     atlas,
@@ -50,6 +49,7 @@ def track_analysis(
 
             spline_names.append(track_layer.name)
     return splines, spline_names
+
 
 
 def run_track_analysis(
