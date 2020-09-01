@@ -20,7 +20,6 @@ from brainreg_segment.regions.layers import (
 )
 
 from brainreg_segment.regions.analysis import region_analysis
-
 from brainreg_segment.layout.gui_constants import *
 
 
@@ -40,17 +39,17 @@ class RegionSeg(QGroupBox):
 
         super(RegionSeg, self).__init__()
         self.parent = parent
+
         self.calculate_volumes_default = calculate_volumes_default
         self.summarise_volumes_default = summarise_volumes_default
 
         # Brushes / ... 
         self.brush_size = brush_size
-        
+        self.num_colors = num_colors
+
         # File formats 
         self.image_file_extension = image_file_extension
 
-        # Colors
-        self.num_colors = num_colors
 
     def add_region_panel(self, row):
         self.region_panel = QGroupBox("Region analysis")
@@ -97,12 +96,10 @@ class RegionSeg(QGroupBox):
             self.image_file_extension,
         )
 
-    def initialise_region_segmentation(self):
-        self.region_panel.setVisible(True)
 
     def add_region(self):
         print("Adding a new region\n")
-        self.initialise_region_segmentation()
+        self.region_panel.setVisible(True) # Should be visible by default!
         add_new_region_layer(
             self.parent.viewer,
             self.parent.label_layers,

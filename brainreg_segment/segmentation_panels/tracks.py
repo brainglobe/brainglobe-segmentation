@@ -20,9 +20,9 @@ from brainreg_segment.tracks.layers import (
     add_new_track_layer,
     add_existing_track_layers,
 )
+from brainreg_segment.image.utils import create_KDTree_from_image
 
 from brainreg_segment.tracks.analysis import track_analysis
-
 from brainreg_segment.layout.gui_constants import *
 
 
@@ -45,11 +45,12 @@ class TrackSeg(QGroupBox):
 
         super(TrackSeg, self).__init__()
         self.parent = parent
-        
+        self.tree = None 
+
         self.summarise_track_default = summarise_track_default
         self.add_surface_point_default = add_surface_point_default
 
-        # Point size / ... 
+        # Point / Spline fitting settings
         self.point_size = point_size
         self.spline_points_default = spline_points_default
         self.spline_size = spline_size
@@ -134,14 +135,15 @@ class TrackSeg(QGroupBox):
                     )
                 )
 
-    def initialise_track_tracing(self):
-        self.track_panel.setVisible(True)
-        self.splines = None
-
     def add_track(self):
         print("Adding a new track\n")
-        self.initialise_track_tracing()
-        add_new_track_layer(self.parent.viewer, self.parent.track_layers, self.point_size)
+        self.splines = None
+        self.track_panel.setVisible(True) # Should be visible by default!
+        add_new_track_layer(
+            self.parent.viewer, 
+            self.parent.track_layers, 
+            self.point_size,
+            )
 
     def add_surface_points(self):
         if self.parent.track_layers:
@@ -156,6 +158,9 @@ class TrackSeg(QGroupBox):
             print("Finished!\n")
         else:
             print("No tracks found.")
+
+    def create_brain_surface_tree(self):
+        self.tree = create_KDTree_from_image(self.parent.atlas_layer.data)
 
     def run_track_analysis(self):
             if self.parent.track_layers:

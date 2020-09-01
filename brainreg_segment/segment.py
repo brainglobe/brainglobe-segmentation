@@ -25,8 +25,6 @@ from brainreg_segment.regions.IO import (
 
 from brainreg_segment.tracks.IO import save_track_layers, export_splines
 
-from brainreg_segment.image.utils import create_KDTree_from_image
-
 from brainreg_segment.atlas.utils import (
     get_available_atlases,
     display_brain_region_name,
@@ -38,7 +36,13 @@ from brainreg_segment.layout.utils import (
     disable_napari_btns,
     disable_napari_key_bindings,
 )
-from brainreg_segment.layout.gui_constants import *
+from brainreg_segment.layout.gui_constants import (
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+    COLUMN_WIDTH,
+    BOUNDARIES_STRING,
+    TRACK_FILE_EXT
+)
 
 from brainreg_segment.layout.gui_elements import (
     add_button,
@@ -49,8 +53,8 @@ from brainreg_segment.layout.gui_elements import (
 )
 
 ##### SEGMENTATION  ################################################################################
-from brainreg_segment.segmentation.region import RegionSeg
-from brainreg_segment.segmentation.track import TrackSeg
+from brainreg_segment.segmentation_panels.regions import RegionSeg
+from brainreg_segment.segmentation_panels.tracks import TrackSeg
 
 
 
@@ -72,14 +76,12 @@ class SegmentationWidget(QWidget):
 
         # track variables
         self.track_layers = []
-        self.tree = None
-       
+
         # region variables
         self.label_layers = []
 
         # atlas variables
         self.current_atlas_string = ''
-        self.region_labels = []
 
         self.boundaries_string = boundaries_string
         
@@ -88,27 +90,53 @@ class SegmentationWidget(QWidget):
         self.track_seg  = TrackSeg(self)
         
         # Generate main layout
-        self.setup_layout()
+        self.setup_main_layout()
 
 
-    def setup_layout(self):
-        self.instantiated = False
+    def setup_main_layout(self):
+        ''' 
+        Construct main layout of widget 
+        
+        ''' 
         self.layout = QGridLayout()
         self.layout.setAlignment(QtCore.Qt.AlignTop)
         self.layout.setSpacing(4)
+
+        # 3 Steps: 
+        # - Loading panel 
+        # - Segmentation methods (which are invisible at first)
+        # - Saving panel
 
         self.add_loading_panel(1)
         self.track_seg.add_track_panel(2)
         self.region_seg.add_region_panel(3)
         self.add_saving_panel(4)
-
+        
+        # Take care of status label
         self.status_label = QLabel()
         self.status_label.setText("Ready")
         self.layout.addWidget(self.status_label, 5, 0)
 
         self.setLayout(self.layout)
 
+
+
+    #################################################### PANELS ###############################################################
+
+
     def add_loading_panel(self, row):
+        '''
+        Loading panel consisting of 
+        - Left column: 
+            - Load project (sample space)
+            - Load project (atlas space)
+            - Atlas chooser 
+        - Right column:
+            Toggle visibility of segmentation
+            methods
+
+
+        '''
         self.load_data_panel = QGroupBox()
         self.load_data_layout = QGridLayout()
 
@@ -118,7 +146,8 @@ class SegmentationWidget(QWidget):
             self.load_brainreg_directory_sample,
             0,
             0,
-            minimum_width=COLUMN_WIDTH
+            minimum_width=COLUMN_WIDTH,
+            alignment='left'
         )
 
         self.load_button_standard = add_button(
@@ -127,13 +156,14 @@ class SegmentationWidget(QWidget):
             self.load_brainreg_directory_standard,
             1,
             0,
-            minimum_width=COLUMN_WIDTH
+            minimum_width=COLUMN_WIDTH,
+            alignment='left'
         )
 
         self.add_atlas_menu(self.load_data_layout)
 
         self.show_trackseg_button = add_button(
-            "Track tracing",
+            "Trace tracks",
             self.load_data_layout, 
             self.track_seg.toggle_track_panel, 
             0, 
@@ -143,7 +173,7 @@ class SegmentationWidget(QWidget):
         self.show_trackseg_button.setEnabled(False)
 
         self.show_regionseg_button = add_button(
-            "Region segment",
+            "Segment regions",
             self.load_data_layout, 
             self.region_seg.toggle_region_panel, 
             1, 
@@ -152,75 +182,17 @@ class SegmentationWidget(QWidget):
         )
         self.show_regionseg_button.setEnabled(False)
 
-
         self.load_data_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)
         self.load_data_panel.setLayout(self.load_data_layout)
         self.layout.addWidget(self.load_data_panel, row, 0, 1, 2)
         self.load_data_panel.setVisible(True)
 
 
-    #################################################### ATLAS INTERACTION ####################################################
-
-    def add_atlas_menu(self, layout):
-        list_of_atlasses = ['Choose atlas']
-        available_atlases = get_available_atlases()
-        for atlas in available_atlases.keys():
-            atlas_desc = f"{atlas} v{available_atlases[atlas]}"
-            list_of_atlasses.append(atlas_desc)
-            atlas_menu, _ = add_combobox(
-            layout,
-            None,
-            list_of_atlasses,
-            2,
-            0,
-            label_stack=True,
-            callback=self.initialise_atlas,
-            width=COLUMN_WIDTH
-        )
-
-        self.atlas_menu = atlas_menu
-
-    def initialise_atlas(self, i):
-        atlas_string = self.atlas_menu.currentText()
-
-        if atlas_string != self.current_atlas_string: 
-            self.reset_layers() 
-        self.current_atlas_string = atlas_string
-
-        atlas_name = atlas_string.split(" ")[0].strip()
-        atlas = BrainGlobeAtlas(atlas_name)
-        
-        self.atlas = atlas
-        self.base_layer = self.viewer.add_image(
-            self.atlas.reference, name="Reference"
-        )
-        self.atlas_layer = self.viewer.add_labels(
-            self.atlas.annotation,
-            name=self.atlas.atlas_name,
-            blending="additive",
-            opacity=0.3,
-            visible=False,
-        )
-        self.standard_space = True
-        self.initialise_segmentation_interface()
-
-        # Get / set directory
-        self.set_output_directory()
-        self.directory = self.directory / atlas_name
-        self.paths = Paths(self.directory, atlas_space=True)
-
-
-        #self.atlas_menu.setEnabled(False)
-        self.status_label.setText("Ready")
-
-        # Also check previous region / track tracing 
-        self.region_seg.check_saved_region()
-        self.track_seg.check_saved_track()
-
-
-    #################################################### MORE LAYOUT COMPONENTS ###########################################
-
     def add_saving_panel(self, row):
+        '''
+        Saving/Export panel 
+
+        '''
         self.save_data_panel = QGroupBox()
         self.save_data_layout = QGridLayout()
 
@@ -242,25 +214,70 @@ class SegmentationWidget(QWidget):
 
         self.save_data_panel.setVisible(False)
 
-    def initialise_image_view(self):
-        self.set_z_position()
 
-    def set_z_position(self):
-        midpoint = int(round(len(self.base_layer.data) / 2))
-        self.viewer.dims.set_point(0, midpoint)
 
-    def set_output_directory(self):
-        self.status_label.setText("Loading...")
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        self.directory = QFileDialog.getExistingDirectory(
-            self, "Select output directory", options=options,
+    #################################################### ATLAS INTERACTION ####################################################
+
+    def add_atlas_menu(self, layout):
+        list_of_atlasses = ['Load atlas']
+        available_atlases = get_available_atlases()
+        for atlas in available_atlases.keys():
+            atlas_desc = f"{atlas} v{available_atlases[atlas]}"
+            list_of_atlasses.append(atlas_desc)
+            atlas_menu, _ = add_combobox(
+            layout,
+            None,
+            list_of_atlasses,
+            2,
+            0,
+            label_stack=True,
+            callback=self.initialise_atlas,
+            width=COLUMN_WIDTH
         )
-        if self.directory != "":
-            self.directory = Path(self.directory)
+
+        self.atlas_menu = atlas_menu
+
+    def initialise_atlas(self, i):
+        atlas_string = self.atlas_menu.currentText()
+
+        if atlas_string != self.current_atlas_string: 
+            self.remove_layers() 
+        self.current_atlas_string = atlas_string
+
+        atlas_name = atlas_string.split(" ")[0].strip()
+        atlas = BrainGlobeAtlas(atlas_name)
+        
+        self.atlas = atlas
+        self.base_layer = self.viewer.add_image(
+            self.atlas.reference, name="Reference"
+        )
+        self.atlas_layer = self.viewer.add_labels(
+            self.atlas.annotation,
+            name=self.atlas.atlas_name,
+            blending="additive",
+            opacity=0.3,
+            visible=False,
+        )
+        self.standard_space = True
+
+        self.initialise_segmentation_interface()
+
+        # Get / set directory
+        self.set_output_directory()
+        self.directory = self.directory / atlas_name
+        self.paths = Paths(self.directory, atlas_space=True)
 
 
-    #################################################### BRAINREG ########################################################
+        #self.atlas_menu.setEnabled(False)
+        self.status_label.setText("Ready")
+
+        # Check / load previous regions and tracks
+        self.region_seg.check_saved_region()
+        self.track_seg.check_saved_track()
+
+
+
+    #################################################### BRAINREG INTERACTION #################################################
 
 
     def load_brainreg_directory_sample(self):
@@ -286,7 +303,7 @@ class SegmentationWidget(QWidget):
         if self.directory != "":
             try:
                 self.directory = Path(self.directory)
-                # self.remove_existing_data()
+                self.remove_layers()
 
                 self.viewer.open(str(self.directory), plugin=plugin)
                 self.paths = Paths(
@@ -294,20 +311,16 @@ class SegmentationWidget(QWidget):
                 )
 
                 self.initialise_loaded_data()
+
+                # Check / load previous regions and tracks
                 self.region_seg.check_saved_region()
                 self.track_seg.check_saved_track()
+                
             except ValueError:
                 print(
                     f"The directory ({self.directory}) does not appear to be "
                     f"a brainreg directory, please try again."
                 )
-
-
-    def remove_existing_data(self):
-        if len(self.viewer.layers) != 0:
-            # remove old layers
-            for layer in list(self.viewer.layers):
-                self.viewer.layers.remove(layer)
 
     def initialise_loaded_data(self):
         # for consistency, don't load this
@@ -322,6 +335,11 @@ class SegmentationWidget(QWidget):
         self.atlas_layer = self.viewer.layers[self.metadata["atlas"]]
         self.initialise_segmentation_interface()
 
+
+
+    #################################################### MORE LAYOUT COMPONENTS ###########################################
+    
+    
     def initialise_segmentation_interface(self):
         self.reset_variables()
         self.initialise_image_view()
@@ -337,29 +355,48 @@ class SegmentationWidget(QWidget):
         self.show_trackseg_button.setEnabled(True)
         self.status_label.setText("Ready")
 
+        
+    def initialise_image_view(self):
+        self.set_z_position()
+
+    def set_z_position(self):
+        midpoint = int(round(len(self.base_layer.data) / 2))
+        self.viewer.dims.set_point(0, midpoint)
+
+    def set_output_directory(self):
+        self.status_label.setText("Loading...")
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        self.directory = QFileDialog.getExistingDirectory(
+            self, "Select output directory", options=options,
+        )
+        if self.directory != "":
+            self.directory = Path(self.directory)
 
     def reset_variables(self):
         # TODO: Re-implement this method
 
-        return
         #self.mean_voxel_size = int(
         #    np.sum(self.atlas.resolution) / len(self.atlas.resolution)
         #)
         #self.point_size = self.point_size / self.mean_voxel_size
         #self.spline_size = self.spline_size / self.mean_voxel_size
-
-    def reset_layers(self):
-        ''' 
-        Delete all layers in current session 
-        TODO: Safety?
-        ''' 
-        #if self.viewer.layers: 
-        #    while self.viewer.layers:
-        #        self.viewer.layers.pop(0)
+        #self.brush_size = self.brush_size / self.mean_voxel_size
         return
 
-    def create_brain_surface_tree(self):
-        self.tree = create_KDTree_from_image(self.atlas_layer.data)
+    def remove_layers(self):
+        '''
+        TODO: This needs work. Runs into an error currently 
+        when switching from a freshly annotated project to another one 
+
+        '''
+        if len(self.viewer.layers) != 0:
+            # Remove old layers
+            for layer in list(self.viewer.layers):
+                self.viewer.layers.remove(layer)
+
+        self.track_layers = []
+        self.label_layers = []
 
 
     def save(self):
@@ -428,6 +465,14 @@ def save_all(
             track_file_extension=track_file_extension,
         )
     print("Finished!\n")
+
+
+
+
+
+
+
+
 
 def main():
     print("Loading segmentation GUI.\n ")
