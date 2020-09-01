@@ -42,8 +42,8 @@ def test_load_atlas(tmpdir, make_test_viewer):
     widget = SegmentationWidget(viewer)
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.directory = tmpdir
-    widget.add_atlas_menu()
-    widget.load_atlas(ATLAS_NAME)
+    widget.current_atlas_name = ATLAS_NAME
+    widget.load_atlas_layers()
     assert len(widget.viewer.layers) == 2
     assert widget.base_layer.name == "Reference"
     assert widget.atlas.atlas_name == ATLAS_NAME
@@ -82,7 +82,7 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
 
     assert len(widget.viewer.layers) == 4
     assert len(widget.track_layers) == 1
-    widget.add_track()
+    widget.track_seg.add_track()
     assert len(widget.viewer.layers) == 5
     assert len(widget.track_layers) == 2
     assert widget.track_layers[0].name == "test_track"
@@ -90,7 +90,7 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
     assert len(widget.track_layers[0].data) == 5
 
     # analysis
-    widget.run_track_analysis()
+    widget.track_seg.run_track_analysis()
     regions_validate = pd.read_csv(validate_tracks_dir / "test_track.csv")
     regions_test = pd.read_csv(test_tracks_dir / "test_track.csv")
     pd.testing.assert_frame_equal(regions_validate, regions_test)
@@ -108,8 +108,8 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
     pd.testing.assert_frame_equal(spline_test, spline_validate)
 
     # surface points
-    widget.add_surface_points()
-    assert len(widget.track_layers[0].data) == 6
+    # widget.track_seg.add_surface_points()
+    # assert len(widget.track_layers[0].data) == 6
 
 
 # def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
@@ -171,19 +171,19 @@ def check_loaded_layers(widget, num_layers):
 
 
 def check_defaults(widget):
-    assert widget.point_size == int(100 / widget.mean_voxel_size)
-    assert widget.spline_size == int(50 / widget.mean_voxel_size)
-    assert widget.track_file_extension == ".points"
-    assert widget.image_file_extension == ".tiff"
-    assert widget.num_colors == 10
-    assert widget.brush_size == int(250 / widget.mean_voxel_size)
-    assert widget.spline_points_default == 1000
-    assert widget.spline_smoothing_default == 0.1
-    assert widget.fit_degree_default == 3
-    assert widget.summarise_track_default is True
-    assert widget.add_surface_point_default is False
-    assert widget.calculate_volumes_default is True
-    assert widget.summarise_volumes_default is True
+    assert widget.track_seg.point_size == int(100 / widget.mean_voxel_size)
+    assert widget.track_seg.spline_size == int(50 / widget.mean_voxel_size)
+    assert widget.track_seg.track_file_extension == ".points"
+    assert widget.region_seg.image_file_extension == ".tiff"
+    assert widget.region_seg.num_colors == 10
+    assert widget.region_seg.brush_size == int(250 / widget.mean_voxel_size)
+    assert widget.track_seg.spline_points_default == 1000
+    assert widget.track_seg.spline_smoothing_default == 0.1
+    assert widget.track_seg.fit_degree_default == 3
+    assert widget.track_seg.summarise_track_default is True
+    assert widget.track_seg.add_surface_point_default is False
+    assert widget.region_seg.calculate_volumes_default is True
+    assert widget.region_seg.summarise_volumes_default is True
     assert widget.boundaries_string == "Boundaries"
 
 
