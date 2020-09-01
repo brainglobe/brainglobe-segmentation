@@ -1,5 +1,4 @@
-from qtpy import QtCore
-
+# GUI ELEMENTS
 from qtpy.QtWidgets import (
     QDoubleSpinBox,
     QPushButton,
@@ -11,7 +10,14 @@ from qtpy.QtWidgets import (
 
 
 def add_combobox(
-    layout, label, items, row, column=0, label_stack=False, callback=None, width=150
+    layout,
+    label,
+    items,
+    row,
+    column=0,
+    label_stack=False,
+    callback=None,
+    width=150,
 ):
     if label_stack:
         combobox_row = row + 1
@@ -29,9 +35,9 @@ def add_combobox(
         combobox_label = QLabel(label)
         combobox_label.setMaximumWidth = width
         layout.addWidget(combobox_label, row, column)
-    else: 
+    else:
         combobox_label = None
-        
+
     layout.addWidget(combobox, combobox_row, combobox_column)
     return combobox, combobox_label
 
@@ -44,14 +50,14 @@ def add_button(
     column,
     visibility=True,
     minimum_width=0,
-    alignment='center'
+    alignment="center",
 ):
     button = QPushButton(label)
-    if alignment == 'center':
+    if alignment == "center":
         pass
-    elif alignment == 'left':
+    elif alignment == "left":
         button.setStyleSheet("QPushButton { text-align: left; }")
-    elif alignment == 'right':
+    elif alignment == "right":
         button.setStyleSheet("QPushButton { text-align: right; }")
 
     button.setVisible(visibility)
