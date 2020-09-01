@@ -63,7 +63,7 @@ class TrackSeg(QGroupBox):
         self.point_size = point_size
         self.spline_points_default = spline_points_default
         self.spline_size = spline_size
-        self.spline_smoothing_default = spline_points_default
+        self.spline_smoothing_default = spline_smoothing_default
         self.fit_degree_default = fit_degree_default
 
         # File formats
