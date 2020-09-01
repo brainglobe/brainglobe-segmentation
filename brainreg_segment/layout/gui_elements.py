@@ -1,3 +1,5 @@
+from qtpy import QtCore
+
 from qtpy.QtWidgets import (
     QDoubleSpinBox,
     QPushButton,
@@ -42,8 +44,16 @@ def add_button(
     column,
     visibility=True,
     minimum_width=0,
+    alignment='center'
 ):
     button = QPushButton(label)
+    if alignment == 'center':
+        pass
+    elif alignment == 'left':
+        button.setStyleSheet("QPushButton { text-align: left; }")
+    elif alignment == 'right':
+        button.setStyleSheet("QPushButton { text-align: right; }")
+
     button.setVisible(visibility)
     button.setMinimumWidth(minimum_width)
     layout.addWidget(button, row, column)
