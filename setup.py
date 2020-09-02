@@ -45,7 +45,7 @@ setup(
         ]
     },
     include_package_data=True,
-    author="Adam Tyson",
+    author="Adam Tyson, Horst Obenhaus",
     author_email="adam.tyson@ucl.ac.uk",
     classifiers=[
         "Development Status :: 3 - Alpha",
