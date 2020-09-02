@@ -164,7 +164,13 @@ class TrackSeg(QGroupBox):
                 self.create_brain_surface_tree()
 
             for track_layer in self.parent.track_layers:
-                _, index = self.tree.query(track_layer.data[0])
+                try:
+                    _, index = self.tree.query(track_layer.data[0])
+                except IndexError:
+                    print(
+                        f"{track_layer.name} does not appear to hold any data"
+                    )
+                    continue
                 surface_point = self.tree.data[index]
                 track_layer.data = np.vstack((surface_point, track_layer.data))
                 if len(track_layer.data) != 0:

@@ -73,7 +73,7 @@ class SegmentationWidget(QWidget):
         self.current_atlas_name = ""
 
         self.boundaries_string = boundaries_string
-
+        self.directory = ""
         # Set up segmentation methods
         self.region_seg = RegionSeg(self)
         self.track_seg = TrackSeg(self)
@@ -227,7 +227,7 @@ class SegmentationWidget(QWidget):
         self.current_atlas_name = atlas_name
 
         # Instantiate atlas layers
-        self.load_atlas_layers()
+        self.load_atlas()
 
         # Get / set output directory
         self.set_output_directory()
@@ -237,13 +237,23 @@ class SegmentationWidget(QWidget):
         self.status_label.setText("Ready")
         # Set window title
         self.viewer.title = f"Atlas: {self.current_atlas_name}"
-
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
         self.track_seg.check_saved_track()
         self.reset_atlas_menu()
+        self.initialise_segmentation_interface()
 
-    def load_atlas_layers(self):
+    def set_output_directory(self):
+        self.status_label.setText("Loading...")
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        self.directory = QFileDialog.getExistingDirectory(
+            self, "Select output directory", options=options,
+        )
+        if self.directory != "":
+            self.directory = Path(self.directory)
+
+    def load_atlas(self):
         atlas = BrainGlobeAtlas(self.current_atlas_name)
         self.atlas = atlas
         self.base_layer = self.viewer.add_image(
@@ -257,7 +267,6 @@ class SegmentationWidget(QWidget):
             visible=False,
         )
         self.standard_space = True
-        self.initialise_segmentation_interface()
 
     def reset_atlas_menu(self):
         # Reset menu for atlas - show initial description
@@ -274,6 +283,7 @@ class SegmentationWidget(QWidget):
         self.get_brainreg_directory(standard_space=True)
 
     def get_brainreg_directory(self, standard_space):
+        """ Shows file dialog to choose output directory """
         if standard_space:
             self.plugin = "brainreg_standard"
             self.standard_space = True
@@ -284,13 +294,25 @@ class SegmentationWidget(QWidget):
         self.status_label.setText("Loading...")
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        self.directory = QFileDialog.getExistingDirectory(
+        brainreg_directory = QFileDialog.getExistingDirectory(
             self, "Select brainreg directory", options=options,
         )
-        self.load_brainreg_directory()
+        self.load_brainreg_directory(brainreg_directory)
 
-    def load_brainreg_directory(self):
-        self.directory = Path(self.directory)
+    def load_brainreg_directory(self, brainreg_directory):
+        """
+        Sets global directory info and opens brainreg folder in napari.
+        Calls initialise_loaded_data to set up layers / info.
+        Then checks for previously loaded data.
+
+        """
+        if self.directory != brainreg_directory:
+            self.remove_layers()
+            self.directory = Path(brainreg_directory)
+        else:
+            print(f"{str(brainreg_directory)} already loaded.")
+            return
+
         try:
             self.viewer.open(str(self.directory), plugin=self.plugin)
             self.paths = Paths(
@@ -302,13 +324,17 @@ class SegmentationWidget(QWidget):
                 f"The directory ({self.directory}) does not appear to be "
                 f"a brainreg directory, please try again."
             )
+            return
 
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
         self.track_seg.check_saved_track()
 
     def initialise_loaded_data(self):
-        # for consistency, don't load this
+        """
+        Set up brainreg layers in napari / fill with new data and info
+
+        """
         try:
             self.viewer.layers.remove(self.boundaries_string)
         except KeyError:
@@ -349,16 +375,6 @@ class SegmentationWidget(QWidget):
     def set_z_position(self):
         midpoint = int(round(len(self.base_layer.data) / 2))
         self.viewer.dims.set_point(0, midpoint)
-
-    def set_output_directory(self):
-        self.status_label.setText("Loading...")
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        self.directory = QFileDialog.getExistingDirectory(
-            self, "Select output directory", options=options,
-        )
-        if self.directory != "":
-            self.directory = Path(self.directory)
 
     def reset_variables(self):
         self.mean_voxel_size = int(

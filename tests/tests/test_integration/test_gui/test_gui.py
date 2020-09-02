@@ -21,8 +21,8 @@ def test_load_sample_space(make_test_viewer):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = False
     widget.plugin = "brainreg"
-    widget.directory = brainreg_dir
-    widget.load_brainreg_directory()
+    # widget.directory = brainreg_dir
+    widget.load_brainreg_directory(brainreg_dir)
     check_loaded_layers(widget, 6)
 
 
@@ -32,8 +32,7 @@ def test_load_standard_space(make_test_viewer):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.directory = brainreg_dir
-    widget.load_brainreg_directory()
+    widget.load_brainreg_directory(brainreg_dir)
     check_loaded_layers(widget, 4)
 
 
@@ -43,7 +42,7 @@ def test_load_atlas(tmpdir, make_test_viewer):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.directory = tmpdir
     widget.current_atlas_name = ATLAS_NAME
-    widget.load_atlas_layers()
+    widget.load_atlas()
     assert len(widget.viewer.layers) == 2
     assert widget.base_layer.name == "Reference"
     assert widget.atlas.atlas_name == ATLAS_NAME
@@ -56,8 +55,8 @@ def test_general(make_test_viewer):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.directory = brainreg_dir
-    widget.load_brainreg_directory()
+    # widget.directory = brainreg_dir
+    widget.load_brainreg_directory(brainreg_dir)
     assert widget.mean_voxel_size == 50
     check_defaults(widget)
     check_paths(widget)
@@ -77,8 +76,8 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.directory = tmp_input_dir
-    widget.load_brainreg_directory()
+    # widget.directory = tmp_input_dir
+    widget.load_brainreg_directory(tmp_input_dir)
 
     assert len(widget.viewer.layers) == 4
     assert len(widget.track_layers) == 1
@@ -87,7 +86,7 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
     assert len(widget.track_layers) == 2
     assert widget.track_layers[0].name == "test_track"
     assert widget.track_layers[1].name == "track_1"
-    assert len(widget.track_layers[0].data) == 5
+    assert len(widget.track_layers[0].data) == 6
 
     # analysis
     widget.track_seg.run_track_analysis()
@@ -108,8 +107,8 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
     pd.testing.assert_frame_equal(spline_test, spline_validate)
 
     # surface points
-    # widget.track_seg.add_surface_points()
-    # assert len(widget.track_layers[0].data) == 6
+    widget.track_seg.add_surface_points()
+    assert len(widget.track_layers[0].data) == 8
 
 
 # def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
