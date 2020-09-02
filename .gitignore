@@ -86,6 +86,9 @@ target/
 # pyenv
 .python-version
 
+# vscode
+.vscode
+
 # celery beat schedule file
 celerybeat-schedule
 
@@ -117,3 +120,4 @@ venv.bak/
 .idea/
 
 *.~lock.*
+*.zip

@@ -1,5 +1,4 @@
 import pandas as pd
-
 from brainreg_segment.tracks.fit import spline_fit
 
 

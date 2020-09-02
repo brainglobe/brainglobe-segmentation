@@ -1,5 +1,4 @@
 import tifffile
-
 import numpy as np
 
 from glob import glob
@@ -28,6 +27,7 @@ def add_new_label_layer(
     """
     labels = np.empty_like(base_image)
     label_layer = viewer.add_labels(labels, num_colors=num_colors, name=name)
+    label_layer.n_dimensional = True
     label_layer.selected_label = selected_label
     label_layer.brush_size = brush_size
     return label_layer

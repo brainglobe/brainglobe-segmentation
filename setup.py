@@ -14,6 +14,7 @@ requirements = [
     "imlib >= 0.0.26",
     "dask >= 2.15.0",
     "napari-brainreg",
+    "imio",
 ]
 
 
