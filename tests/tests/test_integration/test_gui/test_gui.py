@@ -1,5 +1,6 @@
 import shutil
-import tifffile
+
+# import tifffile
 
 import numpy as np
 import pandas as pd
@@ -120,7 +121,6 @@ def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    # widget.directory = tmp_input_dir
     widget.load_brainreg_directory(tmp_input_dir)
 
     assert len(widget.viewer.layers) == 4
@@ -144,9 +144,9 @@ def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
     # saving
     widget.save()
 
-    image_validate = tifffile.imread(validate_regions_dir / "test_region.tiff")
-    image_test = tifffile.imread(test_regions_dir / "test_region.tiff")
-    np.testing.assert_allclose(image_validate, image_test, rtol=rtol)
+    # image_validate = tifffile.imread(validate_regions_dir / "test_region.tiff")
+    # image_test = tifffile.imread(test_regions_dir / "test_region.tiff")
+    # np.testing.assert_allclose(image_validate, image_test, rtol=rtol)
 
     # export
     widget.export_to_brainrender()
