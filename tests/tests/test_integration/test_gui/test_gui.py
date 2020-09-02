@@ -120,8 +120,8 @@ def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.directory = tmp_input_dir
-    widget.load_brainreg_directory(brainreg_dir)
+    # widget.directory = tmp_input_dir
+    widget.load_brainreg_directory(tmp_input_dir)
 
     assert len(widget.viewer.layers) == 4
     assert len(widget.label_layers) == 1
