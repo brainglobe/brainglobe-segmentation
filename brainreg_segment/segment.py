@@ -35,6 +35,8 @@ from brainreg_segment.layout.gui_constants import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
     COLUMN_WIDTH,
+    SEGM_METHODS_PANEL_ALIGN,
+    LOADING_PANEL_ALIGN,
     BOUNDARIES_STRING,
     TRACK_FILE_EXT,
 )
@@ -86,17 +88,20 @@ class SegmentationWidget(QWidget):
         Construct main layout of widget
         """
         self.layout = QGridLayout()
+        self.layout.setContentsMargins(10, 10, 10, 10)
         self.layout.setAlignment(QtCore.Qt.AlignTop)
         self.layout.setSpacing(4)
 
         # 3 Steps:
         # - Loading panel
-        # - Segmentation methods (which are invisible at first)
+        # - Segmentation methods panel
+        # -> Individual segmentation methods (which are invisible at first)
         # - Saving panel
 
         self.add_loading_panel(1)
-        self.track_seg.add_track_panel(2)
-        self.region_seg.add_region_panel(3)
+        self.add_segmentation_methods_panel(1)
+        self.track_seg.add_track_panel(2)  # Track segmentation subpanel
+        self.region_seg.add_region_panel(3)  # Region segmentation subpanel
         self.add_saving_panel(4)
 
         # Take care of status label
@@ -108,19 +113,58 @@ class SegmentationWidget(QWidget):
 
     # PANELS ###############################################################
 
-    def add_loading_panel(self, row):
+    def add_segmentation_methods_panel(self, row, column=1):
         """
-        Loading panel consisting of
-        - Left column:
-            - Load project (sample space)
-            - Load project (atlas space)
-            - Atlas chooser
-        - Right column:
+        Segmentation methods chooser panel:
             Toggle visibility of segmentation
             methods
         """
-        self.load_data_panel = QGroupBox()
+        self.toggle_methods_panel = QGroupBox("Segmentation")
+        self.toggle_methods_layout = QGridLayout()
+        self.toggle_methods_layout.setContentsMargins(10, 10, 10, 10)
+        self.toggle_methods_layout.setSpacing(5)
+        self.toggle_methods_layout.setAlignment(QtCore.Qt.AlignBottom)
+
+        self.show_trackseg_button = add_button(
+            "Trace tracks",
+            self.toggle_methods_layout,
+            self.track_seg.toggle_track_panel,
+            0,
+            1,
+            minimum_width=COLUMN_WIDTH,
+            alignment=SEGM_METHODS_PANEL_ALIGN,
+        )
+        self.show_trackseg_button.setEnabled(False)
+
+        self.show_regionseg_button = add_button(
+            "Segment regions",
+            self.toggle_methods_layout,
+            self.region_seg.toggle_region_panel,
+            1,
+            1,
+            minimum_width=COLUMN_WIDTH,
+            alignment=SEGM_METHODS_PANEL_ALIGN,
+        )
+        self.show_regionseg_button.setEnabled(False)
+
+        self.toggle_methods_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)
+        self.toggle_methods_panel.setLayout(self.toggle_methods_layout)
+        self.toggle_methods_panel.setVisible(True)
+
+        self.layout.addWidget(self.toggle_methods_panel, row, column, 1, 1)
+
+    def add_loading_panel(self, row, column=0):
+        """
+        Loading panel:
+            - Load project (sample space)
+            - Load project (atlas space)
+            - Atlas chooser
+        """
+        self.load_data_panel = QGroupBox("Load data")
         self.load_data_layout = QGridLayout()
+        self.load_data_layout.setSpacing(15)
+        self.load_data_layout.setContentsMargins(10, 10, 10, 10)
+        self.load_data_layout.setAlignment(QtCore.Qt.AlignBottom)
 
         self.load_button = add_button(
             "Load project (sample space)",
@@ -129,7 +173,7 @@ class SegmentationWidget(QWidget):
             0,
             0,
             minimum_width=COLUMN_WIDTH,
-            alignment="left",
+            alignment=LOADING_PANEL_ALIGN,
         )
 
         self.load_button_standard = add_button(
@@ -139,35 +183,16 @@ class SegmentationWidget(QWidget):
             1,
             0,
             minimum_width=COLUMN_WIDTH,
-            alignment="left",
+            alignment=LOADING_PANEL_ALIGN,
         )
 
         self.add_atlas_menu(self.load_data_layout)
 
-        self.show_trackseg_button = add_button(
-            "Trace tracks",
-            self.load_data_layout,
-            self.track_seg.toggle_track_panel,
-            0,
-            1,
-            minimum_width=COLUMN_WIDTH,
-        )
-        self.show_trackseg_button.setEnabled(False)
-
-        self.show_regionseg_button = add_button(
-            "Segment regions",
-            self.load_data_layout,
-            self.region_seg.toggle_region_panel,
-            1,
-            1,
-            minimum_width=COLUMN_WIDTH,
-        )
-        self.show_regionseg_button.setEnabled(False)
-
-        self.load_data_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)
+        self.load_data_layout.setColumnMinimumWidth(0, COLUMN_WIDTH)
         self.load_data_panel.setLayout(self.load_data_layout)
-        self.layout.addWidget(self.load_data_panel, row, 0, 1, 2)
         self.load_data_panel.setVisible(True)
+
+        self.layout.addWidget(self.load_data_panel, row, column, 1, 1)
 
     def add_saving_panel(self, row):
         """
@@ -297,7 +322,8 @@ class SegmentationWidget(QWidget):
         brainreg_directory = QFileDialog.getExistingDirectory(
             self, "Select brainreg directory", options=options,
         )
-        self.load_brainreg_directory(brainreg_directory)
+        if brainreg_directory:
+            self.load_brainreg_directory(brainreg_directory)
 
     def load_brainreg_directory(self, brainreg_directory):
         """

@@ -129,10 +129,33 @@ class TrackSeg(QGroupBox):
         self.track_panel.setVisible(False)
 
     def toggle_track_panel(self):
+        # TODO: Change color scheme directly when theme is switched
+        # TODO: "text-align" property should follow constant SEGM_METHODS_PANEL_ALIGN
         if self.track_panel.isVisible():
             self.track_panel.setVisible(False)
+            if self.parent.viewer.theme == "dark":
+                self.parent.show_trackseg_button.setStyleSheet(
+                    "QPushButton { background-color: #414851; text-align:left;}"
+                    "QPushButton:pressed { background-color: #414851; text-align:left;}"
+                )
+            else:
+                self.parent.show_trackseg_button.setStyleSheet(
+                    "QPushButton { background-color: #d6d0ce; text-align:left;}"
+                    "QPushButton:pressed { background-color: #d6d0ce; text-align:left;}"
+                )
+
         else:
             self.track_panel.setVisible(True)
+            if self.parent.viewer.theme == "dark":
+                self.parent.show_trackseg_button.setStyleSheet(
+                    "QPushButton { background-color: #7e868f; text-align:left;}"
+                    "QPushButton:pressed { background-color: #7e868f; text-align:left;}"
+                )
+            else:
+                self.parent.show_trackseg_button.setStyleSheet(
+                    "QPushButton { background-color: #fdf194; text-align:left;}"
+                    "QPushButton:pressed { background-color: #fdf194; text-align:left;}"
+                )
 
     def check_saved_track(self):
         track_files = glob(

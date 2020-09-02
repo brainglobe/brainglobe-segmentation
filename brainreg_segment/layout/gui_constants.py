@@ -3,6 +3,12 @@ WINDOW_HEIGHT = 750
 WINDOW_WIDTH = 1500
 COLUMN_WIDTH = 150
 
+LOADING_PANEL_ALIGN = (
+    "left"  # Alignment of text in pushbuttons in loading panel
+)
+SEGM_METHODS_PANEL_ALIGN = (
+    "left"  # Alignment of text in pushbuttons in methods chooser panel
+)
 
 POINT_SIZE = 100
 SPLINE_SIZE = 50
