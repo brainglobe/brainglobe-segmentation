@@ -49,8 +49,8 @@ class RegionSeg(QGroupBox):
         self.summarise_volumes_default = summarise_volumes_default
 
         # Brushes / ...
-        self.brush_size_default = BRUSH_SIZE # Keep track of default
-        self.brush_size = brush_size         # Initialise
+        self.brush_size_default = BRUSH_SIZE  # Keep track of default
+        self.brush_size = brush_size  # Initialise
         self.num_colors = num_colors
 
         # File formats

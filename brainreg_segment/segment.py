@@ -10,7 +10,7 @@ from qtpy.QtWidgets import (
     QGridLayout,
     QGroupBox,
     QWidget,
-    QMessageBox
+    QMessageBox,
 )
 
 from bg_atlasapi import BrainGlobeAtlas
@@ -71,7 +71,7 @@ class SegmentationWidget(QWidget):
         disable_napari_key_bindings()
 
         # Main layers
-        self.base_layer = []   # Contains registered brain / reference brain
+        self.base_layer = []  # Contains registered brain / reference brain
         self.atlas_layer = []  # Contains annotations / region information
 
         # Track variables
@@ -94,10 +94,11 @@ class SegmentationWidget(QWidget):
         self.setup_main_layout()
 
         if DISPLAY_REGION_INFO:
+
             @self.viewer.mouse_move_callbacks.append
             def display_region_info(v, event):
-                """ 
-                Show brain region info on mouse over in status bar on the right 
+                """
+                Show brain region info on mouse over in status bar on the right
                 """
                 assert self.viewer == v
                 if len(v.layers) and self.atlas_layer and self.atlas:
@@ -268,7 +269,7 @@ class SegmentationWidget(QWidget):
         atlas_name = atlas_string.split(" ")[0].strip()
         if atlas_name != self.current_atlas_name:
             status = self.remove_layers()
-            if not status: # Something prevented deletion
+            if not status:  # Something prevented deletion
                 self.reset_atlas_menu()
                 return
         else:
@@ -338,8 +339,8 @@ class SegmentationWidget(QWidget):
         self.get_brainreg_directory(standard_space=True)
 
     def get_brainreg_directory(self, standard_space):
-        """ 
-        Shows file dialog to choose output directory 
+        """
+        Shows file dialog to choose output directory
         and sets global directory info
         """
         if standard_space:
@@ -355,14 +356,14 @@ class SegmentationWidget(QWidget):
         brainreg_directory = QFileDialog.getExistingDirectory(
             self, "Select brainreg directory", options=options,
         )
-       
+
         if not brainreg_directory:
-            return 
+            return
 
         if self.directory != brainreg_directory:
             status = self.remove_layers()
             if not status:
-                return # Something prevented deletion
+                return  # Something prevented deletion
             self.directory = Path(brainreg_directory)
         else:
             print(f"{str(brainreg_directory)} already loaded.")
@@ -370,7 +371,6 @@ class SegmentationWidget(QWidget):
 
         # Otherwise, proceed loading brainreg dir
         self.load_brainreg_directory()
-
 
     def load_brainreg_directory(self):
         """
@@ -395,7 +395,6 @@ class SegmentationWidget(QWidget):
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
         self.track_seg.check_saved_track()
-
 
     def initialise_loaded_data(self):
         """
@@ -440,7 +439,7 @@ class SegmentationWidget(QWidget):
 
     def reset_variables(self):
         """
-        Reset atlas scale dependent variables 
+        Reset atlas scale dependent variables
         - point_size (Track segmentation)
         - spline_size (Track segmentation)
         - brush_size (Region segmentation)
@@ -461,14 +460,17 @@ class SegmentationWidget(QWidget):
 
     def display_delete_warning(self):
         """
-        Display a warning in a pop up that informs 
+        Display a warning in a pop up that informs
         about deletion of all annotation layers
         """
-        message_reply = QMessageBox.question(self, 'About to remove layers', \
-                            "All layers are about to be deleted. Proceed?", \
-                            QMessageBox.Yes | QMessageBox.Cancel)
+        message_reply = QMessageBox.question(
+            self,
+            "About to remove layers",
+            "All layers are about to be deleted. Proceed?",
+            QMessageBox.Yes | QMessageBox.Cancel,
+        )
         if message_reply == QMessageBox.Yes:
-            return True 
+            return True
         else:
             return False
 
@@ -481,7 +483,7 @@ class SegmentationWidget(QWidget):
             # Check with user if that is really what is wanted
             if self.track_layers or self.label_layers:
                 choice = self.display_delete_warning()
-                if not choice: 
+                if not choice:
                     print('Preventing deletion because user chose "Cancel"')
                     return False
 

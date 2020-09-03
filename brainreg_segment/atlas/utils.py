@@ -42,7 +42,7 @@ def structure_from_viewer(status, atlas_layer, atlas):
     Get brain region info from mouse position in napari viewer.
 
     Extract nx3 coordinate pair from napari window status string.
-    Return brainglobe (BG) structure number, name, hemisphere, and a 
+    Return brainglobe (BG) structure number, name, hemisphere, and a
     "pretty" string that can be displayed for example in the status bar.
 
     Parameter
@@ -50,7 +50,7 @@ def structure_from_viewer(status, atlas_layer, atlas):
     status        : str, Napari viewer status (napari.viewer.Viewer.status)
     atlas_layer   : Napari viewer layer
                     Layer, which contains the annotation / region
-                    information for every structure in the (registered) 
+                    information for every structure in the (registered)
                     atlas
     atlas         : Brainglobe atlas (bg_atlasapi.bg_atlas.BrainGlobeAtlas)
 
@@ -72,15 +72,16 @@ def structure_from_viewer(status, atlas_layer, atlas):
                     Returns empty string if not found
     """
 
-
     # Using a regex, extract list of coordinates from status string
-    assert hasattr(atlas_layer,'data'), 'Atlas layer appears to be empty'
-    assert atlas_layer.data.ndim == 3, f'Atlas layer data does not have the right dim ("{atlas_layer.data.ndim}")'
-    
+    assert hasattr(atlas_layer, "data"), "Atlas layer appears to be empty"
+    assert (
+        atlas_layer.data.ndim == 3
+    ), f'Atlas layer data does not have the right dim ("{atlas_layer.data.ndim}")'
+
     try:
-        coords = re.findall(
-            r"\[\d{1,5}\s+\d{1,5}\s+\d{1,5}\]", status
-        )[0][1:-1]
+        coords = re.findall(r"\[\d{1,5}\s+\d{1,5}\s+\d{1,5}\]", status)[0][
+            1:-1
+        ]
         coords_list = coords.split()
         map_object = map(int, coords_list)
         coord_list = tuple(map_object)
