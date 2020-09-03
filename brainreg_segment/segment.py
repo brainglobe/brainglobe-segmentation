@@ -295,11 +295,11 @@ class SegmentationWidget(QWidget):
         self.status_label.setText("Ready")
         # Set window title
         self.viewer.title = f"Atlas: {self.current_atlas_name}"
+        self.initialise_segmentation_interface()
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
         self.track_seg.check_saved_track()
         self.reset_atlas_menu()
-        self.initialise_segmentation_interface()
 
     def set_output_directory(self):
         self.status_label.setText("Loading...")
