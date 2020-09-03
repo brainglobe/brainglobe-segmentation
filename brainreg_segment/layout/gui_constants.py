@@ -3,6 +3,8 @@ WINDOW_HEIGHT = 750
 WINDOW_WIDTH = 1500
 COLUMN_WIDTH = 150
 
+DISPLAY_REGION_INFO = True # Display brain region info string in bottom right corner 
+
 LOADING_PANEL_ALIGN = (
     "left"  # Alignment of text in pushbuttons in loading panel
 )
