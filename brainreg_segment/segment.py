@@ -25,12 +25,15 @@ from brainreg_segment.tracks.IO import save_track_layers, export_splines
 
 from brainreg_segment.atlas.utils import (
     get_available_atlases,
-    display_brain_region_name,
+    make_structure_info_string,
 )
 
 # LAYOUT HELPERS ################################################################################
 
-from brainreg_segment.layout.utils import disable_napari_key_bindings
+from brainreg_segment.layout.utils import (
+    disable_napari_key_bindings,
+    disable_napari_btns,
+)
 from brainreg_segment.layout.gui_constants import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
@@ -62,8 +65,12 @@ class SegmentationWidget(QWidget):
 
         # Disable / overwrite napari viewer functions
         # that either do not make sense or should be avoided by the user
-        # disable_napari_btns(self.viewer)
+        disable_napari_btns(self.viewer)
         disable_napari_key_bindings()
+
+        # Main layers
+        self.base_layer = []
+        self.atlas_layer = []
 
         # track variables
         self.track_layers = []
@@ -73,6 +80,7 @@ class SegmentationWidget(QWidget):
 
         # atlas variables
         self.current_atlas_name = ""
+        self.atlas = None
 
         self.boundaries_string = boundaries_string
         self.directory = ""
@@ -82,6 +90,16 @@ class SegmentationWidget(QWidget):
 
         # Generate main layout
         self.setup_main_layout()
+
+        @self.viewer.mouse_move_callbacks.append
+        def display_region_info(v, event):
+            """ Show brain region info on mouse over in status bar (right) """
+            assert self.viewer == v
+            if len(v.layers) and self.atlas:
+                region_info, _, _, _ = make_structure_info_string(
+                    self.viewer.status, self.atlas
+                )
+                self.viewer.help = region_info
 
     def setup_main_layout(self):
         """
@@ -282,7 +300,7 @@ class SegmentationWidget(QWidget):
         atlas = BrainGlobeAtlas(self.current_atlas_name)
         self.atlas = atlas
         self.base_layer = self.viewer.add_image(
-            self.atlas.reference, name="Reference"
+            self.atlas.reference, name="Reference",
         )
         self.atlas_layer = self.viewer.add_labels(
             self.atlas.annotation,
@@ -383,11 +401,6 @@ class SegmentationWidget(QWidget):
     def initialise_segmentation_interface(self):
         self.reset_variables()
         self.initialise_image_view()
-
-        @self.atlas_layer.mouse_move_callbacks.append
-        def display_region_name(layer, event):
-            display_brain_region_name(layer, self.atlas.structures)
-
         self.save_data_panel.setVisible(True)
         self.save_button.setVisible(True)
         self.export_button.setVisible(self.standard_space)
