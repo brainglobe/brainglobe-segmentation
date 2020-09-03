@@ -20,7 +20,8 @@ def test_load_sample_space(make_test_viewer):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = False
     widget.plugin = "brainreg"
-    widget.load_brainreg_directory(brainreg_dir)
+    widget.directory = Path(brainreg_dir)
+    widget.load_brainreg_directory()
     check_loaded_layers(widget, 6)
 
 
@@ -30,7 +31,8 @@ def test_load_standard_space(make_test_viewer):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.load_brainreg_directory(brainreg_dir)
+    widget.directory = Path(brainreg_dir)
+    widget.load_brainreg_directory()
     check_loaded_layers(widget, 4)
 
 
@@ -53,7 +55,8 @@ def test_general(make_test_viewer):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.load_brainreg_directory(brainreg_dir)
+    widget.directory = Path(brainreg_dir)
+    widget.load_brainreg_directory()
     assert widget.mean_voxel_size == 50
     check_defaults(widget)
     check_paths(widget)
@@ -73,7 +76,8 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.load_brainreg_directory(tmp_input_dir)
+    widget.directory = Path(brainreg_dir)
+    widget.load_brainreg_directory()
 
     assert len(widget.viewer.layers) == 4
     assert len(widget.track_layers) == 1
@@ -121,12 +125,13 @@ def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.load_brainreg_directory(tmp_input_dir)
+    widget.directory = Path(brainreg_dir)
+    widget.load_brainreg_directory()
 
-    assert len(widget.viewer.layers) == 4
+    assert len(widget.viewer.layers) == 5
     assert len(widget.label_layers) == 1
     widget.region_seg.add_region()
-    assert len(widget.viewer.layers) == 5
+    assert len(widget.viewer.layers) == 6
     assert len(widget.label_layers) == 2
     assert widget.label_layers[0].name == "test_region"
     assert widget.label_layers[1].name == "region_1"
