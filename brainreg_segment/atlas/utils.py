@@ -99,7 +99,11 @@ def structure_from_viewer(status, atlas_layer, atlas):
         return None, None, None, ""
 
     # Extract structure information
-    structure = atlas.structures[structure_no]["name"]
+    try:
+        structure = atlas.structures[structure_no]["name"]
+    except KeyError:
+        return None, None, None, ""
+
     # ... and make string pretty
     region_info = []
     for struct in structure.split(","):
