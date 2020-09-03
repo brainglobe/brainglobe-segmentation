@@ -22,6 +22,7 @@ from brainreg_segment.image.utils import create_KDTree_from_image
 from brainreg_segment.tracks.analysis import track_analysis
 from brainreg_segment.layout.gui_constants import (
     COLUMN_WIDTH,
+    SEGM_METHODS_PANEL_ALIGN,
     POINT_SIZE,
     SPLINE_SIZE,
     TRACK_FILE_EXT,
@@ -60,9 +61,11 @@ class TrackSeg(QGroupBox):
         self.add_surface_point_default = add_surface_point_default
 
         # Point / Spline fitting settings
-        self.point_size = point_size
+        self.point_size_default = POINT_SIZE   # Keep track of default
+        self.point_size = point_size           # Initialise 
         self.spline_points_default = spline_points_default
-        self.spline_size = spline_size
+        self.spline_size_default = SPLINE_SIZE # Keep track of default 
+        self.spline_size = spline_size         # Initialise
         self.spline_smoothing_default = spline_smoothing_default
         self.fit_degree_default = fit_degree_default
 
@@ -135,26 +138,26 @@ class TrackSeg(QGroupBox):
             self.track_panel.setVisible(False)
             if self.parent.viewer.theme == "dark":
                 self.parent.show_trackseg_button.setStyleSheet(
-                    "QPushButton { background-color: #414851; text-align:left;}"
-                    "QPushButton:pressed { background-color: #414851; text-align:left;}"
+                    f"QPushButton {{ background-color: #414851; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #414851; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
             else:
                 self.parent.show_trackseg_button.setStyleSheet(
-                    "QPushButton { background-color: #d6d0ce; text-align:left;}"
-                    "QPushButton:pressed { background-color: #d6d0ce; text-align:left;}"
+                    f"QPushButton {{ background-color: #d6d0ce; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #d6d0ce; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
 
         else:
             self.track_panel.setVisible(True)
             if self.parent.viewer.theme == "dark":
                 self.parent.show_trackseg_button.setStyleSheet(
-                    "QPushButton { background-color: #7e868f; text-align:left;}"
-                    "QPushButton:pressed { background-color: #7e868f; text-align:left;}"
+                    f"QPushButton {{ background-color: #7e868f; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #7e868f; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
             else:
                 self.parent.show_trackseg_button.setStyleSheet(
-                    "QPushButton { background-color: #fdf194; text-align:left;}"
-                    "QPushButton:pressed { background-color: #fdf194; text-align:left;}"
+                    f"QPushButton {{ background-color: #fdf194; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #fdf194; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
 
     def check_saved_track(self):
