@@ -34,6 +34,7 @@ from brainreg_segment.atlas.utils import (
 from brainreg_segment.layout.utils import (
     disable_napari_key_bindings,
     disable_napari_btns,
+    overwrite_napari_roll,
 )
 from brainreg_segment.layout.gui_constants import (
     WINDOW_HEIGHT,
@@ -69,6 +70,7 @@ class SegmentationWidget(QWidget):
         # that either do not make sense or should be avoided by the user
         disable_napari_btns(self.viewer)
         disable_napari_key_bindings()
+        overwrite_napari_roll(self.viewer)
 
         # Main layers
         self.base_layer = []  # Contains registered brain / reference brain
@@ -493,6 +495,11 @@ class SegmentationWidget(QWidget):
                     self.viewer.layers.remove(layer)
                 except IndexError:  # no idea why this happens
                     pass
+
+        # There seems to be a napari bug trying to access previously used slider
+        # values. Trying to circument for now
+        self.viewer.window.qt_viewer.dims._last_used = None
+
         self.track_layers = []
         self.label_layers = []
         return True
