@@ -44,7 +44,7 @@ def get_dims_from_origins(origins):
     """ From a list of BG space abbreviations (e.g. ["asl","sla","lsa"]) get correct axes for display in Napari """
     all_dims = []
     for o in range(len(origins)):
-        sc = bg.SpaceConvention(origins[0])
+        sc = bg.AnatomicalSpace(origins[0])
         next_orientation = origins[(o + 1) % len(origins)]
         dims, flips, _, _ = sc.map_to(next_orientation)
         assert not any(
