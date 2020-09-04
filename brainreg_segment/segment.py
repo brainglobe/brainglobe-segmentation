@@ -59,7 +59,9 @@ from brainreg_segment.segmentation_panels.tracks import TrackSeg
 
 class SegmentationWidget(QWidget):
     def __init__(
-        self, viewer, boundaries_string=BOUNDARIES_STRING,
+        self,
+        viewer,
+        boundaries_string=BOUNDARIES_STRING,
     ):
         super(SegmentationWidget, self).__init__()
 
@@ -306,7 +308,9 @@ class SegmentationWidget(QWidget):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         self.directory = QFileDialog.getExistingDirectory(
-            self, "Select output directory", options=options,
+            self,
+            "Select output directory",
+            options=options,
         )
         if self.directory != "":
             self.directory = Path(self.directory)
@@ -315,7 +319,8 @@ class SegmentationWidget(QWidget):
         atlas = BrainGlobeAtlas(self.current_atlas_name)
         self.atlas = atlas
         self.base_layer = self.viewer.add_image(
-            self.atlas.reference, name="Reference",
+            self.atlas.reference,
+            name="Reference",
         )
         self.atlas_layer = self.viewer.add_labels(
             self.atlas.annotation,
@@ -356,7 +361,9 @@ class SegmentationWidget(QWidget):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         brainreg_directory = QFileDialog.getExistingDirectory(
-            self, "Select brainreg directory", options=options,
+            self,
+            "Select brainreg directory",
+            options=options,
         )
 
         if not brainreg_directory:
@@ -384,7 +391,8 @@ class SegmentationWidget(QWidget):
         try:
             self.viewer.open(str(self.directory), plugin=self.plugin)
             self.paths = Paths(
-                self.directory, standard_space=self.standard_space,
+                self.directory,
+                standard_space=self.standard_space,
             )
             self.initialise_loaded_data()
         except ValueError:

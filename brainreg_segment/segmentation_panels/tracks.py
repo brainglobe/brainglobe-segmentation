@@ -81,19 +81,34 @@ class TrackSeg(QGroupBox):
         track_layout = QGridLayout()
 
         add_button(
-            "Add surface points", track_layout, self.add_surface_points, 5, 1,
+            "Add surface points",
+            track_layout,
+            self.add_surface_points,
+            5,
+            1,
         )
 
         add_button(
-            "Add track", track_layout, self.add_track, 6, 0,
+            "Add track",
+            track_layout,
+            self.add_track,
+            6,
+            0,
         )
 
         add_button(
-            "Trace tracks", track_layout, self.run_track_analysis, 6, 1,
+            "Trace tracks",
+            track_layout,
+            self.run_track_analysis,
+            6,
+            1,
         )
 
         self.summarise_track_checkbox = add_checkbox(
-            track_layout, self.summarise_track_default, "Summarise", 0,
+            track_layout,
+            self.summarise_track_default,
+            "Summarise",
+            0,
         )
 
         self.add_surface_point_checkbox = add_checkbox(
@@ -104,7 +119,12 @@ class TrackSeg(QGroupBox):
         )
 
         self.fit_degree = add_int_box(
-            track_layout, self.fit_degree_default, 1, 5, "Fit degree", 2,
+            track_layout,
+            self.fit_degree_default,
+            1,
+            5,
+            "Fit degree",
+            2,
         )
 
         self.spline_smoothing = add_float_box(
@@ -170,7 +190,9 @@ class TrackSeg(QGroupBox):
             for track_file in track_files:
                 self.parent.track_layers.append(
                     add_existing_track_layers(
-                        self.parent.viewer, track_file, self.point_size,
+                        self.parent.viewer,
+                        track_file,
+                        self.point_size,
                     )
                 )
 
@@ -180,7 +202,9 @@ class TrackSeg(QGroupBox):
         self.spline_names = None
         self.track_panel.setVisible(True)  # Should be visible by default!
         add_new_track_layer(
-            self.parent.viewer, self.parent.track_layers, self.point_size,
+            self.parent.viewer,
+            self.parent.track_layers,
+            self.point_size,
         )
 
     def add_surface_points(self):

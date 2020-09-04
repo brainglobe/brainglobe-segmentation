@@ -61,11 +61,19 @@ class RegionSeg(QGroupBox):
         region_layout = QGridLayout()
 
         add_button(
-            "Add region", region_layout, self.add_region, 2, 0,
+            "Add region",
+            region_layout,
+            self.add_region,
+            2,
+            0,
         )
 
         add_button(
-            "Analyse regions", region_layout, self.run_region_analysis, 2, 1,
+            "Analyse regions",
+            region_layout,
+            self.run_region_analysis,
+            2,
+            1,
         )
 
         self.calculate_volumes_checkbox = add_checkbox(
