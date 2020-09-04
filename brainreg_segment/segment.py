@@ -10,6 +10,7 @@ from qtpy.QtWidgets import (
     QGridLayout,
     QGroupBox,
     QWidget,
+    QMessageBox,
 )
 
 from bg_atlasapi import BrainGlobeAtlas
@@ -25,12 +26,16 @@ from brainreg_segment.tracks.IO import save_track_layers, export_splines
 
 from brainreg_segment.atlas.utils import (
     get_available_atlases,
-    display_brain_region_name,
+    structure_from_viewer,
 )
 
 # LAYOUT HELPERS ################################################################################
 
-from brainreg_segment.layout.utils import disable_napari_key_bindings
+from brainreg_segment.layout.utils import (
+    disable_napari_key_bindings,
+    disable_napari_btns,
+    overwrite_napari_roll,
+)
 from brainreg_segment.layout.gui_constants import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
@@ -39,6 +44,7 @@ from brainreg_segment.layout.gui_constants import (
     LOADING_PANEL_ALIGN,
     BOUNDARIES_STRING,
     TRACK_FILE_EXT,
+    DISPLAY_REGION_INFO,
 )
 
 from brainreg_segment.layout.gui_elements import (
@@ -53,7 +59,9 @@ from brainreg_segment.segmentation_panels.tracks import TrackSeg
 
 class SegmentationWidget(QWidget):
     def __init__(
-        self, viewer, boundaries_string=BOUNDARIES_STRING,
+        self,
+        viewer,
+        boundaries_string=BOUNDARIES_STRING,
     ):
         super(SegmentationWidget, self).__init__()
 
@@ -62,17 +70,23 @@ class SegmentationWidget(QWidget):
 
         # Disable / overwrite napari viewer functions
         # that either do not make sense or should be avoided by the user
-        # disable_napari_btns(self.viewer)
+        disable_napari_btns(self.viewer)
         disable_napari_key_bindings()
+        overwrite_napari_roll(self.viewer)
 
-        # track variables
+        # Main layers
+        self.base_layer = []  # Contains registered brain / reference brain
+        self.atlas_layer = []  # Contains annotations / region information
+
+        # Track variables
         self.track_layers = []
 
-        # region variables
+        # Region variables
         self.label_layers = []
 
-        # atlas variables
+        # Atlas variables
         self.current_atlas_name = ""
+        self.atlas = None
 
         self.boundaries_string = boundaries_string
         self.directory = ""
@@ -82,6 +96,20 @@ class SegmentationWidget(QWidget):
 
         # Generate main layout
         self.setup_main_layout()
+
+        if DISPLAY_REGION_INFO:
+
+            @self.viewer.mouse_move_callbacks.append
+            def display_region_info(v, event):
+                """
+                Show brain region info on mouse over in status bar on the right
+                """
+                assert self.viewer == v
+                if len(v.layers) and self.atlas_layer and self.atlas:
+                    _, _, _, region_info = structure_from_viewer(
+                        self.viewer.status, self.atlas_layer, self.atlas
+                    )
+                    self.viewer.help = region_info
 
     def setup_main_layout(self):
         """
@@ -126,7 +154,7 @@ class SegmentationWidget(QWidget):
         self.toggle_methods_layout.setAlignment(QtCore.Qt.AlignBottom)
 
         self.show_trackseg_button = add_button(
-            "Trace tracks",
+            "Track tracing",
             self.toggle_methods_layout,
             self.track_seg.toggle_track_panel,
             0,
@@ -137,7 +165,7 @@ class SegmentationWidget(QWidget):
         self.show_trackseg_button.setEnabled(False)
 
         self.show_regionseg_button = add_button(
-            "Segment regions",
+            "Region segmentation",
             self.toggle_methods_layout,
             self.region_seg.toggle_region_panel,
             1,
@@ -244,36 +272,45 @@ class SegmentationWidget(QWidget):
         atlas_string = self.atlas_menu.currentText()
         atlas_name = atlas_string.split(" ")[0].strip()
         if atlas_name != self.current_atlas_name:
-            self.remove_layers()
+            status = self.remove_layers()
+            if not status:  # Something prevented deletion
+                self.reset_atlas_menu()
+                return
         else:
             print(f"{atlas_string} already selected for segmentation.")
             self.reset_atlas_menu()
             return
-        self.current_atlas_name = atlas_name
-
-        # Instantiate atlas layers
-        self.load_atlas()
 
         # Get / set output directory
         self.set_output_directory()
+        if not self.directory:
+            self.reset_atlas_menu()
+            return
+
+        self.current_atlas_name = atlas_name
+        # Instantiate atlas layers
+        self.load_atlas()
+
         self.directory = self.directory / atlas_name
         self.paths = Paths(self.directory, atlas_space=True)
 
         self.status_label.setText("Ready")
         # Set window title
         self.viewer.title = f"Atlas: {self.current_atlas_name}"
+        self.initialise_segmentation_interface()
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
         self.track_seg.check_saved_track()
         self.reset_atlas_menu()
-        self.initialise_segmentation_interface()
 
     def set_output_directory(self):
         self.status_label.setText("Loading...")
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         self.directory = QFileDialog.getExistingDirectory(
-            self, "Select output directory", options=options,
+            self,
+            "Select output directory",
+            options=options,
         )
         if self.directory != "":
             self.directory = Path(self.directory)
@@ -282,7 +319,8 @@ class SegmentationWidget(QWidget):
         atlas = BrainGlobeAtlas(self.current_atlas_name)
         self.atlas = atlas
         self.base_layer = self.viewer.add_image(
-            self.atlas.reference, name="Reference"
+            self.atlas.reference,
+            name="Reference",
         )
         self.atlas_layer = self.viewer.add_labels(
             self.atlas.annotation,
@@ -308,7 +346,10 @@ class SegmentationWidget(QWidget):
         self.get_brainreg_directory(standard_space=True)
 
     def get_brainreg_directory(self, standard_space):
-        """ Shows file dialog to choose output directory """
+        """
+        Shows file dialog to choose output directory
+        and sets global directory info
+        """
         if standard_space:
             self.plugin = "brainreg_standard"
             self.standard_space = True
@@ -320,29 +361,38 @@ class SegmentationWidget(QWidget):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         brainreg_directory = QFileDialog.getExistingDirectory(
-            self, "Select brainreg directory", options=options,
+            self,
+            "Select brainreg directory",
+            options=options,
         )
-        if brainreg_directory:
-            self.load_brainreg_directory(brainreg_directory)
 
-    def load_brainreg_directory(self, brainreg_directory):
-        """
-        Sets global directory info and opens brainreg folder in napari.
-        Calls initialise_loaded_data to set up layers / info.
-        Then checks for previously loaded data.
+        if not brainreg_directory:
+            return
 
-        """
         if self.directory != brainreg_directory:
-            self.remove_layers()
+            status = self.remove_layers()
+            if not status:
+                return  # Something prevented deletion
             self.directory = Path(brainreg_directory)
         else:
             print(f"{str(brainreg_directory)} already loaded.")
             return
 
+        # Otherwise, proceed loading brainreg dir
+        self.load_brainreg_directory()
+
+    def load_brainreg_directory(self):
+        """
+        Opens brainreg folder in napari.
+        Calls initialise_loaded_data to set up layers / info.
+        Then checks for previously loaded data.
+
+        """
         try:
             self.viewer.open(str(self.directory), plugin=self.plugin)
             self.paths = Paths(
-                self.directory, standard_space=self.standard_space,
+                self.directory,
+                standard_space=self.standard_space,
             )
             self.initialise_loaded_data()
         except ValueError:
@@ -383,11 +433,6 @@ class SegmentationWidget(QWidget):
     def initialise_segmentation_interface(self):
         self.reset_variables()
         self.initialise_image_view()
-
-        @self.atlas_layer.mouse_move_callbacks.append
-        def display_region_name(layer, event):
-            display_brain_region_name(layer, self.atlas.structures)
-
         self.save_data_panel.setVisible(True)
         self.save_button.setVisible(True)
         self.export_button.setVisible(self.standard_space)
@@ -403,19 +448,41 @@ class SegmentationWidget(QWidget):
         self.viewer.dims.set_point(0, midpoint)
 
     def reset_variables(self):
+        """
+        Reset atlas scale dependent variables
+        - point_size (Track segmentation)
+        - spline_size (Track segmentation)
+        - brush_size (Region segmentation)
+        """
         self.mean_voxel_size = int(
             np.sum(self.atlas.resolution) / len(self.atlas.resolution)
         )
         self.track_seg.point_size = (
-            self.track_seg.point_size / self.mean_voxel_size
+            self.track_seg.point_size_default / self.mean_voxel_size
         )
         self.track_seg.spline_size = (
-            self.track_seg.spline_size / self.mean_voxel_size
+            self.track_seg.spline_size_default / self.mean_voxel_size
         )
         self.region_seg.brush_size = (
-            self.region_seg.brush_size / self.mean_voxel_size
+            self.region_seg.brush_size_default / self.mean_voxel_size
         )
         return
+
+    def display_delete_warning(self):
+        """
+        Display a warning in a pop up that informs
+        about deletion of all annotation layers
+        """
+        message_reply = QMessageBox.question(
+            self,
+            "About to remove layers",
+            "All layers are about to be deleted. Proceed?",
+            QMessageBox.Yes | QMessageBox.Cancel,
+        )
+        if message_reply == QMessageBox.Yes:
+            return True
+        else:
+            return False
 
     def remove_layers(self):
         """
@@ -423,14 +490,27 @@ class SegmentationWidget(QWidget):
         when switching from a annotated project to another one
         """
         if len(self.viewer.layers) != 0:
+            # Check with user if that is really what is wanted
+            if self.track_layers or self.label_layers:
+                choice = self.display_delete_warning()
+                if not choice:
+                    print('Preventing deletion because user chose "Cancel"')
+                    return False
+
             # Remove old layers
             for layer in list(self.viewer.layers):
                 try:
                     self.viewer.layers.remove(layer)
                 except IndexError:  # no idea why this happens
                     pass
+
+        # There seems to be a napari bug trying to access previously used slider
+        # values. Trying to circument for now
+        self.viewer.window.qt_viewer.dims._last_used = None
+
         self.track_layers = []
         self.label_layers = []
+        return True
 
     def save(self):
         if self.label_layers or self.track_layers:

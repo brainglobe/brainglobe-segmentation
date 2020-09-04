@@ -49,7 +49,11 @@ def add_new_region_layer(
 
 
 def add_existing_label_layers(
-    viewer, label_file, selected_label=1, num_colors=10, brush_size=30,
+    viewer,
+    label_file,
+    selected_label=1,
+    num_colors=10,
+    brush_size=30,
 ):
     """
     Loads an existing image as a napari labels layer

@@ -2,7 +2,9 @@ import pandas as pd
 
 
 def save_track_layers(
-    tracks_directory, points_layers, track_file_extension=".points",
+    tracks_directory,
+    points_layers,
+    track_file_extension=".points",
 ):
     print(f"Saving tracks to: {tracks_directory}")
     tracks_directory.mkdir(parents=True, exist_ok=True)
@@ -17,7 +19,10 @@ def save_track_layers(
 
 
 def save_single_track(
-    points, name, output_directory, track_file_extension=".points",
+    points,
+    name,
+    output_directory,
+    track_file_extension=".points",
 ):
     output_filename = output_directory / (name + track_file_extension)
     points = pd.DataFrame(points)

@@ -22,6 +22,7 @@ from brainreg_segment.image.utils import create_KDTree_from_image
 from brainreg_segment.tracks.analysis import track_analysis
 from brainreg_segment.layout.gui_constants import (
     COLUMN_WIDTH,
+    SEGM_METHODS_PANEL_ALIGN,
     POINT_SIZE,
     SPLINE_SIZE,
     TRACK_FILE_EXT,
@@ -29,7 +30,6 @@ from brainreg_segment.layout.gui_constants import (
     SPLINE_SMOOTHING_DEFAULT,
     FIT_DEGREE_DEFAULT,
     SUMMARISE_TRACK_DEFAULT,
-    ADD_SURFACE_POINT_DEFAULT,
 )
 
 
@@ -49,7 +49,6 @@ class TrackSeg(QGroupBox):
         spline_smoothing_default=SPLINE_SMOOTHING_DEFAULT,
         fit_degree_default=FIT_DEGREE_DEFAULT,
         summarise_track_default=SUMMARISE_TRACK_DEFAULT,
-        add_surface_point_default=ADD_SURFACE_POINT_DEFAULT,
     ):
 
         super(TrackSeg, self).__init__()
@@ -57,12 +56,13 @@ class TrackSeg(QGroupBox):
         self.tree = None
 
         self.summarise_track_default = summarise_track_default
-        self.add_surface_point_default = add_surface_point_default
 
         # Point / Spline fitting settings
-        self.point_size = point_size
+        self.point_size_default = POINT_SIZE  # Keep track of default
+        self.point_size = point_size  # Initialise
         self.spline_points_default = spline_points_default
-        self.spline_size = spline_size
+        self.spline_size_default = SPLINE_SIZE  # Keep track of default
+        self.spline_size = spline_size  # Initialise
         self.spline_smoothing_default = spline_smoothing_default
         self.fit_degree_default = fit_degree_default
 
@@ -78,30 +78,43 @@ class TrackSeg(QGroupBox):
         track_layout = QGridLayout()
 
         add_button(
-            "Add surface points", track_layout, self.add_surface_points, 5, 1,
-        )
-
-        add_button(
-            "Add track", track_layout, self.add_track, 6, 0,
-        )
-
-        add_button(
-            "Trace tracks", track_layout, self.run_track_analysis, 6, 1,
-        )
-
-        self.summarise_track_checkbox = add_checkbox(
-            track_layout, self.summarise_track_default, "Summarise", 0,
-        )
-
-        self.add_surface_point_checkbox = add_checkbox(
+            "Add surface points",
             track_layout,
-            self.add_surface_point_default,
-            "Add surface point",
+            self.add_surface_points,
+            5,
             1,
         )
 
+        add_button(
+            "Add track",
+            track_layout,
+            self.add_track,
+            6,
+            0,
+        )
+
+        add_button(
+            "Trace tracks",
+            track_layout,
+            self.run_track_analysis,
+            6,
+            1,
+        )
+
+        self.summarise_track_checkbox = add_checkbox(
+            track_layout,
+            self.summarise_track_default,
+            "Summarise",
+            0,
+        )
+
         self.fit_degree = add_int_box(
-            track_layout, self.fit_degree_default, 1, 5, "Fit degree", 2,
+            track_layout,
+            self.fit_degree_default,
+            1,
+            5,
+            "Fit degree",
+            1,
         )
 
         self.spline_smoothing = add_float_box(
@@ -111,7 +124,7 @@ class TrackSeg(QGroupBox):
             1,
             "Spline smoothing",
             0.1,
-            3,
+            2,
         )
 
         self.spline_points = add_int_box(
@@ -120,7 +133,7 @@ class TrackSeg(QGroupBox):
             1,
             10000,
             "Spline points",
-            4,
+            3,
         )
 
         track_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)
@@ -135,26 +148,26 @@ class TrackSeg(QGroupBox):
             self.track_panel.setVisible(False)
             if self.parent.viewer.theme == "dark":
                 self.parent.show_trackseg_button.setStyleSheet(
-                    "QPushButton { background-color: #414851; text-align:left;}"
-                    "QPushButton:pressed { background-color: #414851; text-align:left;}"
+                    f"QPushButton {{ background-color: #414851; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #414851; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
             else:
                 self.parent.show_trackseg_button.setStyleSheet(
-                    "QPushButton { background-color: #d6d0ce; text-align:left;}"
-                    "QPushButton:pressed { background-color: #d6d0ce; text-align:left;}"
+                    f"QPushButton {{ background-color: #d6d0ce; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #d6d0ce; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
 
         else:
             self.track_panel.setVisible(True)
             if self.parent.viewer.theme == "dark":
                 self.parent.show_trackseg_button.setStyleSheet(
-                    "QPushButton { background-color: #7e868f; text-align:left;}"
-                    "QPushButton:pressed { background-color: #7e868f; text-align:left;}"
+                    f"QPushButton {{ background-color: #7e868f; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #7e868f; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
             else:
                 self.parent.show_trackseg_button.setStyleSheet(
-                    "QPushButton { background-color: #fdf194; text-align:left;}"
-                    "QPushButton:pressed { background-color: #fdf194; text-align:left;}"
+                    f"QPushButton {{ background-color: #fdf194; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #fdf194; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
 
     def check_saved_track(self):
@@ -167,7 +180,9 @@ class TrackSeg(QGroupBox):
             for track_file in track_files:
                 self.parent.track_layers.append(
                     add_existing_track_layers(
-                        self.parent.viewer, track_file, self.point_size,
+                        self.parent.viewer,
+                        track_file,
+                        self.point_size,
                     )
                 )
 
@@ -177,7 +192,9 @@ class TrackSeg(QGroupBox):
         self.spline_names = None
         self.track_panel.setVisible(True)  # Should be visible by default!
         add_new_track_layer(
-            self.parent.viewer, self.parent.track_layers, self.point_size,
+            self.parent.viewer,
+            self.parent.track_layers,
+            self.point_size,
         )
 
     def add_surface_points(self):
@@ -196,12 +213,6 @@ class TrackSeg(QGroupBox):
                     continue
                 surface_point = self.tree.data[index]
                 track_layer.data = np.vstack((surface_point, track_layer.data))
-                if len(track_layer.data) != 0:
-                    _, index = self.tree.query(track_layer.data[0])
-                    surface_point = self.tree.data[index]
-                    track_layer.data = np.vstack(
-                        (surface_point, track_layer.data)
-                    )
             print("Finished!\n")
         else:
             print("No tracks found.")

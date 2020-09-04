@@ -17,6 +17,7 @@ from brainreg_segment.regions.layers import (
 from brainreg_segment.regions.analysis import region_analysis
 from brainreg_segment.layout.gui_constants import (
     COLUMN_WIDTH,
+    SEGM_METHODS_PANEL_ALIGN,
     CALCULATE_VOLUMES_DEFAULT,
     SUMMARIZE_VOLUMES_DEFAULT,
     BRUSH_SIZE,
@@ -48,7 +49,8 @@ class RegionSeg(QGroupBox):
         self.summarise_volumes_default = summarise_volumes_default
 
         # Brushes / ...
-        self.brush_size = brush_size
+        self.brush_size_default = BRUSH_SIZE  # Keep track of default
+        self.brush_size = brush_size  # Initialise
         self.num_colors = num_colors
 
         # File formats
@@ -59,11 +61,19 @@ class RegionSeg(QGroupBox):
         region_layout = QGridLayout()
 
         add_button(
-            "Add region", region_layout, self.add_region, 2, 0,
+            "Add region",
+            region_layout,
+            self.add_region,
+            2,
+            0,
         )
 
         add_button(
-            "Analyse regions", region_layout, self.run_region_analysis, 2, 1,
+            "Analyse regions",
+            region_layout,
+            self.run_region_analysis,
+            2,
+            1,
         )
 
         self.calculate_volumes_checkbox = add_checkbox(
@@ -92,26 +102,26 @@ class RegionSeg(QGroupBox):
             self.region_panel.setVisible(False)
             if self.parent.viewer.theme == "dark":
                 self.parent.show_regionseg_button.setStyleSheet(
-                    "QPushButton { background-color: #414851; text-align:left;}"
-                    "QPushButton:pressed { background-color: #414851; text-align:left;}"
+                    f"QPushButton {{ background-color: #414851; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #414851; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
             else:
                 self.parent.show_regionseg_button.setStyleSheet(
-                    "QPushButton { background-color: #d6d0ce; text-align:left;}"
-                    "QPushButton:pressed { background-color: #d6d0ce; text-align:left;}"
+                    f"QPushButton {{ background-color: #d6d0ce; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #d6d0ce; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
 
         else:
             self.region_panel.setVisible(True)
             if self.parent.viewer.theme == "dark":
                 self.parent.show_regionseg_button.setStyleSheet(
-                    "QPushButton { background-color: #7e868f; text-align:left;}"
-                    "QPushButton:pressed { background-color: #7e868f; text-align:left;}"
+                    f"QPushButton {{ background-color: #7e868f; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #7e868f; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
             else:
                 self.parent.show_regionseg_button.setStyleSheet(
-                    "QPushButton { background-color: #fdf194; text-align:left;}"
-                    "QPushButton:pressed { background-color: #fdf194; text-align:left;}"
+                    f"QPushButton {{ background-color: #fdf194; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #fdf194; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
 
     def check_saved_region(self):

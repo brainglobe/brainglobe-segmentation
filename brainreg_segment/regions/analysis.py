@@ -27,7 +27,10 @@ def region_analysis(
         print(f"Saving summary volumes to: {regions_directory}")
         for label_layer in label_layers:
             analyse_region_brain_areas(
-                label_layer, atlas_layer_image, regions_directory, atlas,
+                label_layer,
+                atlas_layer_image,
+                regions_directory,
+                atlas,
             )
     if summarise:
         if output_csv_file is not None:
@@ -78,7 +81,11 @@ def summarise_brain_regions(label_layers, filename, atlas_resolution):
 def summarise_single_brain_region(
     label_layer,
     ignore_empty=True,
-    properties_to_fetch=["area", "bbox", "centroid",],
+    properties_to_fetch=[
+        "area",
+        "bbox",
+        "centroid",
+    ],
 ):
     data = label_layer.data
     if ignore_empty:
@@ -172,7 +179,10 @@ def analyse_region_brain_areas(
 
 
 def get_total_volume_regions(
-    unique_vals_left, unique_vals_right, counts_left, counts_right,
+    unique_vals_left,
+    unique_vals_right,
+    counts_left,
+    counts_right,
 ):
     zero_index_left = np.where(unique_vals_left == 0)[0][0]
     counts_left = list(counts_left)

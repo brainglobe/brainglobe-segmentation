@@ -1,5 +1,10 @@
 # Small layout utils
+import napari
 from napari.viewer import Viewer
+
+import bg_space as bg
+
+from brainreg_segment.layout.gui_constants import ORIENTATIONS
 
 
 def disable_napari_btns(viewer):
@@ -33,3 +38,34 @@ def disable_napari_key_bindings():
     @Viewer.bind_key("Control-T", overwrite=True)
     def no_tranpose_warning(self):
         print("Transposing is not supported")
+
+
+def get_dims_from_origins(origins):
+    """ From a list of BG space abbreviations (e.g. ["asl","sla","lsa"]) get correct axes for display in Napari """
+    all_dims = []
+    for o in range(len(origins)):
+        sc = bg.AnatomicalSpace(origins[0])
+        next_orientation = origins[(o + 1) % len(origins)]
+        dims, flips, _, _ = sc.map_to(next_orientation)
+        assert not any(
+            flips
+        ), f"\nReceived orientations: {origins}\nThese require (orientation) flips. This is not currently supported"
+        all_dims.append(list(dims))
+    return all_dims
+
+
+def overwrite_napari_roll(viewer):
+    """
+    Overwrite Napari _roll() function with something that makes more sense for a (mouse) brain
+    Goal: Cycle through views (e.g. asl -> lsa -> sal)
+    """
+    dims = get_dims_from_origins(ORIENTATIONS)
+
+    def _roll(self):
+        """Roll order of dimensions for display."""
+        dims_idx = dims.index(self.order)
+        next_dims = dims[(dims_idx + 1) % len(dims)]
+        self.order = next_dims
+
+    # Substitute Napari function
+    napari.components.dims.Dims._roll = _roll

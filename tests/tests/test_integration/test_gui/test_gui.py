@@ -20,7 +20,8 @@ def test_load_sample_space(make_test_viewer):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = False
     widget.plugin = "brainreg"
-    widget.load_brainreg_directory(brainreg_dir)
+    widget.directory = brainreg_dir
+    widget.load_brainreg_directory()
     check_loaded_layers(widget, 6)
 
 
@@ -30,7 +31,8 @@ def test_load_standard_space(make_test_viewer):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.load_brainreg_directory(brainreg_dir)
+    widget.directory = brainreg_dir
+    widget.load_brainreg_directory()
     check_loaded_layers(widget, 4)
 
 
@@ -53,7 +55,8 @@ def test_general(make_test_viewer):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.load_brainreg_directory(brainreg_dir)
+    widget.directory = brainreg_dir
+    widget.load_brainreg_directory()
     assert widget.mean_voxel_size == 50
     check_defaults(widget)
     check_paths(widget)
@@ -73,7 +76,8 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.load_brainreg_directory(tmp_input_dir)
+    widget.directory = Path(tmp_input_dir)
+    widget.load_brainreg_directory()
 
     assert len(widget.viewer.layers) == 4
     assert len(widget.track_layers) == 1
@@ -104,7 +108,7 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
 
     # surface points
     widget.track_seg.add_surface_points()
-    assert len(widget.track_layers[0].data) == 8
+    assert len(widget.track_layers[0].data) == 7
 
 
 def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
@@ -121,7 +125,8 @@ def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
     viewer.window.add_dock_widget(widget, name="General", area="right")
     widget.standard_space = True
     widget.plugin = "brainreg_standard"
-    widget.load_brainreg_directory(tmp_input_dir)
+    widget.directory = Path(tmp_input_dir)
+    widget.load_brainreg_directory()
 
     assert len(widget.viewer.layers) == 4
     assert len(widget.label_layers) == 1
@@ -175,7 +180,6 @@ def check_defaults(widget):
     assert widget.track_seg.spline_smoothing_default == 0.1
     assert widget.track_seg.fit_degree_default == 3
     assert widget.track_seg.summarise_track_default is True
-    assert widget.track_seg.add_surface_point_default is False
     assert widget.region_seg.calculate_volumes_default is True
     assert widget.region_seg.summarise_volumes_default is True
     assert widget.boundaries_string == "Boundaries"
