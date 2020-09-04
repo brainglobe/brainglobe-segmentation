@@ -108,7 +108,7 @@ def test_tracks(tmpdir, make_test_viewer, rtol=1e-10):
 
     # surface points
     widget.track_seg.add_surface_points()
-    assert len(widget.track_layers[0].data) == 8
+    assert len(widget.track_layers[0].data) == 7
 
 
 def test_regions(tmpdir, make_test_viewer, rtol=1e-10):
@@ -180,7 +180,6 @@ def check_defaults(widget):
     assert widget.track_seg.spline_smoothing_default == 0.1
     assert widget.track_seg.fit_degree_default == 3
     assert widget.track_seg.summarise_track_default is True
-    assert widget.track_seg.add_surface_point_default is False
     assert widget.region_seg.calculate_volumes_default is True
     assert widget.region_seg.summarise_volumes_default is True
     assert widget.boundaries_string == "Boundaries"

@@ -30,7 +30,6 @@ from brainreg_segment.layout.gui_constants import (
     SPLINE_SMOOTHING_DEFAULT,
     FIT_DEGREE_DEFAULT,
     SUMMARISE_TRACK_DEFAULT,
-    ADD_SURFACE_POINT_DEFAULT,
 )
 
 
@@ -50,7 +49,6 @@ class TrackSeg(QGroupBox):
         spline_smoothing_default=SPLINE_SMOOTHING_DEFAULT,
         fit_degree_default=FIT_DEGREE_DEFAULT,
         summarise_track_default=SUMMARISE_TRACK_DEFAULT,
-        add_surface_point_default=ADD_SURFACE_POINT_DEFAULT,
     ):
 
         super(TrackSeg, self).__init__()
@@ -58,7 +56,6 @@ class TrackSeg(QGroupBox):
         self.tree = None
 
         self.summarise_track_default = summarise_track_default
-        self.add_surface_point_default = add_surface_point_default
 
         # Point / Spline fitting settings
         self.point_size_default = POINT_SIZE  # Keep track of default
@@ -111,20 +108,13 @@ class TrackSeg(QGroupBox):
             0,
         )
 
-        self.add_surface_point_checkbox = add_checkbox(
-            track_layout,
-            self.add_surface_point_default,
-            "Add surface point",
-            1,
-        )
-
         self.fit_degree = add_int_box(
             track_layout,
             self.fit_degree_default,
             1,
             5,
             "Fit degree",
-            2,
+            1,
         )
 
         self.spline_smoothing = add_float_box(
@@ -134,7 +124,7 @@ class TrackSeg(QGroupBox):
             1,
             "Spline smoothing",
             0.1,
-            3,
+            2,
         )
 
         self.spline_points = add_int_box(
@@ -143,7 +133,7 @@ class TrackSeg(QGroupBox):
             1,
             10000,
             "Spline points",
-            4,
+            3,
         )
 
         track_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)
@@ -223,12 +213,6 @@ class TrackSeg(QGroupBox):
                     continue
                 surface_point = self.tree.data[index]
                 track_layer.data = np.vstack((surface_point, track_layer.data))
-                if len(track_layer.data) != 0:
-                    _, index = self.tree.query(track_layer.data[0])
-                    surface_point = self.tree.data[index]
-                    track_layer.data = np.vstack(
-                        (surface_point, track_layer.data)
-                    )
             print("Finished!\n")
         else:
             print("No tracks found.")
