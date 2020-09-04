@@ -154,7 +154,7 @@ class SegmentationWidget(QWidget):
         self.toggle_methods_layout.setAlignment(QtCore.Qt.AlignBottom)
 
         self.show_trackseg_button = add_button(
-            "Trace tracks",
+            "Track tracing",
             self.toggle_methods_layout,
             self.track_seg.toggle_track_panel,
             0,
@@ -165,7 +165,7 @@ class SegmentationWidget(QWidget):
         self.show_trackseg_button.setEnabled(False)
 
         self.show_regionseg_button = add_button(
-            "Segment regions",
+            "Region segmentation",
             self.toggle_methods_layout,
             self.region_seg.toggle_region_panel,
             1,
