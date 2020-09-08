@@ -1,10 +1,10 @@
 # Small layout utils
-import napari
+# import napari
 from napari.viewer import Viewer
 
 import bg_space as bg
 
-from brainreg_segment.layout.gui_constants import ORIENTATIONS
+# from brainreg_segment.layout.gui_constants import ORIENTATIONS
 
 
 def disable_napari_btns(viewer):
@@ -54,18 +54,18 @@ def get_dims_from_origins(origins):
     return all_dims
 
 
-def overwrite_napari_roll(viewer):
-    """
-    Overwrite Napari _roll() function with something that makes more sense for a (mouse) brain
-    Goal: Cycle through views (e.g. asl -> lsa -> sal)
-    """
-    dims = get_dims_from_origins(ORIENTATIONS)
-
-    def _roll(self):
-        """Roll order of dimensions for display."""
-        dims_idx = dims.index(self.order)
-        next_dims = dims[(dims_idx + 1) % len(dims)]
-        self.order = next_dims
-
-    # Substitute Napari function
-    napari.components.dims.Dims._roll = _roll
+# def overwrite_napari_roll(viewer):
+#     """
+#     Overwrite Napari _roll() function with something that makes more sense for a (mouse) brain
+#     Goal: Cycle through views (e.g. asl -> lsa -> sal)
+#     """
+#     dims = get_dims_from_origins(ORIENTATIONS)
+#
+#     def _roll(self):
+#         """Roll order of dimensions for display."""
+#         dims_idx = dims.index(self.order)
+#         next_dims = dims[(dims_idx + 1) % len(dims)]
+#         self.order = next_dims
+#
+#     # Substitute Napari function
+#     napari.components.dims.Dims._roll = _roll
