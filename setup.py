@@ -20,7 +20,7 @@ requirements = [
 
 setup(
     name="brainreg-segment",
-    version="0.1.0",
+    version="0.1.1",
     description="Manual segmentation of 3D brain structures in a common anatomical space",
     long_description=long_description,
     long_description_content_type="text/markdown",
