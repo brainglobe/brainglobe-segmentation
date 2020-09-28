@@ -37,7 +37,7 @@ setup(
             "flake8",
         ]
     },
-    python_requires=">=3.6, <3.8",
+    python_requires=">=3.7",
     packages=find_namespace_packages(exclude=("docs", "tests*")),
     entry_points={
         "console_scripts": [
