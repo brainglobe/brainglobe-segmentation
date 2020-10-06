@@ -8,9 +8,9 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 requirements = [
     "numpy",
     "tables",
-    "scikit-image>=0.14.0,<0.17.0",
-    "pandas>=0.25.1,<=0.25.3",
-    "napari[pyqt5]",
+    "scikit-image",
+    "pandas",
+    "napari[pyside2]>=0.3.7",
     "imlib >= 0.0.26",
     "dask >= 2.15.0",
     "napari-brainreg",
@@ -20,7 +20,7 @@ requirements = [
 
 setup(
     name="brainreg-segment",
-    version="0.1.0",
+    version="0.1.2",
     description="Manual segmentation of 3D brain structures in a common anatomical space",
     long_description=long_description,
     long_description_content_type="text/markdown",
