@@ -6,7 +6,7 @@
     https://travis-ci.com/brainglobe/brainreg-segment)
 [![Coverage Status](https://coveralls.io/repos/github/brainglobe/brainreg-segment/badge.svg?branch=master)](https://coveralls.io/github/brainglobe/brainreg-segment?branch=master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
-[![Gitter](https://badges.gitter.im/cellfinder/brainreg.svg)](https://gitter.im/cellfinder/brainreg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/cellfinder/brainreg.svg)](https://gitter.im/cellfinder/brainreg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Join the chat at https://gitter.im/BrainGlobe/brainreg-segment](https://badges.gitter.im/BrainGlobe/brainreg-segment.svg)](https://gitter.im/BrainGlobe/brainreg-segment?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # brainreg-segment
 Segmentation of 1/2/3D brain structures in a common anatomical space
