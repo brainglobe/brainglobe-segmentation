@@ -29,16 +29,12 @@ def save_single_track(
     points.to_hdf(output_filename, key="df", mode="w")
 
 
-def export_splines(
-    tracks_directory, splines, spline_names, resolution, max_axis_2
-):
+def export_splines(tracks_directory, splines, spline_names, resolution):
     print(f"Exporting tracks to: {tracks_directory}")
     tracks_directory.mkdir(parents=True, exist_ok=True)
 
     for spline, name in zip(splines, spline_names):
-        export_single_spline(
-            spline, name, tracks_directory, resolution, max_axis_2
-        )
+        export_single_spline(spline, name, tracks_directory, resolution)
 
 
 def export_single_spline(
@@ -46,12 +42,9 @@ def export_single_spline(
     name,
     output_directory,
     resolution,
-    max_axis_2,
     spline_file_extension=".h5",
 ):
     output_filename = output_directory / (name + spline_file_extension)
     points = pd.DataFrame(spline * resolution)
     points.columns = ["x", "y", "z"]
-    # BR is oriented differently
-    points["z"] = (max_axis_2 * resolution) - points["z"]
     points.to_hdf(output_filename, key="df", mode="w")

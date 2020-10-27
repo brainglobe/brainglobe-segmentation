@@ -526,7 +526,6 @@ class SegmentationWidget(QWidget):
 
     def export_to_brainrender(self):
         print("Exporting")
-        max_axis_2 = self.base_layer.shape[2]
         worker = export_all(
             self.paths.regions_directory,
             self.paths.tracks_directory,
@@ -534,7 +533,6 @@ class SegmentationWidget(QWidget):
             self.track_seg.splines,
             self.track_seg.spline_names,
             self.atlas.resolution[0],
-            max_axis_2,
         )
         worker.start()
 
@@ -547,16 +545,13 @@ def export_all(
     splines,
     spline_names,
     resolution,
-    max_axis_2,
 ):
     if label_layers:
         # TODO: this function does not exist
         export_label_layers(regions_directory, label_layers, resolution)
 
     if splines:
-        export_splines(
-            tracks_directory, splines, spline_names, resolution, max_axis_2
-        )
+        export_splines(tracks_directory, splines, spline_names, resolution)
     print("Finished!\n")
 
 

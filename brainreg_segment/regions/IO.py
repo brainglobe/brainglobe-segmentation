@@ -56,8 +56,6 @@ def volume_to_vector_array_to_obj_file(
     threshold=0,
     deal_with_regions_separately=False,
 ):
-    # BR is oriented differently
-    image = np.flip(image, axis=2)
     if deal_with_regions_separately:
         for label_id in np.unique(image):
             if label_id != 0:
