@@ -26,7 +26,6 @@ spline = np.array(
 )
 
 ATLAS_RESOLUTION = 50
-MAX_ATLAS_AXIS_2 = 228
 
 
 def test_save_single_track_layer(tmpdir, rtol=1e-10):
@@ -38,9 +37,7 @@ def test_save_single_track_layer(tmpdir, rtol=1e-10):
 
 
 def test_export_single_spline(tmpdir):
-    IO.export_single_spline(
-        spline, "track", tmpdir, ATLAS_RESOLUTION, MAX_ATLAS_AXIS_2
-    )
+    IO.export_single_spline(spline, "track", tmpdir, ATLAS_RESOLUTION)
 
     spline_test = pd.read_hdf(tmpdir / "track.h5")
     spline_validate = pd.read_hdf(tracks_dir / "track.h5")
