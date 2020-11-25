@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 def save_track_layers(
@@ -42,9 +43,7 @@ def export_single_spline(
     name,
     output_directory,
     resolution,
-    spline_file_extension=".h5",
+    spline_file_extension=".npy",
 ):
     output_filename = output_directory / (name + spline_file_extension)
-    points = pd.DataFrame(spline * resolution)
-    points.columns = ["x", "y", "z"]
-    points.to_hdf(output_filename, key="df", mode="w")
+    np.save(output_filename, spline * resolution)
