@@ -18,9 +18,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools tox tox-gh-actions pytest pytest-qt pytest-cov
+          pip install setuptools tox tox-gh-actions
       - name: Test with tox
-        run: pytest
+        run: tox
       - name: Coverage
         uses: codecov/codecov-action@v1
 
@@ -36,7 +36,7 @@ jobs:
       - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
-          python-version: 3.8
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
