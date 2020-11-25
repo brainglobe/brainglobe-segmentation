@@ -46,4 +46,4 @@ def export_single_spline(
     spline_file_extension=".npy",
 ):
     output_filename = output_directory / (name + spline_file_extension)
-    np.save(output_filename, spline * resolution)
+    np.save(str(output_filename), spline * resolution)
