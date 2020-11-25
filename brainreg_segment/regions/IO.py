@@ -18,7 +18,7 @@ def convert_obj_to_br(verts, faces, voxel_size):
 def extract_and_save_object(
     image, output_file_name, voxel_size, threshold=0, step_size=1
 ):
-    verts, faces, normals, values = measure.marching_cubes_lewiner(
+    verts, faces, normals, values = measure.marching_cubes(
         image, threshold, step_size=step_size
     )
     verts, faces = convert_obj_to_br(verts, faces, voxel_size)

@@ -223,24 +223,24 @@ class TrackSeg(QGroupBox):
     def run_track_analysis(self):
         if self.parent.track_layers:
             print("Running track analysis")
-            try:
-                self.splines, self.spline_names = track_analysis(
-                    self.parent.viewer,
-                    self.parent.atlas,
-                    self.parent.paths.tracks_directory,
-                    self.parent.track_layers,
-                    self.spline_size,
-                    spline_points=self.spline_points.value(),
-                    fit_degree=self.fit_degree.value(),
-                    spline_smoothing=self.spline_smoothing.value(),
-                    summarise_track=self.summarise_track_checkbox.isChecked(),
-                )
-                print("Finished!\n")
-            except TypeError:
-                print(
-                    "The number of points must be greater "
-                    "than the fit degree. \n"
-                    "Please add points, or reduce the fit degree."
-                )
+            # try:
+            self.splines, self.spline_names = track_analysis(
+                self.parent.viewer,
+                self.parent.atlas,
+                self.parent.paths.tracks_directory,
+                self.parent.track_layers,
+                self.spline_size,
+                spline_points=self.spline_points.value(),
+                fit_degree=self.fit_degree.value(),
+                spline_smoothing=self.spline_smoothing.value(),
+                summarise_track=self.summarise_track_checkbox.isChecked(),
+            )
+            print("Finished!\n")
+        # except TypeError:
+        #     print(
+        #         "The number of points must be greater "
+        #         "than the fit degree. \n"
+        #         "Please add points, or reduce the fit degree."
+        #     )
         else:
             print("No tracks found.")

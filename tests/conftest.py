@@ -4,6 +4,7 @@ import warnings
 import pytest
 
 from typing import List
+
 from qtpy.QtWidgets import QApplication
 from napari import Viewer
 

@@ -413,7 +413,7 @@ class SegmentationWidget(QWidget):
         """
         try:
             self.viewer.layers.remove(self.boundaries_string)
-        except KeyError:
+        except ValueError:
             pass
 
         self.base_layer = self.viewer.layers["Registered image"]

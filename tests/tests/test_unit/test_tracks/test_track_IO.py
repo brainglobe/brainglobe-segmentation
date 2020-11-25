@@ -39,7 +39,7 @@ def test_save_single_track_layer(tmpdir, rtol=1e-10):
 def test_export_single_spline(tmpdir):
     IO.export_single_spline(spline, "track", tmpdir, ATLAS_RESOLUTION)
 
-    spline_test = pd.read_hdf(tmpdir / "track.h5")
-    spline_validate = pd.read_hdf(tracks_dir / "track.h5")
+    spline_test = np.load(str(tmpdir / "track.npy"))
+    spline_validate = np.load(str(tracks_dir / "track.npy"))
 
-    pd.testing.assert_frame_equal(spline_test, spline_validate)
+    assert (spline_test == spline_validate).all()
