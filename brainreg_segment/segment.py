@@ -400,7 +400,7 @@ class SegmentationWidget(QWidget):
                 f"The directory ({self.directory}) does not appear to be "
                 f"a brainreg directory, please try again."
             )
-            return
+        return
 
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
@@ -413,7 +413,7 @@ class SegmentationWidget(QWidget):
         """
         try:
             self.viewer.layers.remove(self.boundaries_string)
-        except KeyError:
+        except ValueError:
             pass
 
         self.base_layer = self.viewer.layers["Registered image"]
