@@ -1,10 +1,11 @@
 # COPIED FROM NAPARI - how to import?
 
-import warnings
+# import warnings
 import pytest
 
 from typing import List
-from qtpy.QtWidgets import QApplication
+
+# from qtpy.QtWidgets import QApplication
 from napari import Viewer
 
 
@@ -41,19 +42,19 @@ def pytest_addoption(parser):
     )
 
 
-@pytest.fixture
-def qtbot(qtbot):
-    """A modified qtbot fixture that makes sure no widgets have been leaked."""
-    initial = QApplication.topLevelWidgets()
-    yield qtbot
-    QApplication.processEvents()
-    leaks = set(QApplication.topLevelWidgets()).difference(initial)
-    # still not sure how to clean up some of the remaining vispy
-    # vispy.app.backends._qt.CanvasBackendDesktop widgets...
-    # if any([n.__class__.__name__ != "CanvasBackendDesktop" for n in leaks]):
-    #    raise AssertionError(f"Widgets leaked!: {leaks}")
-    if leaks:
-        warnings.warn(f"Widgets leaked!: {leaks}")
+# @pytest.fixture
+# def qtbot(qtbot):
+#     """A modified qtbot fixture that makes sure no widgets have been leaked."""
+#     initial = QApplication.topLevelWidgets()
+#     yield qtbot
+#     QApplication.processEvents()
+#     leaks = set(QApplication.topLevelWidgets()).difference(initial)
+#     # still not sure how to clean up some of the remaining vispy
+#     # vispy.app.backends._qt.CanvasBackendDesktop widgets...
+#     # if any([n.__class__.__name__ != "CanvasBackendDesktop" for n in leaks]):
+#     #    raise AssertionError(f"Widgets leaked!: {leaks}")
+#     if leaks:
+#         warnings.warn(f"Widgets leaked!: {leaks}")
 
 
 @pytest.fixture(scope="function")
