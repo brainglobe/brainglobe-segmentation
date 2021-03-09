@@ -60,7 +60,7 @@ from brainreg_segment.segmentation_panels.tracks import TrackSeg
 class SegmentationWidget(QWidget):
     def __init__(
         self,
-        viewer,
+        viewer: napari.viewer.Viewer,
         boundaries_string=BOUNDARIES_STRING,
     ):
         super(SegmentationWidget, self).__init__()
