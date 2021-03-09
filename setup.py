@@ -14,7 +14,7 @@ requirements = [
     "napari-plugin-engine >= 0.1.4",
     "imlib >= 0.0.26",
     "dask >= 2.15.0",
-    "napari-brainreg",
+    "napari-brainreg >= 0.2.4",
     "imio",
 ]
 
