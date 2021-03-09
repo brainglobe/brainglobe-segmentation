@@ -10,7 +10,7 @@ requirements = [
     "tables",
     "scikit-image",
     "pandas",
-    "napari[pyside2]>=0.3.7",
+    "napari[pyside2]>=0.4.5",
     "imlib >= 0.0.26",
     "dask >= 2.15.0",
     "napari-brainreg",
@@ -41,7 +41,7 @@ setup(
     packages=find_namespace_packages(exclude=("docs", "tests*")),
     entry_points={
         "console_scripts": [
-            "brainreg_segment = brainreg_segment.segment:main",
+            "brainreg-segment = brainreg_segment.segment:main",
         ]
     },
     include_package_data=True,
