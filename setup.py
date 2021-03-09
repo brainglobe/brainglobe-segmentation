@@ -7,7 +7,6 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 requirements = [
     "numpy",
-    "tables",
     "scikit-image",
     "pandas",
     "napari[pyside2]>=0.3.7",
@@ -52,9 +51,9 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Operating System :: Microsoft :: Windows :: Windows 10",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
     ],
