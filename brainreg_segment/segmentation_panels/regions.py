@@ -150,6 +150,7 @@ class RegionSeg(QGroupBox):
                 self.parent.label_layers,
                 self.parent.atlas_layer.data,
                 self.parent.atlas,
+                self.parent.hemispheres,
                 self.parent.paths.regions_directory,
                 output_csv_file=self.parent.paths.region_summary_csv,
                 volumes=self.calculate_volumes_checkbox.isChecked(),
