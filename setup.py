@@ -7,6 +7,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 requirements = [
     "numpy",
+    "tables",
     "scikit-image",
     "pandas",
     "napari[pyside2]>=0.3.7",
