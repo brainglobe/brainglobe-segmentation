@@ -78,6 +78,9 @@ class SegmentationWidget(QWidget):
         self.base_layer = []  # Contains registered brain / reference brain
         self.atlas_layer = []  # Contains annotations / region information
 
+        # Other data
+        self.hemispheres_data = []
+
         # Track variables
         self.track_layers = []
 
@@ -420,6 +423,11 @@ class SegmentationWidget(QWidget):
         self.metadata = self.base_layer.metadata
         self.atlas = self.metadata["atlas_class"]
         self.atlas_layer = self.viewer.layers[self.metadata["atlas"]]
+        if self.standard_space:
+            self.hemispheres_data = self.atlas.hemispheres
+        else:
+            self.hemispheres_data = self.viewer.layers["Hemispheres"].data
+
         self.initialise_segmentation_interface()
 
         # Set window title
