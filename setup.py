@@ -10,7 +10,7 @@ requirements = [
     "tables",
     "scikit-image",
     "pandas",
-    "napari[pyside2]>=0.4.5",
+    "napari>=0.4.5",
     "napari-plugin-engine >= 0.1.4",
     "imlib >= 0.0.26",
     "dask >= 2.15.0",
