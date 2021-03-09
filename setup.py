@@ -11,6 +11,7 @@ requirements = [
     "scikit-image",
     "pandas",
     "napari[pyside2]>=0.4.5",
+    "napari-plugin-engine >= 0.1.4",
     "imlib >= 0.0.26",
     "dask >= 2.15.0",
     "napari-brainreg",
@@ -42,7 +43,8 @@ setup(
     entry_points={
         "console_scripts": [
             "brainreg-segment = brainreg_segment.segment:main",
-        ]
+        ],
+        "napari.plugin": ["brainreg-segment = brainreg_segment.plugins"],
     },
     include_package_data=True,
     author="Adam Tyson, Horst Obenhaus",
@@ -51,6 +53,7 @@ setup(
         "Development Status :: 3 - Alpha",
         "Operating System :: POSIX :: Linux",
         "Operating System :: Microsoft :: Windows :: Windows 10",
+        "Framework :: napari",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
