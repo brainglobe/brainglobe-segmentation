@@ -94,7 +94,9 @@ def summarise_single_brain_region(
         if data.sum() == 0:
             return
 
-    regions_table = regionprops_table(data, properties=properties_to_fetch)
+    regions_table = regionprops_table(
+        data.astype(np.uint16), properties=properties_to_fetch
+    )
     df = pd.DataFrame.from_dict(regions_table)
     df.insert(0, "Region", label_layer.name)
     return df
