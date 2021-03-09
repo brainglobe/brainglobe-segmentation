@@ -70,8 +70,8 @@ def summarise_brain_regions(label_layers, filename, atlas_resolution):
 
     for header in length_columns:
         for dim, idx in enumerate(atlas_resolution):
-            if header.startswith(f"axis_{idx}"):
-                scale = float(dim)
+            if header.startswith(f"axis_{dim}"):
+                scale = float(idx)
                 assert scale > 0
                 result[header] = result[header] * scale
 
