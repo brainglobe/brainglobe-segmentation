@@ -20,7 +20,7 @@ requirements = [
 
 setup(
     name="brainreg-segment",
-    version="0.2.2",
+    version="0.2.3",
     description="Manual segmentation of 3D brain structures in a common anatomical space",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -52,9 +52,9 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Operating System :: Microsoft :: Windows :: Windows 10",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
     ],
