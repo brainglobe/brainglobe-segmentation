@@ -206,6 +206,7 @@ class SegmentationWidget(QWidget):
             self.load_brainreg_directory_sample,
             0,
             0,
+            visibility=False,
             minimum_width=COLUMN_WIDTH,
             alignment=LOADING_PANEL_ALIGN,
         )
@@ -216,6 +217,7 @@ class SegmentationWidget(QWidget):
             self.load_brainreg_directory_standard,
             1,
             0,
+            visibility=False,
             minimum_width=COLUMN_WIDTH,
             alignment=LOADING_PANEL_ALIGN,
         )
@@ -227,6 +229,11 @@ class SegmentationWidget(QWidget):
         self.load_data_panel.setVisible(True)
 
         self.layout.addWidget(self.load_data_panel, row, column, 1, 1)
+
+        #  buttons made visible after adding to main widget, preventing them
+        # from briefly appearing in a separate window
+        self.load_button.setVisible(True)
+        self.load_button_standard.setVisible(True)
 
     def add_saving_panel(self, row):
         """
