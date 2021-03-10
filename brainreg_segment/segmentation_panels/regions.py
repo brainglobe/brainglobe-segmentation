@@ -4,6 +4,7 @@ from qtpy.QtWidgets import (
     QGroupBox,
 )
 
+from brainreg_segment.layout.utils import display_warning
 from brainreg_segment.layout.gui_elements import (
     add_button,
     add_checkbox,
@@ -145,16 +146,25 @@ class RegionSeg(QGroupBox):
 
     def run_region_analysis(self):
         if self.parent.label_layers:
-            print("Running region analysis")
-            worker = region_analysis(
-                self.parent.label_layers,
-                self.parent.atlas_layer.data,
-                self.parent.atlas,
-                self.parent.paths.regions_directory,
-                output_csv_file=self.parent.paths.region_summary_csv,
-                volumes=self.calculate_volumes_checkbox.isChecked(),
-                summarise=self.summarise_volumes_checkbox.isChecked(),
+            choice = display_warning(
+                self.parent,
+                "About to analyse regions",
+                "Existing files will be will be deleted. Proceed?",
             )
-            worker.start()
+            if choice:
+                print("Running region analysis")
+                worker = region_analysis(
+                    self.parent.label_layers,
+                    self.parent.atlas_layer.data,
+                    self.parent.atlas,
+                    self.parent.hemispheres_data,
+                    self.parent.paths.regions_directory,
+                    output_csv_file=self.parent.paths.region_summary_csv,
+                    volumes=self.calculate_volumes_checkbox.isChecked(),
+                    summarise=self.summarise_volumes_checkbox.isChecked(),
+                )
+                worker.start()
+            else:
+                print("Preventing analysis as user chose 'Cancel'")
         else:
             print("No regions found")

@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from brainreg_segment.tracks.fit import spline_fit
 
 
@@ -76,6 +77,8 @@ def run_track_analysis(
     all parts of the spline fit
     :return np.array: spline fit
     """
+    # Duplicate points causes fit ValueError
+    points = np.unique(points, axis=0)
 
     spline = spline_fit(
         points,

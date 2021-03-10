@@ -10,7 +10,6 @@ from qtpy.QtWidgets import (
     QGridLayout,
     QGroupBox,
     QWidget,
-    QMessageBox,
 )
 
 from bg_atlasapi import BrainGlobeAtlas
@@ -28,6 +27,7 @@ from brainreg_segment.atlas.utils import (
     get_available_atlases,
     structure_from_viewer,
 )
+from brainreg_segment.layout.utils import display_warning
 
 # LAYOUT HELPERS ################################################################################
 
@@ -78,6 +78,9 @@ class SegmentationWidget(QWidget):
         self.base_layer = []  # Contains registered brain / reference brain
         self.atlas_layer = []  # Contains annotations / region information
 
+        # Other data
+        self.hemispheres_data = []
+
         # Track variables
         self.track_layers = []
 
@@ -105,11 +108,14 @@ class SegmentationWidget(QWidget):
                 Show brain region info on mouse over in status bar on the right
                 """
                 assert self.viewer == v
-                if len(v.layers) and self.atlas_layer and self.atlas:
-                    _, _, _, region_info = structure_from_viewer(
-                        self.viewer.status, self.atlas_layer, self.atlas
-                    )
-                    self.viewer.help = region_info
+                if v.dims.ndisplay == 2:
+                    if len(v.layers) and self.atlas_layer and self.atlas:
+                        _, _, _, region_info = structure_from_viewer(
+                            self.viewer.status, self.atlas_layer, self.atlas
+                        )
+                        self.viewer.help = region_info
+                else:
+                    self.viewer.help = ""
 
     def setup_main_layout(self):
         """
@@ -200,6 +206,7 @@ class SegmentationWidget(QWidget):
             self.load_brainreg_directory_sample,
             0,
             0,
+            visibility=False,
             minimum_width=COLUMN_WIDTH,
             alignment=LOADING_PANEL_ALIGN,
         )
@@ -210,6 +217,7 @@ class SegmentationWidget(QWidget):
             self.load_brainreg_directory_standard,
             1,
             0,
+            visibility=False,
             minimum_width=COLUMN_WIDTH,
             alignment=LOADING_PANEL_ALIGN,
         )
@@ -221,6 +229,11 @@ class SegmentationWidget(QWidget):
         self.load_data_panel.setVisible(True)
 
         self.layout.addWidget(self.load_data_panel, row, column, 1, 1)
+
+        #  buttons made visible after adding to main widget, preventing them
+        # from briefly appearing in a separate window
+        self.load_button.setVisible(True)
+        self.load_button_standard.setVisible(True)
 
     def add_saving_panel(self, row):
         """
@@ -420,6 +433,11 @@ class SegmentationWidget(QWidget):
         self.metadata = self.base_layer.metadata
         self.atlas = self.metadata["atlas_class"]
         self.atlas_layer = self.viewer.layers[self.metadata["atlas"]]
+        if self.standard_space:
+            self.hemispheres_data = self.atlas.hemispheres
+        else:
+            self.hemispheres_data = self.viewer.layers["Hemispheres"].data
+
         self.initialise_segmentation_interface()
 
         # Set window title
@@ -468,22 +486,6 @@ class SegmentationWidget(QWidget):
         )
         return
 
-    def display_delete_warning(self):
-        """
-        Display a warning in a pop up that informs
-        about deletion of all annotation layers
-        """
-        message_reply = QMessageBox.question(
-            self,
-            "About to remove layers",
-            "All layers are about to be deleted. Proceed?",
-            QMessageBox.Yes | QMessageBox.Cancel,
-        )
-        if message_reply == QMessageBox.Yes:
-            return True
-        else:
-            return False
-
     def remove_layers(self):
         """
         TODO: This needs work. Runs into an error currently
@@ -492,7 +494,11 @@ class SegmentationWidget(QWidget):
         if len(self.viewer.layers) != 0:
             # Check with user if that is really what is wanted
             if self.track_layers or self.label_layers:
-                choice = self.display_delete_warning()
+                choice = display_warning(
+                    self,
+                    "About to remove layers",
+                    "All layers are about to be deleted. Proceed?",
+                )
                 if not choice:
                     print('Preventing deletion because user chose "Cancel"')
                     return False
@@ -514,27 +520,43 @@ class SegmentationWidget(QWidget):
 
     def save(self):
         if self.label_layers or self.track_layers:
-            print("Saving")
-            worker = save_all(
+            choice = display_warning(
+                self,
+                "About to save files",
+                "Existing files will be will be deleted. Proceed?",
+            )
+            if choice:
+                print("Saving")
+                worker = save_all(
+                    self.paths.regions_directory,
+                    self.paths.tracks_directory,
+                    self.label_layers,
+                    self.track_layers,
+                    track_file_extension=TRACK_FILE_EXT,
+                )
+                worker.start()
+            else:
+                print('Not saving because user chose "Cancel" \n')
+
+    def export_to_brainrender(self):
+        choice = display_warning(
+            self,
+            "About to export files",
+            "Existing files will be will be deleted. Proceed?",
+        )
+        if choice:
+            print("Exporting")
+            worker = export_all(
                 self.paths.regions_directory,
                 self.paths.tracks_directory,
                 self.label_layers,
-                self.track_layers,
-                track_file_extension=TRACK_FILE_EXT,
+                self.track_seg.splines,
+                self.track_seg.spline_names,
+                self.atlas.resolution[0],
             )
             worker.start()
-
-    def export_to_brainrender(self):
-        print("Exporting")
-        worker = export_all(
-            self.paths.regions_directory,
-            self.paths.tracks_directory,
-            self.label_layers,
-            self.track_seg.splines,
-            self.track_seg.spline_names,
-            self.atlas.resolution[0],
-        )
-        worker.start()
+        else:
+            print('Not exporting because user chose "Cancel" \n')
 
 
 @thread_worker
@@ -547,7 +569,6 @@ def export_all(
     resolution,
 ):
     if label_layers:
-        # TODO: this function does not exist
         export_label_layers(regions_directory, label_layers, resolution)
 
     if splines:
@@ -563,6 +584,7 @@ def save_all(
     points_layers,
     track_file_extension=".points",
 ):
+
     if label_layers:
         save_label_layers(regions_directory, label_layers)
 

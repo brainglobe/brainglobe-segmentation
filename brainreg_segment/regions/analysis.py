@@ -16,6 +16,7 @@ def region_analysis(
     label_layers,
     atlas_layer_image,
     atlas,
+    hemispheres,
     regions_directory,
     output_csv_file=None,
     volumes=True,
@@ -29,6 +30,7 @@ def region_analysis(
             analyse_region_brain_areas(
                 label_layer,
                 atlas_layer_image,
+                hemispheres,
                 regions_directory,
                 atlas,
             )
@@ -92,7 +94,9 @@ def summarise_single_brain_region(
         if data.sum() == 0:
             return
 
-    regions_table = regionprops_table(data, properties=properties_to_fetch)
+    regions_table = regionprops_table(
+        data.astype(np.uint16), properties=properties_to_fetch
+    )
     df = pd.DataFrame.from_dict(regions_table)
     df.insert(0, "Region", label_layer.name)
     return df
@@ -101,6 +105,7 @@ def summarise_single_brain_region(
 def analyse_region_brain_areas(
     label_layer,
     atlas_layer_data,
+    hemispheres,
     destination_directory,
     atlas,
     extension=".csv",
@@ -124,7 +129,7 @@ def analyse_region_brain_areas(
 
     annotations_left, annotations_right = lateralise_atlas_image(
         masked_annotations,
-        atlas.hemispheres,
+        hemispheres,
         left_hemisphere_value=atlas.left_hemisphere_value,
         right_hemisphere_value=atlas.right_hemisphere_value,
     )

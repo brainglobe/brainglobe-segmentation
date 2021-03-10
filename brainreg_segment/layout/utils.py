@@ -6,6 +6,8 @@ import bg_space as bg
 
 # from brainreg_segment.layout.gui_constants import ORIENTATIONS
 
+from qtpy.QtWidgets import QMessageBox
+
 
 def disable_napari_btns(viewer):
     """
@@ -52,6 +54,23 @@ def get_dims_from_origins(origins):
         ), f"\nReceived orientations: {origins}\nThese require (orientation) flips. This is not currently supported"
         all_dims.append(list(dims))
     return all_dims
+
+
+def display_warning(widget, title, message):
+    """
+    Display a warning in a pop up that informs
+    about overwriting files
+    """
+    message_reply = QMessageBox.question(
+        widget,
+        title,
+        message,
+        QMessageBox.Yes | QMessageBox.Cancel,
+    )
+    if message_reply == QMessageBox.Yes:
+        return True
+    else:
+        return False
 
 
 # def overwrite_napari_roll(viewer):
