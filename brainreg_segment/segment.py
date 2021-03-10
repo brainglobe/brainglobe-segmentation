@@ -10,7 +10,6 @@ from qtpy.QtWidgets import (
     QGridLayout,
     QGroupBox,
     QWidget,
-    QMessageBox,
 )
 
 from bg_atlasapi import BrainGlobeAtlas
@@ -28,6 +27,7 @@ from brainreg_segment.atlas.utils import (
     get_available_atlases,
     structure_from_viewer,
 )
+from brainreg_segment.layout.utils import display_warning
 
 # LAYOUT HELPERS ################################################################################
 
@@ -479,22 +479,6 @@ class SegmentationWidget(QWidget):
         )
         return
 
-    def display_delete_warning(self):
-        """
-        Display a warning in a pop up that informs
-        about deletion of all annotation layers
-        """
-        message_reply = QMessageBox.question(
-            self,
-            "About to remove layers",
-            "All layers are about to be deleted. Proceed?",
-            QMessageBox.Yes | QMessageBox.Cancel,
-        )
-        if message_reply == QMessageBox.Yes:
-            return True
-        else:
-            return False
-
     def remove_layers(self):
         """
         TODO: This needs work. Runs into an error currently
@@ -503,7 +487,11 @@ class SegmentationWidget(QWidget):
         if len(self.viewer.layers) != 0:
             # Check with user if that is really what is wanted
             if self.track_layers or self.label_layers:
-                choice = self.display_delete_warning()
+                choice = display_warning(
+                    self,
+                    "About to remove layers",
+                    "All layers are about to be deleted. Proceed?",
+                )
                 if not choice:
                     print('Preventing deletion because user chose "Cancel"')
                     return False
