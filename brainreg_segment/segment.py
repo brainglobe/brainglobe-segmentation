@@ -513,27 +513,43 @@ class SegmentationWidget(QWidget):
 
     def save(self):
         if self.label_layers or self.track_layers:
-            print("Saving")
-            worker = save_all(
+            choice = display_warning(
+                self,
+                "About to save files",
+                "Existing files will be will be deleted. Proceed?",
+            )
+            if choice:
+                print("Saving")
+                worker = save_all(
+                    self.paths.regions_directory,
+                    self.paths.tracks_directory,
+                    self.label_layers,
+                    self.track_layers,
+                    track_file_extension=TRACK_FILE_EXT,
+                )
+                worker.start()
+            else:
+                print('Not saving because user chose "Cancel" \n')
+
+    def export_to_brainrender(self):
+        choice = display_warning(
+            self,
+            "About to export files",
+            "Existing files will be will be deleted. Proceed?",
+        )
+        if choice:
+            print("Exporting")
+            worker = export_all(
                 self.paths.regions_directory,
                 self.paths.tracks_directory,
                 self.label_layers,
-                self.track_layers,
-                track_file_extension=TRACK_FILE_EXT,
+                self.track_seg.splines,
+                self.track_seg.spline_names,
+                self.atlas.resolution[0],
             )
             worker.start()
-
-    def export_to_brainrender(self):
-        print("Exporting")
-        worker = export_all(
-            self.paths.regions_directory,
-            self.paths.tracks_directory,
-            self.label_layers,
-            self.track_seg.splines,
-            self.track_seg.spline_names,
-            self.atlas.resolution[0],
-        )
-        worker.start()
+        else:
+            print('Not exporting because user chose "Cancel" \n')
 
 
 @thread_worker
@@ -546,7 +562,6 @@ def export_all(
     resolution,
 ):
     if label_layers:
-        # TODO: this function does not exist
         export_label_layers(regions_directory, label_layers, resolution)
 
     if splines:
@@ -562,6 +577,7 @@ def save_all(
     points_layers,
     track_file_extension=".points",
 ):
+
     if label_layers:
         save_label_layers(regions_directory, label_layers)
 
