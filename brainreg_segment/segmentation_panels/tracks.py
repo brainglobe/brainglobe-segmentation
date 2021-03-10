@@ -199,7 +199,7 @@ class TrackSeg(QGroupBox):
 
     def add_surface_points(self):
         if self.parent.track_layers:
-            print("Adding surface points")
+            print("Adding surface points (this may take a while)")
             if self.tree is None:
                 self.create_brain_surface_tree()
 
