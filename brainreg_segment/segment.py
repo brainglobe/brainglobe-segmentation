@@ -364,10 +364,10 @@ class SegmentationWidget(QWidget):
         and sets global directory info
         """
         if standard_space:
-            self.plugin = "brainreg_standard"
+            self.plugin = "brainreg-standard"
             self.standard_space = True
         else:
-            self.plugin = "brainreg"
+            self.plugin = "brainglobe-io"
             self.standard_space = False
 
         self.status_label.setText("Loading...")
