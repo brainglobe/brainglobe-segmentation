@@ -21,7 +21,7 @@ requirements = [
 
 setup(
     name="brainreg-segment",
-    version="0.2.5",
+    version="0.2.6-rc0",
     description="Manual segmentation of 3D brain structures in a common anatomical space",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -48,7 +48,7 @@ setup(
     },
     include_package_data=True,
     author="Adam Tyson, Horst Obenhaus",
-    author_email="adam.tyson@ucl.ac.uk",
+    author_email="code@adamltyson.com",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Operating System :: POSIX :: Linux",
