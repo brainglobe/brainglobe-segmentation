@@ -1,12 +1,12 @@
 import pandas as pd
-import numpy as np
 from pathlib import Path
 
 
 def add_new_track_layer(viewer, track_layers, point_size):
     num = len(track_layers)
     new_track_layers = viewer.add_points(
-        np.empty((0, 3)),
+        None,
+        ndim=3,
         n_dimensional=True,
         size=point_size,
         name=f"track_{num}",
