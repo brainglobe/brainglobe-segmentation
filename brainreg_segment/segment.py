@@ -442,9 +442,9 @@ class SegmentationWidget(QWidget):
         self.initialise_segmentation_interface()
 
         # Set window title
-        self.viewer.title = (
-            f"Brainreg: {self.metadata['atlas']} ({self.plugin})"
-        )
+        # self.viewer.title = (
+        #     f"Brainreg: {self.metadata['atlas']} ({self.plugin})"
+        # )
         self.status_label.setText("Ready")
 
     # MORE LAYOUT COMPONENTS ###########################################
