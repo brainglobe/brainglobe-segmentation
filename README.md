@@ -21,4 +21,6 @@ brainreg-segment can be installed on it's own (`pip install brainreg-segment`), 
 
 ## Usage
 
-See [user guide](https://docs.brainglobe.info/brainreg-segment/user-guide)
+See [user guide](https://docs.brainglobe.info/brainreg-segment/user-guide).
+
+If you have any questions, head over to the [image.sc forum](https://forum.image.sc/tag/brainglobe)
