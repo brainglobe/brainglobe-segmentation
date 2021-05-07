@@ -31,11 +31,11 @@ from brainreg_segment.layout.utils import display_warning
 
 # LAYOUT HELPERS ################################################################################
 
-from brainreg_segment.layout.utils import (
-    disable_napari_key_bindings,
-    disable_napari_btns,
-    # overwrite_napari_roll,
-)
+# from brainreg_segment.layout.utils import (
+#     disable_napari_key_bindings,
+#     disable_napari_btns,
+#     overwrite_napari_roll,
+# )
 from brainreg_segment.layout.gui_constants import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
@@ -70,8 +70,9 @@ class SegmentationWidget(QWidget):
 
         # Disable / overwrite napari viewer functions
         # that either do not make sense or should be avoided by the user
-        disable_napari_btns(self.viewer)
-        disable_napari_key_bindings()
+        # removed for now, to make sure plugin
+        # disable_napari_btns(self.viewer)
+        # disable_napari_key_bindings()
         # overwrite_napari_roll(self.viewer)
 
         # Main layers
