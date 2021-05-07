@@ -310,7 +310,7 @@ class SegmentationWidget(QWidget):
 
         self.status_label.setText("Ready")
         # Set window title
-        self.viewer.title = f"Atlas: {self.current_atlas_name}"
+        # self.viewer.title = f"Atlas: {self.current_atlas_name}"
         self.initialise_segmentation_interface()
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
@@ -601,7 +601,7 @@ def save_all(
 def main():
     print("Loading segmentation GUI.\n ")
     with napari.gui_qt():
-        viewer = napari.Viewer(title="Segmentation GUI")
+        viewer = napari.Viewer()  # title="Segmentation GUI")
         viewer.window.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
         widget = SegmentationWidget(viewer)
         viewer.window.add_dock_widget(widget, name="General", area="right")
