@@ -31,11 +31,11 @@ from brainreg_segment.layout.utils import display_warning
 
 # LAYOUT HELPERS ################################################################################
 
-from brainreg_segment.layout.utils import (
-    disable_napari_key_bindings,
-    disable_napari_btns,
-    # overwrite_napari_roll,
-)
+# from brainreg_segment.layout.utils import (
+#     disable_napari_key_bindings,
+#     disable_napari_btns,
+#     overwrite_napari_roll,
+# )
 from brainreg_segment.layout.gui_constants import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
@@ -70,8 +70,9 @@ class SegmentationWidget(QWidget):
 
         # Disable / overwrite napari viewer functions
         # that either do not make sense or should be avoided by the user
-        disable_napari_btns(self.viewer)
-        disable_napari_key_bindings()
+        # removed for now, to make sure plugin
+        # disable_napari_btns(self.viewer)
+        # disable_napari_key_bindings()
         # overwrite_napari_roll(self.viewer)
 
         # Main layers
@@ -309,7 +310,7 @@ class SegmentationWidget(QWidget):
 
         self.status_label.setText("Ready")
         # Set window title
-        self.viewer.title = f"Atlas: {self.current_atlas_name}"
+        # self.viewer.title = f"Atlas: {self.current_atlas_name}"
         self.initialise_segmentation_interface()
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
@@ -441,9 +442,9 @@ class SegmentationWidget(QWidget):
         self.initialise_segmentation_interface()
 
         # Set window title
-        self.viewer.title = (
-            f"Brainreg: {self.metadata['atlas']} ({self.plugin})"
-        )
+        # self.viewer.title = (
+        #     f"Brainreg: {self.metadata['atlas']} ({self.plugin})"
+        # )
         self.status_label.setText("Ready")
 
     # MORE LAYOUT COMPONENTS ###########################################
@@ -600,7 +601,7 @@ def save_all(
 def main():
     print("Loading segmentation GUI.\n ")
     with napari.gui_qt():
-        viewer = napari.Viewer(title="Segmentation GUI")
+        viewer = napari.Viewer()  # title="Segmentation GUI")
         viewer.window.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
         widget = SegmentationWidget(viewer)
         viewer.window.add_dock_widget(widget, name="General", area="right")

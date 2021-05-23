@@ -43,7 +43,7 @@ def disable_napari_key_bindings():
 
 
 def get_dims_from_origins(origins):
-    """ From a list of BG space abbreviations (e.g. ["asl","sla","lsa"]) get correct axes for display in Napari """
+    """From a list of BG space abbreviations (e.g. ["asl","sla","lsa"]) get correct axes for display in Napari"""
     all_dims = []
     for o in range(len(origins)):
         sc = bg.AnatomicalSpace(origins[0])
