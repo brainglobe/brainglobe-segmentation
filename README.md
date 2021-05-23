@@ -22,3 +22,9 @@ brainreg-segment can be installed on it's own (`pip install brainreg-segment`), 
 ## Usage
 
 See [user guide](https://docs.brainglobe.info/brainreg-segment/user-guide)
+
+### Citing brainreg-segment
+
+If you find brainreg-segment useful, and use it in your research, please let us know and also cite the preprint:
+
+> Tyson, A. L., V&eacute;lez-Fort, M.,  Rousseau, C. V., Cossell, L., Tsitoura, C., Obenhaus, H. A., Claudi, F., Lenzi, S. C., Branco, T.,  Margrie, T. W. (2021) “Tools for accurate post hoc determination of marker location within whole-brain microscopy images’ bioRxiv, [doi.org/10.1101/2021.05.21.445133](https://doi.org/10.1101/2021.05.21.445133)
