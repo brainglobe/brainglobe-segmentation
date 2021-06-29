@@ -22,6 +22,9 @@ requirements = [
 setup(
     name="brainreg-segment",
     version="0.2.8",
+    author="Adam Tyson, Horst Obenhaus",
+    author_email="code@adamltyson.com",
+    license="BSD-3-Clause",
     description="Manual segmentation of 3D brain structures in a common anatomical space",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -47,10 +50,8 @@ setup(
         "napari.plugin": ["brainreg-segment = brainreg_segment.plugins"],
     },
     include_package_data=True,
-    author="Adam Tyson, Horst Obenhaus",
-    author_email="code@adamltyson.com",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Operating System :: POSIX :: Linux",
         "Operating System :: Microsoft :: Windows :: Windows 10",
         "Framework :: napari",
