@@ -41,6 +41,12 @@ setup(
             "flake8",
         ]
     },
+    url="https://brainglobe.info/",
+    project_urls={
+        "Source Code": "https://github.com/brainglobe/brainreg-segment",
+        "Bug Tracker": "https://github.com/brainglobe/brainreg-segment/issues",
+        "Documentation": "https://docs.brainglobe.info/brainreg-segment",
+    },
     python_requires=">=3.7",
     packages=find_namespace_packages(exclude=("docs", "tests*")),
     entry_points={
