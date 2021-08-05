@@ -29,7 +29,7 @@ def get_angles_and_distances_between_consecutive_points(
     mp_angles = []
     distances = []
     for i in range(1, n_points):
-        pointA = points_array[i-i, :]
+        pointA = points_array[i-1, :]
         pointB = points_array[i, :]
         segment_vector = pointB - pointA
         # projecting the vector in the sagital plane is just removing
