@@ -8,49 +8,53 @@ from typing import List, Tuple, Optional, TYPE_CHECKING
 import numpy as np
 from napari_plugin_engine import napari_hook_implementation
 
-
 if TYPE_CHECKING:
-    import napari
-
+  import napari
 
 
 # For the axis I will assume the following (x,y,z) are each of the following
 #  (anteroposterior, mediolateral, vectical)
 def get_angles_and_distances_between_consecutive_points(
     point_layer: "napari.layers.Points") -> Tuple[List[float]]:
-    """
+  """
     TODO: pending docstring and output types
     TODO: Assumed points are always 3d, be careful when that's not the case
     https://forum.image.sc/t/controlling-dimensionality-of-napari-point-shape-layers/37896/2
     """
-    points_array  = point_layer.data
-    n_points = points_array.shape[0]
-    ap_angles = []
-    mp_angles = []
-    distances = []
-    for i in range(1, n_points):
-        pointA = points_array[i-1, :]
-        pointB = points_array[i, :]
-        segment_vector = pointB - pointA
-        # projecting the vector in the sagital plane is just removing
-        #  the "y/mediolateral" coordinate
-        segment_vector_zx = segment_vector[[2,0]]
-        # for the angle, z is used as the first direction/axis and x as the other 
-        ap_angle = math.atan2(segment_vector_zx[1], segment_vector_zx[0])
-        ap_angles.append(ap_angle)
-        # projecting the vector in the frontal plane is just removing
-        #  the anterioposterior coordinate.
-        segment_vector_zy = segment_vector[[2,1]]
-        # for the angle, z is used as the first direction/axis and y as the other 
-        mp_angle = math.atan2(segment_vector_zy[1], segment_vector_zy[0])
-        mp_angles.append(mp_angle)
-        distances.append(np.linalg.norm(segment_vector))
-    return ap_angles, mp_angles, distances
+  points_array = point_layer.data
+
+  n_points = points_array.shape[0]
+  n_coords = points_array.shape[1]
+
+  if n_coords == 2:
+    points_array = np.hstack([points_array, np.zeros((n_points, 1))])
+
+  ap_angles = []
+  mp_angles = []
+  distances = []
+  for i in range(1, n_points):
+    pointa = points_array[i - 1, :]
+    pointb = points_array[i, :]
+    segment_vector = pointa - pointb
+    # projecting the vector in the sagital plane is just removing
+    #  the "y/mediolateral" coordinate
+    segment_vector_zx = segment_vector[[2, 0]]
+    # for the angle, z is used as the first direction/axis and x as the other
+    ap_angle = math.atan2(segment_vector_zx[1], segment_vector_zx[0])
+    ap_angles.append(ap_angle)
+    # projecting the vector in the frontal plane is just removing
+    #  the anterioposterior coordinate.
+    segment_vector_zy = segment_vector[[2, 1]]
+    # for the angle, z is used as the first direction/axis and y as the other
+    mp_angle = math.atan2(segment_vector_zy[1], segment_vector_zy[0])
+    mp_angles.append(mp_angle)
+    distances.append(np.linalg.norm(segment_vector))
+  return ap_angles, mp_angles, distances
 
 
 def analyze_points_layer(point_layer: "napari.layers.Points",
-                         output_folder: str='point_analysis'):
-    """Analyzes a point layer and saves distances and angles for consecutive points
+                         output_folder: str = 'point_analysis'):
+  """Analyzes a point layer and saves distances and angles for consecutive points
 
     points.csv
 
@@ -72,30 +76,32 @@ def analyze_points_layer(point_layer: "napari.layers.Points",
 
 
     """
-    if not os.path.exists(output_folder):
-        os.mkdir(output_folder)
-    
-    assert len(point_layer.data) > 0, 'Not enough points in the layer'
 
+  if not os.path.exists(output_folder):
+    os.mkdir(output_folder)
 
-    (ap_angles, mp_angles,
-     distances) = get_angles_and_distances_between_consecutive_points(point_layer)
+  assert len(point_layer.data) > 0, 'Not enough points in the layer'
 
-    with open(os.path.join(output_folder,'measurements.csv'), 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile, delimiter=',')
-        writer.writerow(('point1_id', 'point2_id', 'AP_angle', 'MP_angle', 'distance'))
-        for i in range(len(mp_angles)):
-            writer.writerow((i, i+1, ap_angles[i], mp_angles[i], distances[i]))
-    
-    points_array  = point_layer.data
-    n_points = points_array.shape[0]
-    n_coords = points_array.shape[1]
+  (ap_angles, mp_angles,
+   distances) = get_angles_and_distances_between_consecutive_points(point_layer)
 
+  with open(os.path.join(output_folder, 'measurements.csv'), 'w',
+            newline='') as csvfile:
+    writer = csv.writer(csvfile, delimiter=',')
+    writer.writerow(
+        ('point1_id', 'point2_id', 'AP_angle', 'MP_angle', 'distance'))
+    for i in range(len(mp_angles)):
+      writer.writerow((i, i + 1, ap_angles[i], mp_angles[i], distances[i]))
 
-    with open(os.path.join(output_folder,'points.csv'), 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile, delimiter=',')
-        writer.writerow(('point_id', *(f'coord_{i}' for i in range(n_coords))))
-        for i in range(n_points):
-            writer.writerow((i, *points_array[i]))
+  points_array = point_layer.data
+  n_points = points_array.shape[0]
+  n_coords = points_array.shape[1]
 
-    print(f'created analysis folder at folder called: {output_folder}')
+  with open(os.path.join(output_folder, 'points.csv'), 'w',
+            newline='') as csvfile:
+    writer = csv.writer(csvfile, delimiter=',')
+    writer.writerow(('point_id', *(f'coord_{i}' for i in range(n_coords))))
+    for i in range(n_points):
+      writer.writerow((i, *points_array[i]))
+
+  print(f'created analysis folder at folder called: {output_folder}')
