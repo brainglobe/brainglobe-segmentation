@@ -4,9 +4,8 @@ from enum import Enum
 import math
 import pathlib
 from typing import List, Tuple, Optional, TYPE_CHECKING
-
+from magicgui import magic_factory
 import numpy as np
-from napari_plugin_engine import napari_hook_implementation
 
 if TYPE_CHECKING:
   import napari
@@ -59,9 +58,8 @@ def get_vectors_joining_points(point_layer: "napari.layers.Points") -> np.array:
 
   points_array = point_layer.data
   n_points = points_array.shape[0]
-  n_coords = points_array.shape[1]
   if n_points < 2:
-    return
+    raise ValueError("Expected at least two points in order to run the plugin")
 
   pointsb = points_array[1:]
   pointsa = points_array[:-1]
@@ -70,9 +68,10 @@ def get_vectors_joining_points(point_layer: "napari.layers.Points") -> np.array:
   return arrays
 
 
+@magic_factory(auto_call=False, output_folder={"mode": "d"}, call_button=True)
 def analyze_points_layer(
     point_layer: "napari.layers.Points",
-    output_folder: str = 'point_analysis') -> "napari.layers.Shapes":
+    output_folder: pathlib.Path = 'folder_name') -> "napari.layers.Shapes":
   """Analyzes a point layer and saves distances and angles for consecutive points
 
     points.csv
@@ -126,6 +125,7 @@ def analyze_points_layer(
   print(f'created analysis files at folder called: {output_folder}')
 
   lines_joining_consecutive_points = get_vectors_joining_points(point_layer)
+
   properties_dict = {
       'distance': distances,
       'ap_angle': ap_angles,

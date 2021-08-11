@@ -7,12 +7,11 @@ from brainreg_segment.measurement.random_layers import (
 
 @napari_hook_implementation
 def napari_experimental_provide_dock_widget():
-  return SegmentationWidget, {"name": "Manual segmentation"}
-
-
-@napari_hook_implementation
-def napari_experimental_provide_function():
-  return measurement.analyze_points_layer
+  return [(SegmentationWidget, {
+      "name": "Manual segmentation"
+  }), (measurement.analyze_points_layer, {
+      "name": "Analyze points layer"
+  })]
 
 
 @napari_hook_implementation
