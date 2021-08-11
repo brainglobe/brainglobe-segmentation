@@ -7,11 +7,7 @@ from typing import List, Tuple, Optional, TYPE_CHECKING
 from magicgui import magic_factory
 import numpy as np
 
-if TYPE_CHECKING:
-  import napari
-else:
-  # added by jm
-  import napari
+import napari
 
 
 # For the axis I will assume the following (x,y,z) are each of the following
@@ -71,7 +67,7 @@ def get_vectors_joining_points(point_layer: "napari.layers.Points") -> np.array:
 @magic_factory(auto_call=False, output_folder={"mode": "d"}, call_button=True)
 def analyze_points_layer(
     point_layer: "napari.layers.Points",
-    output_folder: pathlib.Path = 'folder_name') -> "napari.layers.Shapes":
+    output_folder: pathlib.Path = 'results_folder') -> "napari.layers.Shapes":
   """Analyzes a point layer and saves distances and angles for consecutive points
 
     points.csv
