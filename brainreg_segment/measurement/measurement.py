@@ -10,6 +10,9 @@ from napari_plugin_engine import napari_hook_implementation
 
 if TYPE_CHECKING:
   import napari
+else:
+  # added by jm
+  import napari
 
 
 # For the axis I will assume the following (x,y,z) are each of the following
@@ -52,8 +55,24 @@ def get_angles_and_distances_between_consecutive_points(
   return ap_angles, mp_angles, distances
 
 
-def analyze_points_layer(point_layer: "napari.layers.Points",
-                         output_folder: str = 'point_analysis'):
+def get_vectors_joining_points(point_layer: "napari.layers.Points") -> np.array:
+
+  points_array = point_layer.data
+  n_points = points_array.shape[0]
+  n_coords = points_array.shape[1]
+  if n_points < 2:
+    return
+
+  pointsb = points_array[1:]
+  pointsa = points_array[:-1]
+
+  arrays = np.stack([pointsa, pointsb], axis=1)
+  return arrays
+
+
+def analyze_points_layer(
+    point_layer: "napari.layers.Points",
+    output_folder: str = 'point_analysis') -> "napari.layers.Shapes":
   """Analyzes a point layer and saves distances and angles for consecutive points
 
     points.csv
@@ -104,4 +123,32 @@ def analyze_points_layer(point_layer: "napari.layers.Points",
     for i in range(n_points):
       writer.writerow((i, *points_array[i]))
 
-  print(f'created analysis folder at folder called: {output_folder}')
+  print(f'created analysis files at folder called: {output_folder}')
+
+  lines_joining_consecutive_points = get_vectors_joining_points(point_layer)
+  properties_dict = {
+      'distance': distances,
+      'ap_angle': ap_angles,
+      'mp_angle': mp_angles
+  }
+
+  text_parameters = {
+      'text':
+          'distance: {distance:.4f}\nap_angle: {ap_angle:.4f}\n mp_angle: {mp_angle:.4f}',
+      'size':
+          8,
+      'color':
+          'green',
+      'anchor':
+          'upper_left',
+      'translation': [-2, 0., 0.]
+                     if point_layer.data.shape[1] == 3 else [-2, 0.]
+  }
+  # addng vectors as a layer
+  lines_layer = napari.layers.Shapes(data=lines_joining_consecutive_points,
+                                     shape_type='path',
+                                     edge_color='blue',
+                                     properties=properties_dict,
+                                     text=text_parameters,
+                                     edge_width=0.1)
+  return lines_layer
