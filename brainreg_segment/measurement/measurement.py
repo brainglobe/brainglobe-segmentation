@@ -150,6 +150,7 @@ def analyze_points_layer(
                 writer.writerow(
                     (i, i + 1, ap_angles[i], mp_angles[i], distances[i])
                 )
+
         with open(
             os.path.join(output_folder, "points.csv"), "w", newline=""
         ) as csvfile:
@@ -187,7 +188,6 @@ def analyze_points_layer(
         "properties": vectors_props,
         "text": vectors_text,
         "edge_width": 0.1,
-        # "name": "Angles and distances",
     }
 
     # Adding a new point layers with the text to show the index of each point.
@@ -206,7 +206,6 @@ def analyze_points_layer(
     numbered_points_meta = {
         "properties": points_annotations_properties,
         "text": points_annotations_text,
-        # "name": "Points enumeration",
     }
 
     return [
