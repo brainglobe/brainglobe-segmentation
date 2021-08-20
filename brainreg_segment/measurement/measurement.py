@@ -122,9 +122,8 @@ def analyze_points_layer(
             to the output folder below. If False, output_folder is ignored.
         output_folder: Name of the folder where the output is going to be saved.
     """
-    if save_resuts_to_output_folder:
-        if not os.path.exists(output_folder):
-            os.mkdir(output_folder)
+    if save_resuts_to_output_folder and not os.path.exists(output_folder):
+        os.mkdir(output_folder)
 
     assert len(point_layer.data) > 0, "Not enough points in the layer"
 
