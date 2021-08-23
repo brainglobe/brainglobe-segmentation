@@ -1,9 +1,8 @@
 import csv
-from enum import Enum
 import math
 import os
 import pathlib
-from typing import List, Tuple, Optional, TYPE_CHECKING
+from typing import List, Tuple
 
 from magicgui import magic_factory
 import napari
