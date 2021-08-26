@@ -21,7 +21,7 @@ requirements = [
 
 setup(
     name="brainreg-segment",
-    version="0.2.12",
+    version="0.2.13-rc0",
     author="Adam Tyson, Horst Obenhaus",
     author_email="code@adamltyson.com",
     license="BSD-3-Clause",
