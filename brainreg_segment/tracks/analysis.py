@@ -78,7 +78,9 @@ def run_track_analysis(
     :return np.array: spline fit
     """
     # Duplicate points causes fit ValueError
-    points = np.unique(points, axis=0)
+    # 2 stage process to ensure ordering
+    _, indices = np.unique(points, return_index=True, axis=0)
+    points = points[np.sort(indices)]
 
     spline = spline_fit(
         points,
