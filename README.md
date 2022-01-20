@@ -29,10 +29,9 @@ If you have any questions, head over to the [image.sc forum](https://forum.image
 
 ### Citing brainreg-segment
 
-If you find brainreg-segment useful, and use it in your research, please let us know and also cite the preprint:
+If you find brainreg-segment useful, and use it in your research, please let us know and also cite the paper:
 
-> Tyson, A. L., V&eacute;lez-Fort, M.,  Rousseau, C. V., Cossell, L., Tsitoura, C., Obenhaus, H. A., Claudi, F., Lenzi, S. C., Branco, T.,  Margrie, T. W. (2021) “Tools for accurate post hoc determination of marker location within whole-brain microscopy images’ bioRxiv, [doi.org/10.1101/2021.05.21.445133](https://doi.org/10.1101/2021.05.21.445133)
-
+> Tyson, A. L., V&eacute;lez-Fort, M.,  Rousseau, C. V., Cossell, L., Tsitoura, C., Lenzi, S. C., Obenhaus, H. A., Claudi, F., Branco, T.,  Margrie, T. W. (2022). Accurate determination of marker location within whole-brain microscopy images. Scientific Reports, 12, 867 [doi.org/10.1038/s41598-021-04676-9](https://doi.org/10.1038/s41598-021-04676-9)
 
 ---
 The BrainGlobe project is generously supported by the Sainsbury Wellcome Centre and the Institute of Neuroscience, Technical University of Munich, with funding from Wellcome, the Gatsby Charitable Foundation and the Munich Cluster for Systems Neurology - Synergy.
