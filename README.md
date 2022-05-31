@@ -27,6 +27,9 @@ See [user guide](https://docs.brainglobe.info/brainreg-segment/user-guide).
 
 If you have any questions, head over to the [image.sc forum](https://forum.image.sc/tag/brainglobe).
 
+## Contributing
+Contributions are very welcome. Please see the [contributing guide](https://github.com/brainglobe/.github/blob/main/CONTRIBUTING.md).
+
 ### Citing brainreg-segment
 
 If you find brainreg-segment useful, and use it in your research, please let us know and also cite the paper:
