@@ -44,6 +44,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install .[dev]
           pip install pytest PyQt5 --upgrade
+          pip install pytest-xvfb
 
       - name: Test
         run: pytest
