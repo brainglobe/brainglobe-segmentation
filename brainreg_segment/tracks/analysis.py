@@ -130,13 +130,20 @@ def analyse_track_anatomy(atlas, spline, file_path):
                 ignore_index=True,
             )
         else:
-            df = df.append(
-                {
-                    "Position": idx,
-                    "Region ID": spline_region["id"],
-                    "Region acronym": spline_region["acronym"],
-                    "Region name": spline_region["name"],
-                },
-                ignore_index=True,
+            df = pd.concat(
+                [
+                    df,
+                    pd.DataFrame(
+                        [
+                            {
+                                "Position": idx,
+                                "Region ID": spline_region["id"],
+                                "Region acronym": spline_region["acronym"],
+                                "Region name": spline_region["name"],
+                            }
+                        ]
+                    ),
+                ]
             )
+
     df.to_csv(file_path, index=False)
