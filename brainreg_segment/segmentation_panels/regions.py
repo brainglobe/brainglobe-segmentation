@@ -136,13 +136,17 @@ class RegionSeg(QGroupBox):
             self.num_colors,
         )
 
-    def run_region_analysis(self):
+    def run_region_analysis(self, override=False):
         if self.parent.label_layers:
-            choice = display_warning(
-                self.parent,
-                "About to analyse regions",
-                "Existing files will be will be deleted. Proceed?",
-            )
+            if not override:
+                choice = display_warning(
+                    self.parent,
+                    "About to analyse regions",
+                    "Existing files will be will be deleted. Proceed?",
+                )
+            else:
+                choice = True  # for debugging
+
             if choice:
                 print("Running region analysis")
                 worker = region_analysis(

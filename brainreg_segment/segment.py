@@ -481,13 +481,16 @@ class SegmentationWidget(QWidget):
         self.label_layers = []
         return True
 
-    def save(self):
+    def save(self, override=True):
         if self.label_layers or self.track_layers:
-            choice = display_warning(
-                self,
-                "About to save files",
-                "Existing files will be will be deleted. Proceed?",
-            )
+            if not override:
+                choice = display_warning(
+                    self,
+                    "About to save files",
+                    "Existing files will be will be deleted. Proceed?",
+                )
+            else:
+                choice = True  # for debugging
             if choice:
                 print("Saving")
                 worker = save_all(
@@ -501,12 +504,16 @@ class SegmentationWidget(QWidget):
             else:
                 print('Not saving because user chose "Cancel" \n')
 
-    def export_to_brainrender(self):
-        choice = display_warning(
-            self,
-            "About to export files",
-            "Existing files will be will be deleted. Proceed?",
-        )
+    def export_to_brainrender(self, override=False):
+        if not override:
+            choice = display_warning(
+                self,
+                "About to export files",
+                "Existing files will be will be deleted. Proceed?",
+            )
+        else:
+            choice = True  # for debugging
+
         if choice:
             print("Exporting")
             worker = export_all(
