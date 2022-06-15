@@ -217,13 +217,17 @@ class TrackSeg(QGroupBox):
     def create_brain_surface_tree(self):
         self.tree = create_KDTree_from_image(self.parent.atlas_layer.data)
 
-    def run_track_analysis(self):
+    def run_track_analysis(self, override=False):
         if self.parent.track_layers:
-            choice = display_warning(
-                self.parent,
-                "About to analyse tracks",
-                "Existing files will be will be deleted. Proceed?",
-            )
+            if not override:
+                choice = display_warning(
+                    self.parent,
+                    "About to analyse tracks",
+                    "Existing files will be will be deleted. Proceed?",
+                )
+            else:
+                choice = True  # for debugging
+
             if choice:
                 print("Running track analysis")
                 self.splines, self.spline_names = track_analysis(
