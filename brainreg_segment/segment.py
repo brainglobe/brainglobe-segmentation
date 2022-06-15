@@ -368,7 +368,7 @@ class SegmentationWidget(QWidget):
             self.plugin = "brainreg-standard"
             self.standard_space = True
         else:
-            self.plugin = "brainglobe-io"
+            self.plugin = "brainglobe-napari-io"
             self.standard_space = False
 
         self.status_label.setText("Loading...")
