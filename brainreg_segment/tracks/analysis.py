@@ -120,15 +120,22 @@ def analyse_track_anatomy(atlas, spline, file_path):
     )
     for idx, spline_region in enumerate(spline_regions):
         if spline_region is None:
-            df = df.append(
-                {
-                    "Position": idx,
-                    "Region ID": "Not found in brain",
-                    "Region acronym": "Not found in brain",
-                    "Region name": "Not found in brain",
-                },
-                ignore_index=True,
+            df = pd.concat(
+                [
+                    df,
+                    pd.DataFrame(
+                        [
+                            {
+                                "Position": idx,
+                                "Region ID": "Not found in brain",
+                                "Region acronym": "Not found in brain",
+                                "Region name": "Not found in brain",
+                            }
+                        ]
+                    ),
+                ]
             )
+
         else:
             df = pd.concat(
                 [
