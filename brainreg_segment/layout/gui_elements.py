@@ -2,12 +2,12 @@
 # from napari.resources import build_icons # Contains .SVGPATH to all icons for napari
 
 from qtpy.QtWidgets import (
-    QDoubleSpinBox,
-    QPushButton,
     QCheckBox,
-    QLabel,
-    QSpinBox,
     QComboBox,
+    QDoubleSpinBox,
+    QLabel,
+    QPushButton,
+    QSpinBox,
 )
 
 

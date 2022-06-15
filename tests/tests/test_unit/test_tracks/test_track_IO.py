@@ -1,7 +1,7 @@
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
-
-from pathlib import Path
 
 from brainreg_segment.tracks import IO
 

@@ -1,5 +1,6 @@
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
 
 
 def add_new_track_layer(viewer, track_layers, point_size):

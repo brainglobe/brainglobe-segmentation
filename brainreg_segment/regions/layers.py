@@ -1,8 +1,8 @@
-import tifffile
-import numpy as np
-
 from glob import glob
 from pathlib import Path
+
+import numpy as np
+import tifffile
 
 
 def add_new_label_layer(

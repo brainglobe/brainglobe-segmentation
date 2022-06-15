@@ -1,12 +1,10 @@
 # Small layout utils
 # import napari
-from napari.viewer import Viewer
-
 import bg_space as bg
+from napari.viewer import Viewer
+from qtpy.QtWidgets import QMessageBox
 
 # from brainreg_segment.layout.gui_constants import ORIENTATIONS
-
-from qtpy.QtWidgets import QMessageBox
 
 
 def disable_napari_btns(viewer):

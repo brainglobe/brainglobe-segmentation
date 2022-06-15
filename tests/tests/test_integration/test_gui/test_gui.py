@@ -1,13 +1,14 @@
 import shutil
-
-# import tifffile
+from filecmp import cmp
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-from pathlib import Path
-from filecmp import cmp
 from brainreg_segment.segment import SegmentationWidget
+
+# import tifffile
+
 
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
 
