@@ -1,9 +1,9 @@
-import tifffile
 from filecmp import cmp
-
 from pathlib import Path
-from brainreg_segment.regions import IO as region_IO
 
+import tifffile
+
+from brainreg_segment.regions import IO as region_IO
 
 regions_dir = Path.cwd() / "tests" / "data" / "regions"
 VOXEL_SIZE = 100

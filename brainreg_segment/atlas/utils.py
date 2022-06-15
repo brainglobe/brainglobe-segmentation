@@ -1,5 +1,6 @@
 import re
-from bg_atlasapi.list_atlases import utils, descriptors
+
+from bg_atlasapi.list_atlases import descriptors, utils
 
 
 def lateralise_atlas_image(

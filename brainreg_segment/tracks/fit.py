@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.interpolate import splprep, splev
+from scipy.interpolate import splev, splprep
 
 
 def spline_fit(points, smoothing=0.2, k=3, n_points=100):

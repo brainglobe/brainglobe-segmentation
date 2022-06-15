@@ -1,12 +1,9 @@
 import numpy as np
 import pandas as pd
-
-
+from imlib.general.list import unique_elements_lists
+from imlib.pandas.misc import initialise_df
 from napari.qt.threading import thread_worker
 from skimage.measure import regionprops_table
-
-from imlib.pandas.misc import initialise_df
-from imlib.general.list import unique_elements_lists
 
 from brainreg_segment.atlas.utils import lateralise_atlas_image
 
@@ -66,7 +63,7 @@ def summarise_brain_regions(label_layers, filename, atlas_resolution):
 
     result.columns = ["region"] + [volume_header] + length_columns
 
-    voxel_volume_in_mm = np.prod(atlas_resolution) / (1000 ** 3)
+    voxel_volume_in_mm = np.prod(atlas_resolution) / (1000**3)
 
     result[volume_header] = result[volume_header] * voxel_volume_in_mm
 
@@ -140,7 +137,7 @@ def analyse_region_brain_areas(
     unique_vals_right, counts_right = np.unique(
         annotations_right, return_counts=True
     )
-    voxel_volume_in_mm = np.prod(atlas.resolution) / (1000 ** 3)
+    voxel_volume_in_mm = np.prod(atlas.resolution) / (1000**3)
 
     df = initialise_df(
         "structure_name",

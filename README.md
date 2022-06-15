@@ -17,9 +17,9 @@ Segmentation of 1/2/3D brain structures in a common anatomical space
 
 ## Installation
 
-brainreg-segment comes bundled with [`brainreg`](https://github.com/brainglobe/brainreg), so see the [brainreg installation instructions](https://docs.brainglobe.info/brainreg/installation). 
+brainreg-segment comes bundled with [`brainreg`](https://github.com/brainglobe/brainreg), so see the [brainreg installation instructions](https://docs.brainglobe.info/brainreg/installation).
 
-brainreg-segment can be installed on it's own (`pip install brainreg-segment`), but you will need to register your data with brainreg first. 
+brainreg-segment can be installed on it's own (`pip install brainreg-segment`), but you will need to register your data with brainreg first.
 
 ## Usage
 
@@ -40,4 +40,3 @@ If you find brainreg-segment useful, and use it in your research, please let us 
 The BrainGlobe project is generously supported by the Sainsbury Wellcome Centre and the Institute of Neuroscience, Technical University of Munich, with funding from Wellcome, the Gatsby Charitable Foundation and the Munich Cluster for Systems Neurology - Synergy.
 
 <img src='https://brainglobe.info/images/logos_combined.png' width="550">
-

@@ -1,10 +1,11 @@
 from napari_plugin_engine import napari_hook_implementation
-from brainreg_segment.segment import SegmentationWidget
+
 from brainreg_segment.measurement import measurement
 from brainreg_segment.measurement.random_layers import (
     generate_random_points_2d_layer,
     generate_random_points_3d_layer,
 )
+from brainreg_segment.segment import SegmentationWidget
 
 
 @napari_hook_implementation

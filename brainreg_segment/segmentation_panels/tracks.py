@@ -1,37 +1,32 @@
 # TrackSeg
 from glob import glob
+
 import numpy as np
+from qtpy.QtWidgets import QGridLayout, QGroupBox
 
-from qtpy.QtWidgets import (
-    QGridLayout,
-    QGroupBox,
+from brainreg_segment.image.utils import create_KDTree_from_image
+from brainreg_segment.layout.gui_constants import (
+    COLUMN_WIDTH,
+    FIT_DEGREE_DEFAULT,
+    POINT_SIZE,
+    SEGM_METHODS_PANEL_ALIGN,
+    SPLINE_POINTS_DEFAULT,
+    SPLINE_SIZE,
+    SPLINE_SMOOTHING_DEFAULT,
+    SUMMARISE_TRACK_DEFAULT,
+    TRACK_FILE_EXT,
 )
-
 from brainreg_segment.layout.gui_elements import (
     add_button,
     add_checkbox,
     add_float_box,
     add_int_box,
 )
-from brainreg_segment.tracks.layers import (
-    add_new_track_layer,
-    add_existing_track_layers,
-)
-from brainreg_segment.image.utils import create_KDTree_from_image
-
-from brainreg_segment.tracks.analysis import track_analysis
-
 from brainreg_segment.layout.utils import display_warning
-from brainreg_segment.layout.gui_constants import (
-    COLUMN_WIDTH,
-    SEGM_METHODS_PANEL_ALIGN,
-    POINT_SIZE,
-    SPLINE_SIZE,
-    TRACK_FILE_EXT,
-    SPLINE_POINTS_DEFAULT,
-    SPLINE_SMOOTHING_DEFAULT,
-    FIT_DEGREE_DEFAULT,
-    SUMMARISE_TRACK_DEFAULT,
+from brainreg_segment.tracks.analysis import track_analysis
+from brainreg_segment.tracks.layers import (
+    add_existing_track_layers,
+    add_new_track_layer,
 )
 
 

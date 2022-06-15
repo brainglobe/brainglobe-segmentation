@@ -1,60 +1,37 @@
+from pathlib import Path
+
 import napari
 import numpy as np
-from pathlib import Path
+from bg_atlasapi import BrainGlobeAtlas
 from napari.qt.threading import thread_worker
 from qtpy import QtCore
-
-from qtpy.QtWidgets import (
-    QLabel,
-    QFileDialog,
-    QGridLayout,
-    QGroupBox,
-    QWidget,
-)
-
-from bg_atlasapi import BrainGlobeAtlas
-
-from brainreg_segment.paths import Paths
-
-from brainreg_segment.regions.IO import (
-    save_label_layers,
-    export_label_layers,
-)
-
-from brainreg_segment.tracks.IO import save_track_layers, export_splines
+from qtpy.QtWidgets import QFileDialog, QGridLayout, QGroupBox, QLabel, QWidget
 
 from brainreg_segment.atlas.utils import (
     get_available_atlases,
     structure_from_viewer,
 )
-from brainreg_segment.layout.utils import display_warning
-
-# LAYOUT HELPERS ################################################################################
-
-# from brainreg_segment.layout.utils import (
-#     disable_napari_key_bindings,
-#     disable_napari_btns,
-#     overwrite_napari_roll,
-# )
 from brainreg_segment.layout.gui_constants import (
+    BOUNDARIES_STRING,
+    COLUMN_WIDTH,
+    DISPLAY_REGION_INFO,
+    LOADING_PANEL_ALIGN,
+    SEGM_METHODS_PANEL_ALIGN,
+    TRACK_FILE_EXT,
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
-    COLUMN_WIDTH,
-    SEGM_METHODS_PANEL_ALIGN,
-    LOADING_PANEL_ALIGN,
-    BOUNDARIES_STRING,
-    TRACK_FILE_EXT,
-    DISPLAY_REGION_INFO,
 )
-
-from brainreg_segment.layout.gui_elements import (
-    add_button,
-    add_combobox,
-)
+from brainreg_segment.layout.gui_elements import add_button, add_combobox
+from brainreg_segment.layout.utils import display_warning
+from brainreg_segment.paths import Paths
+from brainreg_segment.regions.IO import export_label_layers, save_label_layers
 
 # SEGMENTATION  ################################################################################
 from brainreg_segment.segmentation_panels.regions import RegionSeg
 from brainreg_segment.segmentation_panels.tracks import TrackSeg
+from brainreg_segment.tracks.IO import export_splines, save_track_layers
+
+# LAYOUT HELPERS ################################################################################
 
 
 class SegmentationWidget(QWidget):
@@ -67,13 +44,6 @@ class SegmentationWidget(QWidget):
 
         # general variables
         self.viewer = viewer
-
-        # Disable / overwrite napari viewer functions
-        # that either do not make sense or should be avoided by the user
-        # removed for now, to make sure plugin
-        # disable_napari_btns(self.viewer)
-        # disable_napari_key_bindings()
-        # overwrite_napari_roll(self.viewer)
 
         # Main layers
         self.base_layer = []  # Contains registered brain / reference brain
@@ -310,7 +280,6 @@ class SegmentationWidget(QWidget):
 
         self.status_label.setText("Ready")
         # Set window title
-        # self.viewer.title = f"Atlas: {self.current_atlas_name}"
         self.initialise_segmentation_interface()
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
@@ -365,10 +334,12 @@ class SegmentationWidget(QWidget):
         and sets global directory info
         """
         if standard_space:
-            self.plugin = "brainreg-standard"
+            self.plugin = (
+                "brainglobe-napari-io.brainreg_read_dir_standard_space"
+            )
             self.standard_space = True
         else:
-            self.plugin = "brainglobe-io"
+            self.plugin = "brainglobe-napari-io.brainreg_read_dir"
             self.standard_space = False
 
         self.status_label.setText("Loading...")
@@ -440,11 +411,6 @@ class SegmentationWidget(QWidget):
             self.hemispheres_data = self.viewer.layers["Hemispheres"].data
 
         self.initialise_segmentation_interface()
-
-        # Set window title
-        # self.viewer.title = (
-        #     f"Brainreg: {self.metadata['atlas']} ({self.plugin})"
-        # )
         self.status_label.setText("Ready")
 
     # MORE LAYOUT COMPONENTS ###########################################
@@ -510,10 +476,6 @@ class SegmentationWidget(QWidget):
                     self.viewer.layers.remove(layer)
                 except IndexError:  # no idea why this happens
                     pass
-
-        # There seems to be a napari bug trying to access previously used slider
-        # values. Trying to circument for now
-        self.viewer.window.qt_viewer.dims._last_used = None
 
         self.track_layers = []
         self.label_layers = []

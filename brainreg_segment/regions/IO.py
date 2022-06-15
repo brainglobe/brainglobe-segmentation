@@ -1,10 +1,9 @@
+from pathlib import Path
+
 import imio
 import numpy as np
-
-from pathlib import Path
-from skimage import measure
-
 from imlib.general.pathlib import append_to_pathlib_stem
+from skimage import measure
 
 
 def convert_obj_to_br(verts, faces, voxel_size):

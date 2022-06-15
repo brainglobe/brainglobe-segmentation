@@ -1,12 +1,11 @@
 # COPIED FROM NAPARI - how to import?
 
 import warnings
-import pytest
-
 from typing import List
 
-from qtpy.QtWidgets import QApplication
+import pytest
 from napari import Viewer
+from qtpy.QtWidgets import QApplication
 
 
 def pytest_addoption(parser):

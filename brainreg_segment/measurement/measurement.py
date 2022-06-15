@@ -4,9 +4,9 @@ import os
 import pathlib
 from typing import List, Tuple
 
-from magicgui import magic_factory
 import napari
 import numpy as np
+from magicgui import magic_factory
 
 
 # For the axis This assumes the following (x,y,z) are each of the following

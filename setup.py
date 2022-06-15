@@ -1,5 +1,6 @@
-from setuptools import setup, find_namespace_packages
 from os import path
+
+from setuptools import find_namespace_packages, setup
 
 this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
@@ -21,7 +22,7 @@ requirements = [
 
 setup(
     name="brainreg-segment",
-    version="0.2.14",
+    version="0.2.16",
     author="Adam Tyson, Horst Obenhaus",
     author_email="code@adamltyson.com",
     license="BSD-3-Clause",

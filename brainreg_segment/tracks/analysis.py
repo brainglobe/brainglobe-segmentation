@@ -1,5 +1,6 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 from brainreg_segment.tracks.fit import spline_fit
 
 
@@ -119,23 +120,37 @@ def analyse_track_anatomy(atlas, spline, file_path):
     )
     for idx, spline_region in enumerate(spline_regions):
         if spline_region is None:
-            df = df.append(
-                {
-                    "Position": idx,
-                    "Region ID": "Not found in brain",
-                    "Region acronym": "Not found in brain",
-                    "Region name": "Not found in brain",
-                },
-                ignore_index=True,
+            df = pd.concat(
+                [
+                    df,
+                    pd.DataFrame(
+                        [
+                            {
+                                "Position": idx,
+                                "Region ID": "Not found in brain",
+                                "Region acronym": "Not found in brain",
+                                "Region name": "Not found in brain",
+                            }
+                        ]
+                    ),
+                ]
             )
+
         else:
-            df = df.append(
-                {
-                    "Position": idx,
-                    "Region ID": spline_region["id"],
-                    "Region acronym": spline_region["acronym"],
-                    "Region name": spline_region["name"],
-                },
-                ignore_index=True,
+            df = pd.concat(
+                [
+                    df,
+                    pd.DataFrame(
+                        [
+                            {
+                                "Position": idx,
+                                "Region ID": spline_region["id"],
+                                "Region acronym": spline_region["acronym"],
+                                "Region name": spline_region["name"],
+                            }
+                        ]
+                    ),
+                ]
             )
+
     df.to_csv(file_path, index=False)
