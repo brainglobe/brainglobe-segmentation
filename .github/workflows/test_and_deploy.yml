@@ -56,7 +56,6 @@ jobs:
             coveralls --service=github
 
   deploy:
-#    needs: test
     runs-on: ubuntu-latest
     if: contains(github.ref, 'tags')
     steps:
