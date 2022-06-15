@@ -11,12 +11,6 @@ from brainreg_segment.atlas.utils import (
     get_available_atlases,
     structure_from_viewer,
 )
-
-# from brainreg_segment.layout.utils import (
-#     disable_napari_key_bindings,
-#     disable_napari_btns,
-#     overwrite_napari_roll,
-# )
 from brainreg_segment.layout.gui_constants import (
     BOUNDARIES_STRING,
     COLUMN_WIDTH,
@@ -50,13 +44,6 @@ class SegmentationWidget(QWidget):
 
         # general variables
         self.viewer = viewer
-
-        # Disable / overwrite napari viewer functions
-        # that either do not make sense or should be avoided by the user
-        # removed for now, to make sure plugin
-        # disable_napari_btns(self.viewer)
-        # disable_napari_key_bindings()
-        # overwrite_napari_roll(self.viewer)
 
         # Main layers
         self.base_layer = []  # Contains registered brain / reference brain
@@ -293,7 +280,6 @@ class SegmentationWidget(QWidget):
 
         self.status_label.setText("Ready")
         # Set window title
-        # self.viewer.title = f"Atlas: {self.current_atlas_name}"
         self.initialise_segmentation_interface()
         # Check / load previous regions and tracks
         self.region_seg.check_saved_region()
@@ -425,11 +411,6 @@ class SegmentationWidget(QWidget):
             self.hemispheres_data = self.viewer.layers["Hemispheres"].data
 
         self.initialise_segmentation_interface()
-
-        # Set window title
-        # self.viewer.title = (
-        #     f"Brainreg: {self.metadata['atlas']} ({self.plugin})"
-        # )
         self.status_label.setText("Ready")
 
     # MORE LAYOUT COMPONENTS ###########################################
@@ -495,10 +476,6 @@ class SegmentationWidget(QWidget):
                     self.viewer.layers.remove(layer)
                 except IndexError:  # no idea why this happens
                     pass
-
-        # There seems to be a napari bug trying to access previously used slider
-        # values. Trying to circument for now
-        self.viewer.window.qt_viewer.dims._last_used = None
 
         self.track_layers = []
         self.label_layers = []
