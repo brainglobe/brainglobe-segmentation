@@ -32,12 +32,28 @@ jobs:
           - {os: "windows-latest", python-version: "3.7"}
           - {os: "windows-latest", python-version: "3.9"}
     steps:
-      # Setup pyqt libraries
-      - uses: tlambert03/setup-qt-libs@v1
-      # Run tests
-      - uses: brainglobe/actions/test@v1
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      # Setup pyqt libraries
+      - uses: tlambert03/setup-qt-libs@v1
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+          pip install pytest PyQt5 --upgrade
+          pip install pytest-xvfb
+
+      - name: Test
+        run: pytest
+      - name: Coveralls
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            pip install coveralls
+            coveralls --service=github
 
   deploy:
     runs-on: ubuntu-latest
