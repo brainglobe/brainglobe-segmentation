@@ -12,7 +12,7 @@ jobs:
       - uses: brainglobe/actions/lint@v1
 
   test:
-    needs: [linting, manifest]
+    needs: linting
     name: ${{ matrix.os }} py${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
