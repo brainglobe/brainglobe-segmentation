@@ -34,12 +34,6 @@ jobs:
       - uses: brainglobe/actions/test@v1
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          pip install coveralls
-          coveralls --service=github
 
   deploy:
     # this will run when you have tagged a commit, starting with "v*"
