@@ -2,8 +2,8 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from bg_atlasapi import BrainGlobeAtlas
 
+from bg_atlasapi import BrainGlobeAtlas
 from brainreg_segment.tracks.analysis import run_track_analysis
 
 atlas_name = "allen_mouse_50um"
