@@ -4,8 +4,7 @@
 [![Development Status](https://img.shields.io/pypi/status/brainreg-segment.svg)](https://github.com/brainglobe/brainreg-segment)
 [![Tests](https://img.shields.io/github/workflow/status/brainglobe/brainreg-segment/tests)](
     https://github.com/brainglobe/brainreg-segment/actions)
-[![Coverage Status](https://coveralls.io/repos/github/brainglobe/brainreg-segment/badge.svg?branch=master)](https://coveralls.io/github/brainglobe/brainreg-segment?branch=master)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+[![codecov](https://codecov.io/gh/brainglobe/brainreg-segment/branch/master/graph/badge.svg?token=WP9KTPZE5R)](https://codecov.io/gh/brainglobe/brainreg-segment)[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 [![Twitter](https://img.shields.io/twitter/follow/brain_globe?style=social)](https://twitter.com/brain_globe)
 
 # brainreg-segment

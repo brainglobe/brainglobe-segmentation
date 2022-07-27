@@ -1,6 +1,3 @@
-# This workflows will upload a Python Package using Twine when a release is created
-# For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
-
 name: tests
 
 on: [push, pull_request]
@@ -12,20 +9,14 @@ jobs:
       - uses: brainglobe/actions/lint@v1
 
   test:
-    needs: linting
+    needs: [linting]
     name: ${{ matrix.os }} py${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # Run all supported Python versions on linux
-        python-version: ["3.8", "3.9"]
-        os: [ubuntu-latest]
-        # Include one windows and macos run
-        include:
-        - os: macos-latest
-          python-version: "3.9"
-        - os: windows-latest
-          python-version: "3.9"
+        # Run all supported Python versions on linux and windows
+        python-version: ["3.8", "3.9", "3.10"]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       # Setup pyqt libraries
