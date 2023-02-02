@@ -34,7 +34,6 @@ class RegionSeg(QGroupBox):
         image_file_extension=IMAGE_FILE_EXT,
         num_colors=NUM_COLORS,
     ):
-
         super(RegionSeg, self).__init__()
         self.parent = parent
 

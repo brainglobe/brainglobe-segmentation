@@ -554,7 +554,6 @@ def save_all(
     points_layers,
     track_file_extension=".points",
 ):
-
     if label_layers:
         save_label_layers(regions_directory, label_layers)
 
