@@ -23,7 +23,7 @@ jobs:
       # Setup pyqt libraries
       - uses: tlambert03/setup-qt-libs@v1
       # Run tests
-      - uses: dstansby/neuro-actions/test@xvfb
+      - uses: neuroinformatics-unit/actions/test@v1
         with:
           python-version: ${{ matrix.python-version }}
           use-xvfb: true
