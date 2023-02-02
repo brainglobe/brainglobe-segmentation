@@ -22,9 +22,10 @@ jobs:
       # Setup pyqt libraries
       - uses: tlambert03/setup-qt-libs@v1
       # Run tests
-      - uses: brainglobe/actions/test@v1
+      - uses: dstansby/neuro-actions/test@xvfb
         with:
           python-version: ${{ matrix.python-version }}
+          use-xvfb: true
 
   deploy:
     # this will run when you have tagged a commit, starting with "v*"
