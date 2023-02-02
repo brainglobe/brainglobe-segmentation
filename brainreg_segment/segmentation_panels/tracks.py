@@ -47,7 +47,6 @@ class TrackSeg(QGroupBox):
         fit_degree_default=FIT_DEGREE_DEFAULT,
         summarise_track_default=SUMMARISE_TRACK_DEFAULT,
     ):
-
         super(TrackSeg, self).__init__()
         self.parent = parent
         self.tree = None
