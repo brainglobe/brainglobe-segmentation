@@ -42,7 +42,7 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture
-def qtbot(qtbot):
+def qtbot_(qtbot):
     """A modified qtbot fixture that makes sure no widgets have been leaked."""
     initial = QApplication.topLevelWidgets()
     yield qtbot
@@ -57,7 +57,7 @@ def qtbot(qtbot):
 
 
 @pytest.fixture(scope="function")
-def make_test_viewer(qtbot, request):
+def make_test_viewer(qtbot_, request):
     viewers: List[Viewer] = []
 
     def actual_factory(*model_args, **model_kwargs):
