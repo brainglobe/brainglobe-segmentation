@@ -27,7 +27,8 @@ jobs:
           python-version: "3.8"
 
     steps:
-      # Setup pyqt libraries
+      # SHA corresponds to version 2.2.0
+      - uses: conda-incubator/setup-miniconda@3b0f2504dd76ef23b6d31f291f4913fb60ab5ff3
       - uses: tlambert03/setup-qt-libs@v1
       # Run tests
       - uses: neuroinformatics-unit/actions/test@v1
