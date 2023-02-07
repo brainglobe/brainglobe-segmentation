@@ -1,6 +1,6 @@
 import numpy as np
-
 from bg_atlasapi import BrainGlobeAtlas
+
 from brainreg_segment.atlas import utils as atlas_utils
 
 atlas_name = "allen_mouse_50um"

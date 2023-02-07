@@ -2,11 +2,11 @@ from pathlib import Path
 
 import napari
 import numpy as np
+from bg_atlasapi import BrainGlobeAtlas
 from napari.qt.threading import thread_worker
 from qtpy import QtCore
 from qtpy.QtWidgets import QFileDialog, QGridLayout, QGroupBox, QLabel, QWidget
 
-from bg_atlasapi import BrainGlobeAtlas
 from brainreg_segment.atlas.utils import (
     get_available_atlases,
     structure_from_viewer,
