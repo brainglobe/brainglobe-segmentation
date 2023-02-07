@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import List, Optional
 
 import napari
 import numpy as np
@@ -46,17 +47,20 @@ class SegmentationWidget(QWidget):
         self.viewer = viewer
 
         # Main layers
-        self.base_layer = []  # Contains registered brain / reference brain
-        self.atlas_layer = []  # Contains annotations / region information
+
+        # Contains registered brain / reference brain
+        self.base_layer: Optional[napari.layers.Image] = None
+        # Contains annotations / region information
+        self.atlas_layer: Optional[napari.layers.Labels] = None
 
         # Other data
-        self.hemispheres_data = []
+        self.hemispheres_data: Optional[np.ndarray] = None
 
         # Track variables
-        self.track_layers = []
+        self.track_layers: List[napari.layers.Tracks] = []
 
         # Region variables
-        self.label_layers = []
+        self.label_layers: List[napari.layers.Labels] = []
 
         # Atlas variables
         self.current_atlas_name = ""

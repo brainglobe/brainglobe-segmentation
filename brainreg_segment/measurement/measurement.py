@@ -13,7 +13,7 @@ from magicgui import magic_factory
 #  (anteroposterior, mediolateral, vectical)
 def get_angles_and_distances_between_consecutive_points(
     point_layer: "napari.layers.Points",
-) -> Tuple[List[float]]:
+) -> Tuple[List[float], List[float], List[float]]:
     """Returns the distance and angles  for each pair of consecutive points.
 
     Receives a points layer and for each pair of consecutive points it
@@ -102,7 +102,7 @@ def get_vectors_joining_points(
 def analyze_points_layer(
     point_layer: "napari.layers.Points",
     save_resuts_to_output_folder: bool = False,
-    output_folder: pathlib.Path = "results_folder",
+    output_folder: pathlib.Path = pathlib.Path("results_folder"),
 ) -> List[napari.types.LayerDataTuple]:
     """
     Analyzes a point layer and saves distances and angles for consecutive
