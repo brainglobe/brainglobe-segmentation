@@ -139,31 +139,40 @@ class TrackSeg(QGroupBox):
 
     def toggle_track_panel(self):
         # TODO: Change color scheme directly when theme is switched
-        # TODO: "text-align" property should follow constant SEGM_METHODS_PANEL_ALIGN
+        # TODO: "text-align" property should follow constant
+        # SEGM_METHODS_PANEL_ALIGN
         if self.track_panel.isVisible():
             self.track_panel.setVisible(False)
             if self.parent.viewer.theme == "dark":
                 self.parent.show_trackseg_button.setStyleSheet(
-                    f"QPushButton {{ background-color: #414851; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
-                    f"QPushButton:pressed {{ background-color: #414851; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton {{ background-color: #414851; text-align:"
+                    f"{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #414851; "
+                    f"text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
             else:
                 self.parent.show_trackseg_button.setStyleSheet(
-                    f"QPushButton {{ background-color: #d6d0ce; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
-                    f"QPushButton:pressed {{ background-color: #d6d0ce; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton {{ background-color: #d6d0ce; text-align:"
+                    f"{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #d6d0ce; "
+                    f"text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
 
         else:
             self.track_panel.setVisible(True)
             if self.parent.viewer.theme == "dark":
                 self.parent.show_trackseg_button.setStyleSheet(
-                    f"QPushButton {{ background-color: #7e868f; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
-                    f"QPushButton:pressed {{ background-color: #7e868f; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton {{ background-color: #7e868f; text-align:"
+                    f"{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #7e868f; "
+                    f"text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
             else:
                 self.parent.show_trackseg_button.setStyleSheet(
-                    f"QPushButton {{ background-color: #fdf194; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
-                    f"QPushButton:pressed {{ background-color: #fdf194; text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton {{ background-color: #fdf194; text-align:"
+                    f"{SEGM_METHODS_PANEL_ALIGN};}}"
+                    f"QPushButton:pressed {{ background-color: #fdf194; "
+                    f"text-align:{SEGM_METHODS_PANEL_ALIGN};}}"
                 )
 
     def check_saved_track(self):

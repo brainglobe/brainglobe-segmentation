@@ -75,9 +75,10 @@ def structure_from_viewer(status, atlas_layer, atlas):
 
     # Using a regex, extract list of coordinates from status string
     assert hasattr(atlas_layer, "data"), "Atlas layer appears to be empty"
-    assert (
-        atlas_layer.data.ndim == 3
-    ), f'Atlas layer data does not have the right dim ("{atlas_layer.data.ndim}")'
+    assert atlas_layer.data.ndim == 3, (
+        "Atlas layer data does not have the right dim "
+        f'("{atlas_layer.data.ndim}")'
+    )
 
     try:
         coords = re.findall(r"\[\d{1,5}\s+\d{1,5}\s+\d{1,5}\]", status)[0][

@@ -26,12 +26,12 @@ from brainreg_segment.layout.utils import display_warning
 from brainreg_segment.paths import Paths
 from brainreg_segment.regions.IO import export_label_layers, save_label_layers
 
-# SEGMENTATION  ################################################################################
+### SEGMENTATION
 from brainreg_segment.segmentation_panels.regions import RegionSeg
 from brainreg_segment.segmentation_panels.tracks import TrackSeg
 from brainreg_segment.tracks.IO import export_splines, save_track_layers
 
-# LAYOUT HELPERS ################################################################################
+### LAYOUT HELPERS
 
 
 class SegmentationWidget(QWidget):
