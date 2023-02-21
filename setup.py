@@ -26,7 +26,10 @@ setup(
     author="Adam Tyson, Horst Obenhaus",
     author_email="code@adamltyson.com",
     license="BSD-3-Clause",
-    description="Manual segmentation of 3D brain structures in a common anatomical space",
+    description=(
+        "Manual segmentation of 3D brain structures "
+        "in a common anatomical space"
+    ),
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=requirements,

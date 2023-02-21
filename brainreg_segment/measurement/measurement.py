@@ -13,7 +13,7 @@ from magicgui import magic_factory
 #  (anteroposterior, mediolateral, vectical)
 def get_angles_and_distances_between_consecutive_points(
     point_layer: "napari.layers.Points",
-) -> Tuple[List[float]]:
+) -> Tuple[List[float], List[float], List[float]]:
     """Returns the distance and angles  for each pair of consecutive points.
 
     Receives a points layer and for each pair of consecutive points it
@@ -45,13 +45,15 @@ def get_angles_and_distances_between_consecutive_points(
         # projecting the vector in the sagital plane is just removing
         #  the "y/mediolateral" coordinate
         segment_vector_zx = segment_vector[[2, 0]]
-        # for the angle, z is used as the first direction/axis and x as the other
+        # for the angle, z is used as the first direction/axis and x as the
+        # other
         ap_angle = math.atan2(segment_vector_zx[1], segment_vector_zx[0])
         ap_angles.append(ap_angle)
         # projecting the vector in the frontal plane is just removing
         #  the anterioposterior coordinate.
         segment_vector_zy = segment_vector[[2, 1]]
-        # for the angle, z is used as the first direction/axis and y as the other
+        # for the angle, z is used as the first direction/axis and y as the
+        # other
         mp_angle = math.atan2(segment_vector_zy[1], segment_vector_zy[0])
         mp_angles.append(mp_angle)
         distances.append(np.linalg.norm(segment_vector))
@@ -100,9 +102,12 @@ def get_vectors_joining_points(
 def analyze_points_layer(
     point_layer: "napari.layers.Points",
     save_resuts_to_output_folder: bool = False,
-    output_folder: pathlib.Path = "results_folder",
+    output_folder: pathlib.Path = pathlib.Path("results_folder"),
 ) -> List[napari.types.LayerDataTuple]:
-    """Analyzes a point layer and saves distances and angles for consecutive points
+    """
+    Analyzes a point layer and saves distances and angles for consecutive
+    points
+
     points.csv
     id, coordx,  coordy,  coordz
     0,   ..
@@ -119,7 +124,8 @@ def analyze_points_layer(
         point_layer: A points layer to analyze.
         save_resuts_to_output_folder: A boolean, whether to save the results
             to the output folder below. If False, output_folder is ignored.
-        output_folder: Name of the folder where the output is going to be saved.
+        output_folder: Name of the folder where the output is going to be
+            saved.
     """
     if save_resuts_to_output_folder and not os.path.exists(output_folder):
         os.mkdir(output_folder)
@@ -171,7 +177,10 @@ def analyze_points_layer(
 
     # Adding vectors as a shapes layer.
     vectors_text = {
-        "text": "distance: {distance:.4f}\nap_angle: {ap_angle:.4f}\n mp_angle: {mp_angle:.4f}",
+        "text": (
+            "distance: {distance:.4f}\nap_angle: {ap_angle:.4f}\n"
+            "mp_angle: {mp_angle:.4f}"
+        ),
         "size": 8,
         "color": "green",
         "anchor": "upper_left",

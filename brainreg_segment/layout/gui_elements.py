@@ -1,5 +1,6 @@
 # GUI ELEMENTS
-# from napari.resources import build_icons # Contains .SVGPATH to all icons for napari
+# from napari.resources import build_icons # Contains .SVGPATH to all icons
+# for napari
 
 from qtpy.QtWidgets import (
     QCheckBox,
@@ -91,7 +92,8 @@ def add_button(
 #             "QRadioButton { text-align: right; padding: 0; spacing: 30px;}"
 #         )
 
-#     # Too change indicator button ... needs to dynamically retrieve icon from Napari.
+#     # Too change indicator button ... needs to dynamically retrieve icon
+#     # from Napari.
 #     # Icons are saved as .svg files under napari.resources SVGPATH
 #     # "QRadioButton::indicator"
 #     # "{"
@@ -104,7 +106,8 @@ def add_button(
 #     # "}"
 #     # "QRadioButton::indicator::checked"
 #     # "{"
-#     # "image: url(/opt/miniconda3/envs/analysis/lib/python3.6/site-packages/napari/resources/icons/visibility.svg);"
+#     # "image: url(/opt/miniconda3/envs/analysis/lib/python3.6/site-packages/
+#                   napari/resources/icons/visibility.svg);"
 #     # "}"
 #     # )
 

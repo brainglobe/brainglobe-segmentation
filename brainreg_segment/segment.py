@@ -1,12 +1,13 @@
 from pathlib import Path
+from typing import List, Optional
 
 import napari
 import numpy as np
+from bg_atlasapi import BrainGlobeAtlas
 from napari.qt.threading import thread_worker
 from qtpy import QtCore
 from qtpy.QtWidgets import QFileDialog, QGridLayout, QGroupBox, QLabel, QWidget
 
-from bg_atlasapi import BrainGlobeAtlas
 from brainreg_segment.atlas.utils import (
     get_available_atlases,
     structure_from_viewer,
@@ -26,12 +27,12 @@ from brainreg_segment.layout.utils import display_warning
 from brainreg_segment.paths import Paths
 from brainreg_segment.regions.IO import export_label_layers, save_label_layers
 
-# SEGMENTATION  ################################################################################
+### SEGMENTATION
 from brainreg_segment.segmentation_panels.regions import RegionSeg
 from brainreg_segment.segmentation_panels.tracks import TrackSeg
 from brainreg_segment.tracks.IO import export_splines, save_track_layers
 
-# LAYOUT HELPERS ################################################################################
+### LAYOUT HELPERS
 
 
 class SegmentationWidget(QWidget):
@@ -46,17 +47,20 @@ class SegmentationWidget(QWidget):
         self.viewer = viewer
 
         # Main layers
-        self.base_layer = []  # Contains registered brain / reference brain
-        self.atlas_layer = []  # Contains annotations / region information
+
+        # Contains registered brain / reference brain
+        self.base_layer: Optional[napari.layers.Image] = None
+        # Contains annotations / region information
+        self.atlas_layer: Optional[napari.layers.Labels] = None
 
         # Other data
-        self.hemispheres_data = []
+        self.hemispheres_data: Optional[np.ndarray] = None
 
         # Track variables
-        self.track_layers = []
+        self.track_layers: List[napari.layers.Tracks] = []
 
         # Region variables
-        self.label_layers = []
+        self.label_layers: List[napari.layers.Labels] = []
 
         # Atlas variables
         self.current_atlas_name = ""
