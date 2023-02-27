@@ -1,5 +1,80 @@
+[project]
+name = "brainreg-segment"
+description = "Manual segmentation of 3D brain structures in a common anatomical space"
+readme = "README.md"
+authors = [
+    {name = "Adam Tyson, Horst Obenhaus", email = "code@adamltyson.com"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: napari",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "brainglobe-napari-io",
+    "dask >= 2.15.0",
+    "imio",
+    "imlib >= 0.0.26",
+    "napari-plugin-engine >= 0.1.4",
+    "napari>=0.4.5",
+    "numpy",
+    "pandas",
+    "scikit-image",
+    "tables",
+]
+license = {text = "BSD-3-Clause"}
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://brainglobe.info/"
+"Source Code" = "https://github.com/brainglobe/brainreg-segment"
+"Bug Tracker" = "https://github.com/brainglobe/brainreg-segment/issues"
+Documentation = "https://docs.brainglobe.info/brainreg-segment"
+"User Support" = "https://forum.image.sc/tag/brainglobe"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "gitpython",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+]
+
+
+[project.scripts]
+brainreg-segment = "brainreg_segment.segment:main"
+
+[project.entry-points."napari.plugin"]
+brainreg-segment = "brainreg_segment.plugins"
+
+[build-system]
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "setuptools_scm[toml]>=6.2",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["brainreg_segment*"]
+
+[tool.setuptools_scm]
+
 [tool.black]
-target-version = ['py38', 'py39', 'py310']
+target-version = ['py38', 'py39', 'py310', 'py311']
 skip-string-normalization = false
 line-length = 79
 
