@@ -185,7 +185,7 @@ def test_regions(segmentation_widget, tmpdir, rtol=1e-10):
 
     assert len(segmentation_widget.viewer.layers) == 4
     assert len(segmentation_widget.label_layers) == 1
-    segmentation_widget.region_seg.add_region()
+    segmentation_widget.region_seg.add_new_region()
     assert len(segmentation_widget.viewer.layers) == 5
     assert len(segmentation_widget.label_layers) == 2
     assert segmentation_widget.label_layers[0].name == "test_region"
