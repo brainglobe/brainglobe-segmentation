@@ -73,7 +73,7 @@ class RegionSeg(QGroupBox):
             1,
         )
         add_button(
-            "Add region from existing layer",
+            "Add region from selected layer",
             region_layout,
             self.add_region_from_existing_layer,
             3,
