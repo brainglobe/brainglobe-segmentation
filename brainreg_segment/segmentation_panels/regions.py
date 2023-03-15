@@ -164,6 +164,11 @@ class RegionSeg(QGroupBox):
             add_region_from_existing_layer(
                 selected_layer, self.parent.label_layers
             )
+            display_info(
+                self.parent,
+                "Layer added",
+                f"Added layer: {str(selected_layer)}.",
+            )
             print(f"Added layer: {str(selected_layer)}.")
         else:
             display_info(
