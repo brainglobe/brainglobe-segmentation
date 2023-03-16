@@ -158,7 +158,6 @@ class RegionSeg(QGroupBox):
 
     def add_region_from_existing_layer(self):
         print("Adding region from existing layer\n")
-        self.region_panel.setVisible(True)
         selected_layer = self.parent.viewer.layers.selection.active
         if isinstance(selected_layer, Labels):
             add_region_from_existing_layer(
