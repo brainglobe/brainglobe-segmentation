@@ -414,8 +414,14 @@ class SegmentationWidget(QWidget):
         else:
             self.hemispheres_data = self.viewer.layers["Hemispheres"].data
 
+        self.prevent_layer_edit()
+
         self.initialise_segmentation_interface()
         self.status_label.setText("Ready")
+
+    def prevent_layer_edit(self):
+        for layer in self.viewer.layers:
+            layer.editable = False
 
     # MORE LAYOUT COMPONENTS ###########################################
 

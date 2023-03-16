@@ -31,6 +31,7 @@ def test_load_sample_space(segmentation_widget):
     segmentation_widget.directory = brainreg_dir
     segmentation_widget.load_brainreg_directory()
     check_loaded_layers(segmentation_widget, 7)
+    check_editable(segmentation_widget, standard_space=False)
 
 
 def test_load_standard_space(segmentation_widget):
@@ -41,6 +42,7 @@ def test_load_standard_space(segmentation_widget):
     segmentation_widget.directory = brainreg_dir
     segmentation_widget.load_brainreg_directory()
     check_loaded_layers(segmentation_widget, 4)
+    check_editable(segmentation_widget, standard_space=True)
 
 
 def check_loaded_layers(widget, num_layers):
@@ -49,6 +51,13 @@ def check_loaded_layers(widget, num_layers):
     assert widget.atlas.atlas_name == "allen_mouse_50um"
     assert widget.metadata["orientation"] == "psl"
     assert widget.atlas_layer.name == widget.atlas.atlas_name
+
+
+def check_editable(widget, standard_space=False):
+    assert widget.base_layer.editable is False
+    assert widget.atlas_layer.editable is False
+    if not standard_space:
+        assert widget.viewer.layers["Hemispheres"].editable is False
 
 
 def test_load_atlas(segmentation_widget, tmpdir):
