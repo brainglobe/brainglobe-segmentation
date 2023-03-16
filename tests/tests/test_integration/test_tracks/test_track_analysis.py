@@ -27,15 +27,15 @@ spline_validate = np.array(
 )
 
 
-def test_run_track_analysis(tmpdir, rtol=1e-10):
+def test_run_track_analysis(tmp_path, rtol=1e-10):
     points = np.array(pd.read_hdf(tracks_dir / "track.points"))
     spline_test = run_track_analysis(
-        points, "track", tmpdir, atlas, spline_points=10
+        points, "track", tmp_path, atlas, spline_points=10
     )
 
     np.testing.assert_allclose(spline_test, spline_validate, rtol=rtol)
 
     regions_validate = pd.read_csv(tracks_dir / "track.csv")
-    regions_test = pd.read_csv(tmpdir / "track.csv")
+    regions_test = pd.read_csv(tmp_path / "track.csv")
 
     pd.testing.assert_frame_equal(regions_test, regions_validate)
