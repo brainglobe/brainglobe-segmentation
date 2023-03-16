@@ -26,3 +26,10 @@ def add_existing_track_layers(viewer, track_file, point_size):
     )
     new_points_layer.mode = "ADD"
     return new_points_layer
+
+
+def add_track_from_existing_layer(selected_layer, track_layers):
+    """
+    Adds an existing tracks layer (e.g. from another plugin) to the list
+    """
+    track_layers.append(selected_layer)
