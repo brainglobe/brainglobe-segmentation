@@ -51,8 +51,8 @@ def check_loaded_layers(widget, num_layers):
     assert widget.atlas_layer.name == widget.atlas.atlas_name
 
 
-def test_load_atlas(segmentation_widget, tmpdir):
-    segmentation_widget.directory = tmpdir
+def test_load_atlas(segmentation_widget, tmp_path):
+    segmentation_widget.directory = tmp_path
     segmentation_widget.current_atlas_name = ATLAS_NAME
     segmentation_widget.load_atlas()
     assert len(segmentation_widget.viewer.layers) == 2
@@ -119,8 +119,8 @@ def check_paths(widget):
     )
 
 
-def test_tracks(segmentation_widget, tmpdir, rtol=1e-10):
-    tmp_input_dir = tmpdir / "brainreg_output"
+def test_tracks(segmentation_widget, tmp_path, rtol=1e-10):
+    tmp_input_dir = tmp_path / "brainreg_output"
     test_tracks_dir = (
         tmp_input_dir / "manual_segmentation" / "standard_space" / "tracks"
     )
@@ -143,6 +143,18 @@ def test_tracks(segmentation_widget, tmpdir, rtol=1e-10):
     assert segmentation_widget.track_layers[0].name == "test_track"
     assert segmentation_widget.track_layers[1].name == "track_1"
     assert len(segmentation_widget.track_layers[0].data) == 6
+
+    # importing existing track
+    points = np.array([[0, 0, 0], [1, 1, 1], [2, 2, 2], [3, 3, 3]])
+    test_layer = segmentation_widget.viewer.add_points(
+        points, name="test_track2"
+    )
+    segmentation_widget.viewer.layers.selection.select_only(test_layer)
+    segmentation_widget.track_seg.add_track_from_existing_layer(
+        confirmation=False
+    )
+    assert len(segmentation_widget.viewer.layers) == 6
+    assert len(segmentation_widget.track_layers) == 3
 
     # analysis
     segmentation_widget.track_seg.run_track_analysis(override=True)
@@ -167,8 +179,8 @@ def test_tracks(segmentation_widget, tmpdir, rtol=1e-10):
     assert len(segmentation_widget.track_layers[0].data) == 7
 
 
-def test_regions(segmentation_widget, tmpdir, rtol=1e-10):
-    tmp_input_dir = tmpdir / "brainreg_output"
+def test_regions(segmentation_widget, tmp_path, rtol=1e-10):
+    tmp_input_dir = tmp_path / "brainreg_output"
     test_regions_dir = (
         tmp_input_dir / "manual_segmentation" / "standard_space" / "regions"
     )
@@ -185,11 +197,22 @@ def test_regions(segmentation_widget, tmpdir, rtol=1e-10):
 
     assert len(segmentation_widget.viewer.layers) == 4
     assert len(segmentation_widget.label_layers) == 1
-    segmentation_widget.region_seg.add_region()
+    segmentation_widget.region_seg.add_new_region()
     assert len(segmentation_widget.viewer.layers) == 5
     assert len(segmentation_widget.label_layers) == 2
     assert segmentation_widget.label_layers[0].name == "test_region"
     assert segmentation_widget.label_layers[1].name == "region_1"
+
+    # importing existing region
+    test_layer = segmentation_widget.viewer.add_labels(
+        segmentation_widget.label_layers[0].data, name="test_region_2"
+    )
+    segmentation_widget.viewer.layers.selection.select_only(test_layer)
+    segmentation_widget.region_seg.add_region_from_existing_layer(
+        confirmation=False
+    )
+    assert len(segmentation_widget.viewer.layers) == 6
+    assert len(segmentation_widget.label_layers) == 3
 
     # analysis
     segmentation_widget.region_seg.run_region_analysis(override=True)
