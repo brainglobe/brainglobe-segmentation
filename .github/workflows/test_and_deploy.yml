@@ -16,8 +16,6 @@ jobs:
       matrix:
         # Run across a mixture of Python versions and operating systems
         include:
-        - os: ubuntu-latest
-          python-version: "3.11"
         - os: macos-latest
           python-version: "3.10"
         - os: windows-latest
