@@ -16,7 +16,6 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
 ]
 requires-python = ">=3.7"
 dependencies = [
@@ -47,7 +46,9 @@ dev = [
     "gitpython",
     "pre-commit",
     "pytest",
+    "coverage",
     "pytest-cov",
+    "pytest-qt"
 ]
 
 
@@ -94,7 +95,7 @@ filterwarnings = [
 ]
 
 [tool.black]
-target-version = ['py38', 'py39', 'py310', 'py311']
+target-version = ['py38', 'py39', 'py310']
 skip-string-normalization = false
 line-length = 79
 
