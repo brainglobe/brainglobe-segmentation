@@ -86,7 +86,9 @@ class SegmentationWidget(QWidget):
                 if v.dims.ndisplay == 2:
                     if len(v.layers) and self.atlas_layer and self.atlas:
                         _, _, _, region_info = structure_from_viewer(
-                            self.viewer.status, self.atlas_layer, self.atlas
+                            self.viewer.cursor.position,
+                            self.atlas_layer,
+                            self.atlas,
                         )
                         self.viewer.help = region_info
                 else:
