@@ -6,7 +6,6 @@ import pandas as pd
 def add_new_track_layer(viewer, track_layers, point_size):
     num = len(track_layers)
     new_track_layers = viewer.add_points(
-        None,
         ndim=3,
         n_dimensional=True,
         size=point_size,
