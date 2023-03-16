@@ -9,7 +9,6 @@ jobs:
       - uses: neuroinformatics-unit/actions/lint@v1
 
   test:
-    needs: [linting]
     name: ${{ matrix.os }} py${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
