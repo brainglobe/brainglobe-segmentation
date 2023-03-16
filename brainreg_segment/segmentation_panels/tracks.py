@@ -240,6 +240,7 @@ class TrackSeg(QGroupBox):
                 print("Running track analysis")
                 self.splines, self.spline_names = track_analysis(
                     self.parent.viewer,
+                    self.parent.atlas_layer.data,
                     self.parent.atlas,
                     self.parent.paths.tracks_directory,
                     self.parent.track_layers,

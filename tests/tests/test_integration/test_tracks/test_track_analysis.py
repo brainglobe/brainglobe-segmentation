@@ -30,7 +30,7 @@ spline_validate = np.array(
 def test_run_track_analysis(tmpdir, rtol=1e-10):
     points = np.array(pd.read_hdf(tracks_dir / "track.points"))
     spline_test = run_track_analysis(
-        points, "track", tmpdir, atlas, spline_points=10
+        points, "track", tmpdir, atlas.annotation, atlas, spline_points=10
     )
 
     np.testing.assert_allclose(spline_test, spline_validate, rtol=rtol)
