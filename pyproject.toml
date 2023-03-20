@@ -23,6 +23,7 @@ dependencies = [
     "dask >= 2.15.0",
     "imio",
     "imlib >= 0.0.26",
+    "magicgui",
     "napari-plugin-engine >= 0.1.4",
     "napari>=0.4.5",
     "numpy",
@@ -42,11 +43,10 @@ Documentation = "https://docs.brainglobe.info/brainreg-segment"
 
 [project.optional-dependencies]
 dev = [
-    "black",
     "gitpython",
     "pre-commit",
+    "napari[pyqt5]",
     "pytest",
-    "coverage",
     "pytest-cov",
     "pytest-qt"
 ]
