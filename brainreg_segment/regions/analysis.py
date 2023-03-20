@@ -229,18 +229,18 @@ def add_structure_volume_to_df(
     else:
         total_percentage = 0
 
-    df = df.append(
-        {
-            "structure_name": name,
-            "left_volume_mm3": left_volume,
-            "left_percentage_of_total": left_percentage,
-            "right_volume_mm3": right_volume,
-            "right_percentage_of_total": right_percentage,
-            "total_volume_mm3": left_volume + right_volume,
-            "percentage_of_total": total_percentage,
-        },
-        ignore_index=True,
-    )
+    data_to_append = {
+        "structure_name": [name],
+        "left_volume_mm3": [left_volume],
+        "left_percentage_of_total": [left_percentage],
+        "right_volume_mm3": [right_volume],
+        "right_percentage_of_total": [right_percentage],
+        "total_volume_mm3": [left_volume + right_volume],
+        "percentage_of_total": [total_percentage],
+    }
+
+    df_to_append = pd.DataFrame(data_to_append)
+    df = pd.concat([df, df_to_append], ignore_index=True)
     return df
 
 
