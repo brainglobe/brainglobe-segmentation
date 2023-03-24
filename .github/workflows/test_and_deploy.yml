@@ -31,7 +31,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           use-xvfb: true
-          tox-args: "-vv"
 
   build_sdist_wheels:
     name: Build source distribution
