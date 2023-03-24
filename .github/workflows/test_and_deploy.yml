@@ -24,6 +24,11 @@ jobs:
           python-version: "3.8"
 
     steps:
+      - name: Cache atlases
+        uses: actions/cache@v3
+        with:
+          path: ~/.brainglobe
+          key: bg-atlases
       # Setup pyqt libraries
       - uses: tlambert03/setup-qt-libs@v1
       # Run tests
