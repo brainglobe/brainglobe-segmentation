@@ -11,7 +11,7 @@ from brainreg_segment.atlas.utils import lateralise_atlas_image
 @thread_worker
 def region_analysis(
     label_layers,
-    atlas_layer_image,
+    annotations_layer_image,
     atlas,
     hemispheres,
     regions_directory,
@@ -26,7 +26,7 @@ def region_analysis(
         for label_layer in label_layers:
             analyse_region_brain_areas(
                 label_layer,
-                atlas_layer_image,
+                annotations_layer_image,
                 hemispheres,
                 regions_directory,
                 atlas,
@@ -101,7 +101,7 @@ def summarise_single_brain_region(
 
 def analyse_region_brain_areas(
     label_layer,
-    atlas_layer_data,
+    annotations_layer_image,
     hemispheres,
     destination_directory,
     atlas,
@@ -122,7 +122,7 @@ def analyse_region_brain_areas(
 
     name = label_layer.name
 
-    masked_annotations = data.astype(bool) * atlas_layer_data
+    masked_annotations = data.astype(bool) * annotations_layer_image
 
     annotations_left, annotations_right = lateralise_atlas_image(
         masked_annotations,
