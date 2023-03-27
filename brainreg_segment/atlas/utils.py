@@ -1,5 +1,3 @@
-import re
-
 from bg_atlasapi.list_atlases import descriptors, utils
 
 
@@ -38,17 +36,17 @@ def get_available_atlases():
     return available_atlases
 
 
-def structure_from_viewer(status, atlas_layer, atlas):
+def structure_from_viewer(coordinates, atlas_layer, atlas):
     """
     Get brain region info from mouse position in napari viewer.
 
-    Extract nx3 coordinate pair from napari window status string.
     Return brainglobe (BG) structure number, name, hemisphere, and a
     "pretty" string that can be displayed for example in the status bar.
 
     Parameter
     ---------
-    status        : str, Napari viewer status (napari.viewer.Viewer.status)
+    coordinates   : tuple, nx3 coordinate of cursor position, from
+                    Viewer.cursor.position
     atlas_layer   : Napari viewer layer
                     Layer, which contains the annotation / region
                     information for every structure in the (registered)
@@ -57,16 +55,6 @@ def structure_from_viewer(status, atlas_layer, atlas):
 
     Returns
     -------
-    If any error is raised, (None,None,None,"") is returned
-    structure_no  : int
-                    BG Structure number
-                    Returns none if not found
-    structure     : str
-                    Structure name
-                    Returns none if not found
-    hemisphere    : str
-                    Hemisphere name
-                    Returns none if not found
     region_info   : str
                     A string containing info about structure
                     and hemisphere
@@ -80,16 +68,7 @@ def structure_from_viewer(status, atlas_layer, atlas):
         f'("{atlas_layer.data.ndim}")'
     )
 
-    try:
-        coords = re.findall(r"\[\d{1,5}\s+\d{1,5}\s+\d{1,5}\]", status)[0][
-            1:-1
-        ]
-        coords_list = coords.split()
-        map_object = map(int, coords_list)
-        coord_list = tuple(map_object)
-    except (IndexError, ValueError):
-        # No coordinates could be extracted from status
-        return None, None, None, ""
+    coord_list = tuple([int(x) for x in coordinates])
 
     # Extract structure number
     try:
