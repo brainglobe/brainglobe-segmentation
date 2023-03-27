@@ -51,7 +51,7 @@ class SegmentationWidget(QWidget):
         # Contains registered brain / reference brain
         self.base_layer: Optional[napari.layers.Image] = None
         # Contains annotations / region information
-        self.atlas_layer: Optional[napari.layers.Labels] = None
+        self.annotations_layer: Optional[napari.layers.Labels] = None
 
         # Other data
         self.hemispheres_data: Optional[np.ndarray] = None
@@ -84,9 +84,11 @@ class SegmentationWidget(QWidget):
                 """
                 assert self.viewer == v
                 if v.dims.ndisplay == 2:
-                    if len(v.layers) and self.atlas_layer and self.atlas:
+                    if len(v.layers) and self.annotations_layer and self.atlas:
                         _, _, _, region_info = structure_from_viewer(
-                            self.viewer.status, self.atlas_layer, self.atlas
+                            self.viewer.status,
+                            self.annotations_layer,
+                            self.atlas,
                         )
                         self.viewer.help = region_info
                 else:
@@ -309,7 +311,7 @@ class SegmentationWidget(QWidget):
             self.atlas.reference,
             name="Reference",
         )
-        self.atlas_layer = self.viewer.add_labels(
+        self.annotations_layer = self.viewer.add_labels(
             self.atlas.annotation,
             name=self.atlas.atlas_name,
             blending="additive",
@@ -408,7 +410,7 @@ class SegmentationWidget(QWidget):
         self.base_layer = self.viewer.layers["Registered image"]
         self.metadata = self.base_layer.metadata
         self.atlas = self.metadata["atlas_class"]
-        self.atlas_layer = self.viewer.layers[self.metadata["atlas"]]
+        self.annotations_layer = self.viewer.layers[self.metadata["atlas"]]
         if self.standard_space:
             self.hemispheres_data = self.atlas.hemispheres
         else:

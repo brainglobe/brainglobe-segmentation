@@ -159,7 +159,7 @@ class RegionSeg(QGroupBox):
                 print("Running region analysis")
                 worker = region_analysis(
                     self.parent.label_layers,
-                    self.parent.atlas_layer.data,
+                    self.parent.annotations_layer.data,
                     self.parent.atlas,
                     self.parent.hemispheres_data,
                     self.parent.paths.regions_directory,
