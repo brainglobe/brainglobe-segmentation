@@ -1,3 +1,10 @@
-__author__ = "Adam Tyson"
-__version__ = "0.2.17-rc0"
+from importlib.metadata import PackageNotFoundError, version
 from . import *
+
+__author__ = "Adam Tyson"
+
+try:
+    __version__ = version("brainreg-segment")
+except PackageNotFoundError:
+    # package is not installed
+    pass
