@@ -116,7 +116,7 @@ def analyse_track_anatomy(atlas_layer_data, atlas, spline, file_path):
     spline_regions = []
     for coord in spline.tolist():
         try:
-            coord = tuple([int(c) for c in coord])
+            coord = tuple(int(c) for c in coord)
             atlas_value = atlas_layer_data[coord]
             spline_regions.append(atlas.structures[atlas_value])
         except KeyError:
