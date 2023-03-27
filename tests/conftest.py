@@ -4,8 +4,16 @@ import warnings
 from typing import List
 
 import pytest
+from bg_atlasapi import BrainGlobeAtlas
 from napari import Viewer
 from qtpy.QtWidgets import QApplication
+
+atlas_name = "allen_mouse_50um"
+
+
+@pytest.fixture
+def allen_mouse_50um_atlas():
+    return BrainGlobeAtlas(atlas_name)
 
 
 def pytest_addoption(parser):

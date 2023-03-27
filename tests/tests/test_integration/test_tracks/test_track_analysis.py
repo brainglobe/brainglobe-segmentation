@@ -2,12 +2,8 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from bg_atlasapi import BrainGlobeAtlas
 
 from brainreg_segment.tracks.analysis import run_track_analysis
-
-atlas_name = "allen_mouse_50um"
-atlas = BrainGlobeAtlas(atlas_name)
 
 tracks_dir = Path.cwd() / "tests" / "data" / "tracks"
 
@@ -27,7 +23,8 @@ spline_validate = np.array(
 )
 
 
-def test_run_track_analysis(tmpdir, rtol=1e-10):
+def test_run_track_analysis(allen_mouse_50um_atlas, tmpdir, rtol=1e-10):
+    atlas = allen_mouse_50um_atlas
     points = np.array(pd.read_hdf(tracks_dir / "track.points"))
     spline_test = run_track_analysis(
         points, "track", tmpdir, atlas.annotation, atlas, spline_points=10
