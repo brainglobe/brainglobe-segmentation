@@ -62,6 +62,9 @@ class SegmentationWidget(QWidget):
         # Region variables
         self.label_layers: List[napari.layers.Labels] = []
 
+        # To allow state of existing layers to be preserved
+        self.existing_layers: List[napari.layers.Layer] = []
+
         # Atlas variables
         self.current_atlas_name = ""
         self.atlas = None
@@ -305,6 +308,7 @@ class SegmentationWidget(QWidget):
             self.directory = Path(self.directory)
 
     def load_atlas(self):
+        self.create_list_exisiting_layers()
         atlas = BrainGlobeAtlas(self.current_atlas_name)
         self.atlas = atlas
         self.base_layer = self.viewer.add_image(
@@ -319,6 +323,7 @@ class SegmentationWidget(QWidget):
             visible=False,
         )
         self.standard_space = True
+        self.prevent_layer_edit()
 
     def reset_atlas_menu(self):
         # Reset menu for atlas - show initial description
@@ -379,6 +384,7 @@ class SegmentationWidget(QWidget):
         Then checks for previously loaded data.
 
         """
+        self.create_list_exisiting_layers()
         try:
             self.viewer.open(str(self.directory), plugin=self.plugin)
             self.paths = Paths(
@@ -421,9 +427,15 @@ class SegmentationWidget(QWidget):
         self.initialise_segmentation_interface()
         self.status_label.setText("Ready")
 
+    def create_list_exisiting_layers(self):
+        self.existing_layers = []
+        for layer in self.viewer.layers:
+            self.existing_layers.append(layer)
+
     def prevent_layer_edit(self):
         for layer in self.viewer.layers:
-            layer.editable = False
+            if layer not in self.existing_layers:
+                layer.editable = False
 
     # MORE LAYOUT COMPONENTS ###########################################
 
