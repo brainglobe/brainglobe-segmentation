@@ -59,7 +59,7 @@ def check_not_editable(widget, standard_space=False):
     if not standard_space:
         assert widget.viewer.layers["Hemispheres"].editable is False
 
-        
+
 def test_load_atlas(segmentation_widget, tmp_path):
     segmentation_widget.directory = tmp_path
     segmentation_widget.current_atlas_name = ATLAS_NAME
