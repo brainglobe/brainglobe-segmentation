@@ -59,9 +59,9 @@ def check_not_editable(widget, standard_space=False):
     if not standard_space:
         assert widget.viewer.layers["Hemispheres"].editable is False
 
-
-def test_load_atlas(segmentation_widget, tmpdir):
-    segmentation_widget.directory = tmpdir
+        
+def test_load_atlas(segmentation_widget, tmp_path):
+    segmentation_widget.directory = tmp_path
     segmentation_widget.current_atlas_name = ATLAS_NAME
     segmentation_widget.load_atlas()
     assert len(segmentation_widget.viewer.layers) == 2
@@ -128,8 +128,8 @@ def check_paths(widget):
     )
 
 
-def test_tracks(segmentation_widget, tmpdir, rtol=1e-10):
-    tmp_input_dir = tmpdir / "brainreg_output"
+def test_tracks(segmentation_widget, tmp_path, rtol=1e-10):
+    tmp_input_dir = tmp_path / "brainreg_output"
     test_tracks_dir = (
         tmp_input_dir / "manual_segmentation" / "standard_space" / "tracks"
     )
@@ -176,8 +176,8 @@ def test_tracks(segmentation_widget, tmpdir, rtol=1e-10):
     assert len(segmentation_widget.track_layers[0].data) == 7
 
 
-def test_regions(segmentation_widget, tmpdir, rtol=1e-10):
-    tmp_input_dir = tmpdir / "brainreg_output"
+def test_regions(segmentation_widget, tmp_path, rtol=1e-10):
+    tmp_input_dir = tmp_path / "brainreg_output"
     test_regions_dir = (
         tmp_input_dir / "manual_segmentation" / "standard_space" / "regions"
     )

@@ -28,18 +28,18 @@ spline = np.array(
 ATLAS_RESOLUTION = 50
 
 
-def test_save_single_track_layer(tmpdir, rtol=1e-10):
+def test_save_single_track_layer(tmp_path, rtol=1e-10):
     points = pd.read_hdf(tracks_dir / "track.points")
-    IO.save_single_track(points, "track", tmpdir)
+    IO.save_single_track(points, "track", tmp_path)
 
-    points_test = pd.read_hdf((tmpdir / "track.points"))
+    points_test = pd.read_hdf((tmp_path / "track.points"))
     np.testing.assert_allclose(points, points_test, rtol=rtol)
 
 
-def test_export_single_spline(tmpdir):
-    IO.export_single_spline(spline, "track", tmpdir, ATLAS_RESOLUTION)
+def test_export_single_spline(tmp_path):
+    IO.export_single_spline(spline, "track", tmp_path, ATLAS_RESOLUTION)
 
-    spline_test = np.load(str(tmpdir / "track.npy"))
+    spline_test = np.load(str(tmp_path / "track.npy"))
     spline_validate = np.load(str(tracks_dir / "track.npy"))
 
     assert (spline_test == spline_validate).all()
