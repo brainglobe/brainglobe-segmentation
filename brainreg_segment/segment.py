@@ -436,6 +436,9 @@ class SegmentationWidget(QWidget):
         self.status_label.setText("Ready")
 
     def collate_widget_layers(self):
+    """
+    Populate self.editable_widget_layers and self.non_editable_widget_layers.
+    """
         self.non_editable_widget_layers = [
             self.base_layer,
             self.atlas_layer,
