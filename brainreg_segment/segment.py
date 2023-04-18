@@ -247,7 +247,7 @@ class SegmentationWidget(QWidget):
 
         self.save_data_panel.setVisible(False)
 
-    # ATLAS INTERACTION ####################################################
+    # ATLAS INTERACTION ###################################################
 
     def add_atlas_menu(self, layout):
         list_of_atlasses = ["Load atlas"]
