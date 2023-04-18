@@ -442,7 +442,7 @@ class SegmentationWidget(QWidget):
         """
         self.non_editable_widget_layers = [
             self.base_layer,
-            self.atlas_layer,
+            self.annotations_layer,
             self.hemispheres_layer,
         ]
         self.editable_widget_layers = self.track_layers + self.label_layers

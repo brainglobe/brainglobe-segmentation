@@ -70,7 +70,7 @@ def check_loaded_layers(widget, num_layers):
 
 def check_not_editable(widget, standard_space=False):
     assert widget.base_layer.editable is False
-    assert widget.atlas_layer.editable is False
+    assert widget.annotations_layer.editable is False
     if not standard_space:
         assert widget.viewer.layers["Hemispheres"].editable is False
 
