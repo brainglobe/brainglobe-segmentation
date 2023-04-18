@@ -45,6 +45,21 @@ def test_load_standard_space(segmentation_widget):
     check_not_editable(segmentation_widget, standard_space=True)
 
 
+def test_layer_deletion(segmentation_widget):
+    """
+    Check that remove_layers() doesn't remove any layers that were present
+    before brainreg-segment added layers
+    """
+    assert len(segmentation_widget.viewer.layers) == 0
+    segmentation_widget.viewer.add_points(np.array([[1, 1], [2, 2]]))
+    assert len(segmentation_widget.viewer.layers) == 1
+    segmentation_widget.standard_space = False
+    segmentation_widget.plugin = "brainglobe-napari-io.brainreg_read_dir"
+    segmentation_widget.directory = brainreg_dir
+    segmentation_widget.load_brainreg_directory()
+    check_loaded_layers(segmentation_widget, 8)
+
+
 def check_loaded_layers(widget, num_layers):
     assert len(widget.viewer.layers) == num_layers
     assert widget.base_layer.name == "Registered image"
