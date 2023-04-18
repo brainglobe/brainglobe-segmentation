@@ -65,7 +65,7 @@ def check_loaded_layers(widget, num_layers):
     assert widget.base_layer.name == "Registered image"
     assert widget.atlas.atlas_name == "allen_mouse_50um"
     assert widget.metadata["orientation"] == "psl"
-    assert widget.atlas_layer.name == widget.atlas.atlas_name
+    assert widget.annotations_layer.name == widget.atlas.atlas_name
 
 
 def check_not_editable(widget, standard_space=False):
@@ -83,7 +83,7 @@ def test_load_atlas(segmentation_widget, tmp_path):
     assert segmentation_widget.base_layer.name == "Reference"
     assert segmentation_widget.atlas.atlas_name == ATLAS_NAME
     assert (
-        segmentation_widget.atlas_layer.name
+        segmentation_widget.annotations_layer.name
         == segmentation_widget.atlas.atlas_name
     )
 

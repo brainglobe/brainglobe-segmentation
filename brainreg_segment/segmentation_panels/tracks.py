@@ -223,7 +223,9 @@ class TrackSeg(QGroupBox):
             print("No tracks found.")
 
     def create_brain_surface_tree(self):
-        self.tree = create_KDTree_from_image(self.parent.atlas_layer.data)
+        self.tree = create_KDTree_from_image(
+            self.parent.annotations_layer.data
+        )
 
     def run_track_analysis(self, override=False):
         if self.parent.track_layers:
@@ -240,6 +242,7 @@ class TrackSeg(QGroupBox):
                 print("Running track analysis")
                 self.splines, self.spline_names = track_analysis(
                     self.parent.viewer,
+                    self.parent.annotations_layer.data,
                     self.parent.atlas,
                     self.parent.paths.tracks_directory,
                     self.parent.track_layers,
