@@ -16,6 +16,7 @@ from brainreg_segment.layout.gui_constants import (
     BOUNDARIES_STRING,
     COLUMN_WIDTH,
     DISPLAY_REGION_INFO,
+    HEMISPHERES_STRING,
     LOADING_PANEL_ALIGN,
     SEGM_METHODS_PANEL_ALIGN,
     TRACK_FILE_EXT,
@@ -40,6 +41,7 @@ class SegmentationWidget(QWidget):
         self,
         viewer: napari.viewer.Viewer,
         boundaries_string=BOUNDARIES_STRING,
+        hemispheres_string=HEMISPHERES_STRING,
     ):
         super(SegmentationWidget, self).__init__()
 
@@ -54,6 +56,7 @@ class SegmentationWidget(QWidget):
         self.annotations_layer: Optional[napari.layers.Labels] = None
 
         # Other data
+        self.hemispheres_layer: Optional[napari.layers.Labels] = None
         self.hemispheres_data: Optional[np.ndarray] = None
 
         # Track variables
@@ -62,11 +65,18 @@ class SegmentationWidget(QWidget):
         # Region variables
         self.label_layers: List[napari.layers.Labels] = []
 
+        # List of all layers created by plugin, to allow the correct
+        # layers to be modified
+        self.editable_widget_layers: List[napari.layers.Layer] = []
+        self.non_editable_widget_layers: List[napari.layers.Layer] = []
+
         # Atlas variables
         self.current_atlas_name = ""
         self.atlas = None
 
         self.boundaries_string = boundaries_string
+        self.hemispheres_string = hemispheres_string
+
         self.directory = ""
         # Set up segmentation methods
         self.region_seg = RegionSeg(self)
@@ -237,7 +247,7 @@ class SegmentationWidget(QWidget):
 
         self.save_data_panel.setVisible(False)
 
-    # ATLAS INTERACTION ####################################################
+    # ATLAS INTERACTION ###################################################
 
     def add_atlas_menu(self, layout):
         list_of_atlasses = ["Load atlas"]
@@ -319,6 +329,7 @@ class SegmentationWidget(QWidget):
             visible=False,
         )
         self.standard_space = True
+        self.prevent_layer_edit()
 
     def reset_atlas_menu(self):
         # Reset menu for atlas - show initial description
@@ -414,10 +425,49 @@ class SegmentationWidget(QWidget):
         if self.standard_space:
             self.hemispheres_data = self.atlas.hemispheres
         else:
-            self.hemispheres_data = self.viewer.layers["Hemispheres"].data
+            self.hemispheres_layer = self.viewer.layers[
+                self.hemispheres_string
+            ]
+            self.hemispheres_data = self.hemispheres_layer.data
+
+        self.prevent_layer_edit()
 
         self.initialise_segmentation_interface()
         self.status_label.setText("Ready")
+
+    def collate_widget_layers(self):
+        """
+        Populate self.editable_widget_layers and
+        self.non_editable_widget_layers.
+        """
+        self.non_editable_widget_layers = [
+            self.base_layer,
+            self.annotations_layer,
+            self.hemispheres_layer,
+        ]
+        self.editable_widget_layers = self.track_layers + self.label_layers
+
+        # add any downsampled layers loaded by plugin
+        for layer in self.viewer.layers:
+            if "downsampled" in layer.name:
+                self.non_editable_widget_layers.append(layer)
+
+        # ensure only napari layers in list (i.e. not None etc)
+        self.editable_widget_layers = [
+            item
+            for item in self.editable_widget_layers
+            if isinstance(item, napari.layers.Layer)
+        ]
+        self.non_editable_widget_layers = [
+            item
+            for item in self.non_editable_widget_layers
+            if isinstance(item, napari.layers.Layer)
+        ]
+
+    def prevent_layer_edit(self):
+        self.collate_widget_layers()
+        for layer in self.non_editable_widget_layers:
+            layer.editable = False
 
     # MORE LAYOUT COMPONENTS ###########################################
 
@@ -464,27 +514,26 @@ class SegmentationWidget(QWidget):
         TODO: This needs work. Runs into an error currently
         when switching from a annotated project to another one
         """
-        if len(self.viewer.layers) != 0:
+        self.collate_widget_layers()
+        all_layers = (
+            self.editable_widget_layers + self.non_editable_widget_layers
+        )
+        if len(all_layers) != 0:
             # Check with user if that is really what is wanted
-            if self.track_layers or self.label_layers:
-                choice = display_warning(
-                    self,
-                    "About to remove layers",
-                    "All layers are about to be deleted. Proceed?",
-                )
-                if not choice:
-                    print('Preventing deletion because user chose "Cancel"')
-                    return False
+            choice = display_warning(
+                self,
+                "About to remove layers",
+                "All layers are about to be deleted. Proceed?",
+            )
+            if not choice:
+                print('Preventing deletion because user chose "Cancel"')
+                return False
 
             # Remove old layers
-            for layer in list(self.viewer.layers):
-                try:
-                    self.viewer.layers.remove(layer)
-                except IndexError:  # no idea why this happens
-                    pass
-
-        self.track_layers = []
-        self.label_layers = []
+            for layer in all_layers:
+                self.viewer.layers.remove(layer)
+                self.track_layers = []
+                self.label_layers = []
         return True
 
     def save(self, override=True):

@@ -29,6 +29,7 @@ SUMMARIZE_VOLUMES_DEFAULT = True
 TRACK_FILE_EXT = ".points"
 IMAGE_FILE_EXT = ".tiff"
 BOUNDARIES_STRING = "Boundaries"
+HEMISPHERES_STRING = "Hemispheres"
 
 # ORIENTATIONS = [
 #     "asl",
