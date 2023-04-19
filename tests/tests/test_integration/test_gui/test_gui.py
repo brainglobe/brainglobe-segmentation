@@ -57,6 +57,7 @@ def test_layer_deletion(segmentation_widget):
     segmentation_widget.plugin = "brainglobe-napari-io.brainreg_read_dir"
     segmentation_widget.directory = brainreg_dir
     segmentation_widget.load_brainreg_directory()
+    # Brainreg should load 7 new layers
     check_loaded_layers(segmentation_widget, 8)
 
 
