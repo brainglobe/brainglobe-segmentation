@@ -6,6 +6,7 @@ from brainreg_segment.tracks.fit import spline_fit
 
 def track_analysis(
     viewer,
+    annotations_layer_image,
     atlas,
     tracks_directory,
     track_layers,
@@ -30,6 +31,7 @@ def track_analysis(
                 track_layer.data,
                 track_layer.name,
                 tracks_directory,
+                annotations_layer_image,
                 atlas,
                 summarise_track=summarise_track,
                 spline_smoothing=spline_smoothing,
@@ -57,6 +59,7 @@ def run_track_analysis(
     points,
     track_name,
     tracks_directory,
+    annotations_layer_image,
     atlas,
     spline_smoothing=0.05,
     spline_points=100,
@@ -69,6 +72,8 @@ def run_track_analysis(
     :param points: 3D numpy array of points
     :param track_name: Name of the set of points (used for saving results)
     :param tracks_directory: Where to save the results to
+    :param annotations_layer_image: 3D numpy array of the (possibly registered)
+    annotations image
     :param atlas: brainglobe atlas class
     :param spline_smoothing: spline fit smoothing factor
     :param spline_points: How many points used to define the resulting
@@ -91,27 +96,31 @@ def run_track_analysis(
     )
     if summarise_track:
         summary_csv_file = tracks_directory / (track_name + ".csv")
-        analyse_track_anatomy(atlas, spline, summary_csv_file)
+        analyse_track_anatomy(
+            annotations_layer_image, atlas, spline, summary_csv_file
+        )
 
     return spline
 
 
-def analyse_track_anatomy(atlas, spline, file_path):
+def analyse_track_anatomy(annotations_layer_image, atlas, spline, file_path):
     """
     For a given spline, find the atlas region that each
     "segment" is in, and save to csv.
 
+    :param annotations_layer_image: 3D numpy array of the (possibly registered)
+    annotations image
     :param atlas: brainglobe atlas class
     :param spline: numpy array defining the spline interpolation
     :param file_path: path to save the results to
     :param bool verbose: Whether to print the progress
     """
     spline_regions = []
-    for p in spline.tolist():
+    for coord in spline.tolist():
         try:
-            spline_regions.append(
-                atlas.structures[atlas.structure_from_coords(p)]
-            )
+            coord = tuple(int(c) for c in coord)
+            atlas_value = annotations_layer_image[coord]
+            spline_regions.append(atlas.structures[atlas_value])
         except KeyError:
             spline_regions.append(None)
 

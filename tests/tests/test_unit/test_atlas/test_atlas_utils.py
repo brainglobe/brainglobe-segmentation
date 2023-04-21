@@ -1,5 +1,4 @@
 import numpy as np
-from bg_atlasapi import BrainGlobeAtlas
 
 from brainreg_segment.atlas import utils as atlas_utils
 
@@ -16,8 +15,8 @@ def test_get_available_atlases():
     assert float(atlases["mpin_zfish_1um"]) >= 0.4
 
 
-def test_lateralise_atlas_image():
-    atlas = BrainGlobeAtlas(atlas_name)
+def test_lateralise_atlas_image(allen_mouse_50um_atlas):
+    atlas = allen_mouse_50um_atlas
 
     mask = np.random.random(atlas.annotation.shape) > 0.7
     masked_annotations = mask * atlas.annotation
