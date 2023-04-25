@@ -2,7 +2,6 @@
 from glob import glob
 
 import numpy as np
-from napari.layers import Points
 from qtpy.QtWidgets import QGridLayout, QGroupBox
 
 from brainreg_segment.image.utils import create_KDTree_from_image
@@ -215,7 +214,7 @@ class TrackSeg(QGroupBox):
     def add_track_from_existing_layer(self, overrride=False):
         print("Adding track from existing layer\n")
         selected_layer = self.parent.viewer.layers.selection.active
-        if isinstance(selected_layer, Points):
+        try:
             add_track_from_existing_layer(
                 selected_layer, self.parent.track_layers
             )
@@ -225,7 +224,7 @@ class TrackSeg(QGroupBox):
                     "Layer added",
                     f"Added layer: {str(selected_layer)}.",
                 )
-        else:
+        except TypeError:
             if not overrride:
                 display_info(
                     self.parent,

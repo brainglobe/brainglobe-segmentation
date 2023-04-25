@@ -1,5 +1,4 @@
 # RegionSeg
-from napari.layers import Labels
 from qtpy.QtWidgets import QGridLayout, QGroupBox
 
 from brainreg_segment.layout.gui_constants import (
@@ -159,7 +158,7 @@ class RegionSeg(QGroupBox):
     def add_region_from_existing_layer(self, override=False):
         print("Adding region from existing layer\n")
         selected_layer = self.parent.viewer.layers.selection.active
-        if isinstance(selected_layer, Labels):
+        try:
             add_region_from_existing_layer(
                 selected_layer, self.parent.label_layers
             )
@@ -169,7 +168,7 @@ class RegionSeg(QGroupBox):
                     "Layer added",
                     f"Added layer: {str(selected_layer)}.",
                 )
-        else:
+        except TypeError:
             if not override:
                 display_info(
                     self.parent,

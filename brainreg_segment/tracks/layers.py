@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
+from napari.layers import Points
 
 
 def add_new_track_layer(viewer, track_layers, point_size):
@@ -31,4 +32,7 @@ def add_track_from_existing_layer(selected_layer, track_layers):
     """
     Adds an existing tracks layer (e.g. from another plugin) to the list
     """
-    track_layers.append(selected_layer)
+    if isinstance(selected_layer, Points):
+        track_layers.append(selected_layer)
+    else:
+        raise TypeError("Layer must be a napari Points layer")
