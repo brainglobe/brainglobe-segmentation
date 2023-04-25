@@ -169,6 +169,16 @@ def test_tracks(segmentation_widget, tmp_path, rtol=1e-10):
     assert segmentation_widget.track_layers[1].name == "track_1"
     assert len(segmentation_widget.track_layers[0].data) == 6
 
+    # importing existing track
+    points = np.array([[0, 0, 0], [1, 1, 1], [2, 2, 2], [3, 3, 3]])
+    test_layer = segmentation_widget.viewer.add_points(
+        points, name="test_track2"
+    )
+    segmentation_widget.viewer.layers.selection.select_only(test_layer)
+    segmentation_widget.track_seg.add_track_from_existing_layer(overrride=True)
+    assert len(segmentation_widget.viewer.layers) == 6
+    assert len(segmentation_widget.track_layers) == 3
+
     # analysis
     segmentation_widget.track_seg.run_track_analysis(override=True)
     regions_validate = pd.read_csv(validate_tracks_dir / "test_track.csv")
@@ -210,11 +220,22 @@ def test_regions(segmentation_widget, tmp_path, rtol=1e-10):
 
     assert len(segmentation_widget.viewer.layers) == 4
     assert len(segmentation_widget.label_layers) == 1
-    segmentation_widget.region_seg.add_region()
+    segmentation_widget.region_seg.add_new_region()
     assert len(segmentation_widget.viewer.layers) == 5
     assert len(segmentation_widget.label_layers) == 2
     assert segmentation_widget.label_layers[0].name == "test_region"
     assert segmentation_widget.label_layers[1].name == "region_1"
+
+    # importing existing region
+    test_layer = segmentation_widget.viewer.add_labels(
+        segmentation_widget.label_layers[0].data, name="test_region_2"
+    )
+    segmentation_widget.viewer.layers.selection.select_only(test_layer)
+    segmentation_widget.region_seg.add_region_from_existing_layer(
+        override=True
+    )
+    assert len(segmentation_widget.viewer.layers) == 6
+    assert len(segmentation_widget.label_layers) == 3
 
     # analysis
     segmentation_widget.region_seg.run_region_analysis(override=True)

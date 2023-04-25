@@ -3,8 +3,7 @@ from qtpy.QtWidgets import QMessageBox
 
 def display_warning(widget, title, message):
     """
-    Display a warning in a pop up that informs
-    about overwriting files
+    Display a warning in a pop-up that can be accepted or dismissed
     """
     message_reply = QMessageBox.question(
         widget,
@@ -16,3 +15,15 @@ def display_warning(widget, title, message):
         return True
     else:
         return False
+
+
+def display_info(widget, title, message):
+    """
+    Display information in a pop-up that can only be accepted
+    """
+    QMessageBox.information(
+        widget,
+        title,
+        message,
+        QMessageBox.Ok,
+    )

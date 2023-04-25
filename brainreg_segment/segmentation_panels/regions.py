@@ -10,12 +10,16 @@ from brainreg_segment.layout.gui_constants import (
     SEGM_METHODS_PANEL_ALIGN,
     SUMMARIZE_VOLUMES_DEFAULT,
 )
-from brainreg_segment.layout.gui_elements import add_button, add_checkbox
-from brainreg_segment.layout.utils import display_warning
+from brainreg_segment.layout.gui_elements import (
+    add_button,
+    add_checkbox,
+)
+from brainreg_segment.layout.utils import display_info, display_warning
 from brainreg_segment.regions.analysis import region_analysis
 from brainreg_segment.regions.layers import (
     add_existing_region_segmentation,
     add_new_region_layer,
+    add_region_from_existing_layer,
 )
 
 
@@ -53,9 +57,9 @@ class RegionSeg(QGroupBox):
         region_layout = QGridLayout()
 
         add_button(
-            "Add region",
+            "Add new region",
             region_layout,
-            self.add_region,
+            self.add_new_region,
             2,
             0,
         )
@@ -66,6 +70,13 @@ class RegionSeg(QGroupBox):
             self.run_region_analysis,
             2,
             1,
+        )
+        add_button(
+            "Add region from selected layer",
+            region_layout,
+            self.add_region_from_existing_layer,
+            3,
+            0,
         )
 
         self.calculate_volumes_checkbox = add_checkbox(
@@ -133,7 +144,7 @@ class RegionSeg(QGroupBox):
             self.image_file_extension,
         )
 
-    def add_region(self):
+    def add_new_region(self):
         print("Adding a new region\n")
         self.region_panel.setVisible(True)  # Should be visible by default!
         add_new_region_layer(
@@ -143,6 +154,28 @@ class RegionSeg(QGroupBox):
             self.brush_size,
             self.num_colors,
         )
+
+    def add_region_from_existing_layer(self, override=False):
+        print("Adding region from existing layer\n")
+        selected_layer = self.parent.viewer.layers.selection.active
+        try:
+            add_region_from_existing_layer(
+                selected_layer, self.parent.label_layers
+            )
+            if not override:
+                display_info(
+                    self.parent,
+                    "Layer added",
+                    f"Added layer: {str(selected_layer)}.",
+                )
+        except TypeError:
+            if not override:
+                display_info(
+                    self.parent,
+                    "Unsupported layer type",
+                    "Selected layer is not a label layer. "
+                    "Please select a label layer and try again.",
+                )
 
     def run_region_analysis(self, override=False):
         if self.parent.label_layers:

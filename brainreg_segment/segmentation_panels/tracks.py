@@ -22,11 +22,12 @@ from brainreg_segment.layout.gui_elements import (
     add_float_box,
     add_int_box,
 )
-from brainreg_segment.layout.utils import display_warning
+from brainreg_segment.layout.utils import display_info, display_warning
 from brainreg_segment.tracks.analysis import track_analysis
 from brainreg_segment.tracks.layers import (
     add_existing_track_layers,
     add_new_track_layer,
+    add_track_from_existing_layer,
 )
 
 
@@ -74,18 +75,10 @@ class TrackSeg(QGroupBox):
         track_layout = QGridLayout()
 
         add_button(
-            "Add surface points",
-            track_layout,
-            self.add_surface_points,
-            5,
-            1,
-        )
-
-        add_button(
             "Add track",
             track_layout,
             self.add_track,
-            6,
+            5,
             0,
         )
 
@@ -93,6 +86,22 @@ class TrackSeg(QGroupBox):
             "Trace tracks",
             track_layout,
             self.run_track_analysis,
+            5,
+            1,
+        )
+
+        add_button(
+            "Add track from selected layer",
+            track_layout,
+            self.add_track_from_existing_layer,
+            6,
+            0,
+        )
+
+        add_button(
+            "Add surface points",
+            track_layout,
+            self.add_surface_points,
             6,
             1,
         )
@@ -201,6 +210,28 @@ class TrackSeg(QGroupBox):
             self.parent.track_layers,
             self.point_size,
         )
+
+    def add_track_from_existing_layer(self, overrride=False):
+        print("Adding track from existing layer\n")
+        selected_layer = self.parent.viewer.layers.selection.active
+        try:
+            add_track_from_existing_layer(
+                selected_layer, self.parent.track_layers
+            )
+            if not overrride:
+                display_info(
+                    self.parent,
+                    "Layer added",
+                    f"Added layer: {str(selected_layer)}.",
+                )
+        except TypeError:
+            if not overrride:
+                display_info(
+                    self.parent,
+                    "Unsupported layer type",
+                    "Selected layer is not a points layer. "
+                    "Please select a points layer and try again.",
+                )
 
     def add_surface_points(self):
         if self.parent.track_layers:

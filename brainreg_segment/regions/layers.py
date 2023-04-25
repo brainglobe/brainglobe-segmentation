@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import tifffile
+from napari.layers import Labels
 
 
 def add_new_label_layer(
@@ -72,6 +73,16 @@ def add_existing_label_layers(
     label_layer.selected_label = selected_label
     label_layer.brush_size = brush_size
     return label_layer
+
+
+def add_region_from_existing_layer(new_layer, label_layers):
+    """
+    Adds an existing label layer (e.g. from another plugin) to the list
+    """
+    if isinstance(new_layer, Labels):
+        label_layers.append(new_layer)
+    else:
+        raise TypeError("Layer must be a napari Labels layer")
 
 
 def add_existing_region_segmentation(
