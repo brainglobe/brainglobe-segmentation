@@ -74,11 +74,11 @@ def add_existing_label_layers(
     return label_layer
 
 
-def add_region_from_existing_layer(selected_layer, label_layers):
+def add_region_from_existing_layer(new_layer, label_layers):
     """
     Adds an existing label layer (e.g. from another plugin) to the list
     """
-    label_layers.append(selected_layer)
+    label_layers.append(new_layer)
 
 
 def add_existing_region_segmentation(
