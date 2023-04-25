@@ -156,21 +156,21 @@ class RegionSeg(QGroupBox):
             self.num_colors,
         )
 
-    def add_region_from_existing_layer(self, confirmation=True):
+    def add_region_from_existing_layer(self, override=False):
         print("Adding region from existing layer\n")
         selected_layer = self.parent.viewer.layers.selection.active
         if isinstance(selected_layer, Labels):
             add_region_from_existing_layer(
                 selected_layer, self.parent.label_layers
             )
-            if confirmation:
+            if not override:
                 display_info(
                     self.parent,
                     "Layer added",
                     f"Added layer: {str(selected_layer)}.",
                 )
         else:
-            if confirmation:
+            if not override:
                 display_info(
                     self.parent,
                     "Unsupported layer type",

@@ -55,6 +55,7 @@ def structure_from_viewer(coordinates, atlas_layer, atlas):
 
     Returns
     -------
+
     region_info   : str
                     A string containing info about structure
                     and hemisphere

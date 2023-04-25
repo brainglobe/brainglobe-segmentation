@@ -175,9 +175,7 @@ def test_tracks(segmentation_widget, tmp_path, rtol=1e-10):
         points, name="test_track2"
     )
     segmentation_widget.viewer.layers.selection.select_only(test_layer)
-    segmentation_widget.track_seg.add_track_from_existing_layer(
-        confirmation=False
-    )
+    segmentation_widget.track_seg.add_track_from_existing_layer(overrride=True)
     assert len(segmentation_widget.viewer.layers) == 6
     assert len(segmentation_widget.track_layers) == 3
 
@@ -234,7 +232,7 @@ def test_regions(segmentation_widget, tmp_path, rtol=1e-10):
     )
     segmentation_widget.viewer.layers.selection.select_only(test_layer)
     segmentation_widget.region_seg.add_region_from_existing_layer(
-        confirmation=False
+        override=True
     )
     assert len(segmentation_widget.viewer.layers) == 6
     assert len(segmentation_widget.label_layers) == 3

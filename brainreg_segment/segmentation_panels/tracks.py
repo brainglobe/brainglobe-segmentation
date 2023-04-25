@@ -212,21 +212,21 @@ class TrackSeg(QGroupBox):
             self.point_size,
         )
 
-    def add_track_from_existing_layer(self, confirmation=True):
+    def add_track_from_existing_layer(self, overrride=False):
         print("Adding track from existing layer\n")
         selected_layer = self.parent.viewer.layers.selection.active
         if isinstance(selected_layer, Points):
             add_track_from_existing_layer(
                 selected_layer, self.parent.track_layers
             )
-            if confirmation:
+            if not overrride:
                 display_info(
                     self.parent,
                     "Layer added",
                     f"Added layer: {str(selected_layer)}.",
                 )
         else:
-            if confirmation:
+            if not overrride:
                 display_info(
                     self.parent,
                     "Unsupported layer type",
