@@ -78,32 +78,32 @@ class TrackSeg(QGroupBox):
             "Add track",
             track_layout,
             self.add_track,
-            5,
-            0,
+            row=5,
+            column=0,
         )
 
         add_button(
             "Trace tracks",
             track_layout,
             self.run_track_analysis,
-            5,
-            1,
+            row=5,
+            column=1,
         )
 
         add_button(
             "Add track from selected layer",
             track_layout,
             self.add_track_from_existing_layer,
-            6,
-            0,
+            row=6,
+            column=0,
         )
 
         add_button(
             "Add surface points",
             track_layout,
             self.add_surface_points,
-            6,
-            1,
+            row=6,
+            column=1,
         )
 
         self.summarise_track_checkbox = add_checkbox(
