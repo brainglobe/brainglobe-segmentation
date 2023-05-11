@@ -150,8 +150,8 @@ class SegmentationWidget(QWidget):
             "Track tracing",
             self.toggle_methods_layout,
             self.track_seg.toggle_track_panel,
-            0,
-            1,
+            row=0,
+            column=1,
             minimum_width=COLUMN_WIDTH,
             alignment=SEGM_METHODS_PANEL_ALIGN,
         )
@@ -161,8 +161,8 @@ class SegmentationWidget(QWidget):
             "Region segmentation",
             self.toggle_methods_layout,
             self.region_seg.toggle_region_panel,
-            1,
-            1,
+            row=1,
+            column=1,
             minimum_width=COLUMN_WIDTH,
             alignment=SEGM_METHODS_PANEL_ALIGN,
         )
@@ -191,8 +191,8 @@ class SegmentationWidget(QWidget):
             "Load project (sample space)",
             self.load_data_layout,
             self.load_brainreg_directory_sample,
-            0,
-            0,
+            row=0,
+            column=0,
             visibility=False,
             minimum_width=COLUMN_WIDTH,
             alignment=LOADING_PANEL_ALIGN,
@@ -202,8 +202,8 @@ class SegmentationWidget(QWidget):
             "Load project (atlas space)",
             self.load_data_layout,
             self.load_brainreg_directory_standard,
-            1,
-            0,
+            row=1,
+            column=0,
             visibility=False,
             minimum_width=COLUMN_WIDTH,
             alignment=LOADING_PANEL_ALIGN,
@@ -233,12 +233,17 @@ class SegmentationWidget(QWidget):
             "To brainrender",
             self.save_data_layout,
             self.export_to_brainrender,
-            0,
-            0,
+            row=0,
+            column=0,
             visibility=False,
         )
         self.save_button = add_button(
-            "Save", self.save_data_layout, self.save, 0, 1, visibility=False
+            "Save",
+            self.save_data_layout,
+            self.save,
+            row=0,
+            column=1,
+            visibility=False,
         )
 
         self.save_data_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)

@@ -60,23 +60,23 @@ class RegionSeg(QGroupBox):
             "Add new region",
             region_layout,
             self.add_new_region,
-            2,
-            0,
+            row=2,
+            column=0,
         )
 
         add_button(
             "Analyse regions",
             region_layout,
             self.run_region_analysis,
-            2,
-            1,
+            row=2,
+            column=1,
         )
         add_button(
             "Add region from selected layer",
             region_layout,
             self.add_region_from_existing_layer,
-            3,
-            0,
+            row=3,
+            column=0,
         )
 
         self.calculate_volumes_checkbox = add_checkbox(
