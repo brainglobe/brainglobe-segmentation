@@ -103,7 +103,7 @@ def summarise_single_brain_region(
         data.astype(np.uint16), properties=properties_to_fetch
     )
     df = pd.DataFrame.from_dict(regions_table)
-    df.insert(0, "Region", label_layer.name)
+    df.insert(0, "region", label_layer.name)
     return df
 
 
