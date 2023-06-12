@@ -86,7 +86,7 @@ def summarise_single_brain_region(
         "centroid",
     ],
 ):
-    data = label_layer.data
+    data = np.asarray(label_layer.data)
     if ignore_empty:
         if data.sum() == 0:
             return
