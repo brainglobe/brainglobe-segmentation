@@ -46,6 +46,10 @@ def summarise_brain_regions(label_layers, filename, atlas_resolution):
     for label_layer in label_layers:
         summaries.append(summarise_single_brain_region(label_layer))
 
+    if check_list_only_nones(summaries):
+        print("No regions to summarise")
+        return
+
     result = pd.concat(summaries)
     # TODO: use atlas.space to make these more intuitive
     volume_header = "volume_mm3"
@@ -75,6 +79,10 @@ def summarise_brain_regions(label_layers, filename, atlas_resolution):
                 result[header] = result[header] * scale
 
     result.to_csv(filename, index=False)
+
+
+def check_list_only_nones(input_list):
+    return all(v is None for v in input_list)
 
 
 def summarise_single_brain_region(
