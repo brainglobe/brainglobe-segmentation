@@ -48,7 +48,8 @@ dev = [
     "pytest",
     "coverage",
     "pytest-cov",
-    "pytest-qt"
+    "pytest-qt",
+    "napari-time-slicer" # to test non ndarray-types
 ]
 
 
