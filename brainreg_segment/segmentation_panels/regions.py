@@ -62,6 +62,8 @@ class RegionSeg(QGroupBox):
             self.add_new_region,
             row=2,
             column=0,
+            tooltip="Create a new empty segmentation layer "
+            "to manually segment a new region.",
         )
 
         add_button(
@@ -70,6 +72,8 @@ class RegionSeg(QGroupBox):
             self.run_region_analysis,
             row=2,
             column=1,
+            tooltip="Analyse the spatial distribution of the "
+            "segmented regions.",
         )
         add_button(
             "Add region from selected layer",
@@ -77,6 +81,10 @@ class RegionSeg(QGroupBox):
             self.add_region_from_existing_layer,
             row=3,
             column=0,
+            tooltip="Adds a region from a selected labels layer (e.g. "
+            "from another plugin). Make sure this region "
+            "was segmented from the currently loaded "
+            "brainreg result (i.e. atlas/sample space)!",
         )
 
         self.calculate_volumes_checkbox = add_checkbox(
@@ -84,6 +92,9 @@ class RegionSeg(QGroupBox):
             self.calculate_volumes_default,
             "Calculate volumes",
             0,
+            tooltip="Calculate and save the volume of each "
+            "brain region included in the segmented "
+            "region.",
         )
 
         self.summarise_volumes_checkbox = add_checkbox(
@@ -91,6 +102,8 @@ class RegionSeg(QGroupBox):
             self.summarise_volumes_default,
             "Summarise volumes",
             1,
+            tooltip="Summarise each segmented region "
+            "(e.g. center, volume etc.).",
         )
 
         region_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)
