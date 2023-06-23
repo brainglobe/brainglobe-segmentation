@@ -2,7 +2,7 @@ from pathlib import Path
 
 import imio
 import numpy as np
-from imlib.general.pathlib import append_to_pathlib_stem
+from brainglobe_utils.general.pathlib import append_to_pathlib_stem
 from skimage import measure
 
 
