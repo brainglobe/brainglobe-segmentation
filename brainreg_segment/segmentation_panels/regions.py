@@ -183,6 +183,8 @@ class RegionSeg(QGroupBox):
                 choice = display_warning(
                     self.parent,
                     "About to analyse regions",
+                    "Please ensure the regions were segmented in the same "
+                    "reference space as the currently open image. "
                     "Existing files will be will be deleted. Proceed?",
                 )
             else:
