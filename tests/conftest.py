@@ -24,21 +24,3 @@ def segmentation_widget(make_napari_viewer):
     widget = SegmentationWidget(viewer)
     viewer.window.add_dock_widget(widget)
     return widget
-
-
-@pytest.fixture
-def segmentation_widget_with_data_sample_space(segmentation_widget):
-    return load_brainreg_dir(segmentation_widget, standard_space=False)
-
-
-@pytest.fixture
-def segmentation_widget_with_data_atlas_space(segmentation_widget):
-    return load_brainreg_dir(segmentation_widget, standard_space=True)
-
-
-def load_brainreg_dir(segmentation_widget, standard_space=False):
-    segmentation_widget.standard_space = standard_space
-    segmentation_widget.plugin = "brainglobe-napari-io.brainreg_read_dir"
-    segmentation_widget.directory = brainreg_dir
-    segmentation_widget.load_brainreg_directory()
-    return segmentation_widget
