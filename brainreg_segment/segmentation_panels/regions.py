@@ -83,14 +83,14 @@ class RegionSeg(QGroupBox):
             region_layout,
             self.calculate_volumes_default,
             "Calculate volumes",
-            0,
+            row=0,
         )
 
         self.summarise_volumes_checkbox = add_checkbox(
             region_layout,
             self.summarise_volumes_default,
             "Summarise volumes",
-            1,
+            row=1,
         )
 
         region_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)

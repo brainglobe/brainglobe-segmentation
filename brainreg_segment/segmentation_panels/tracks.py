@@ -110,7 +110,7 @@ class TrackSeg(QGroupBox):
             track_layout,
             self.summarise_track_default,
             "Summarise",
-            0,
+            row=0,
         )
 
         self.fit_degree = add_int_box(
@@ -119,7 +119,7 @@ class TrackSeg(QGroupBox):
             1,
             5,
             "Fit degree",
-            1,
+            row=1,
         )
 
         self.spline_smoothing = add_float_box(
@@ -129,7 +129,7 @@ class TrackSeg(QGroupBox):
             1,
             "Spline smoothing",
             0.1,
-            2,
+            row=2,
         )
 
         self.spline_points = add_int_box(
@@ -138,7 +138,7 @@ class TrackSeg(QGroupBox):
             1,
             10000,
             "Spline points",
-            3,
+            row=3,
         )
 
         track_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)

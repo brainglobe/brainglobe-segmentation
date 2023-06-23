@@ -1,7 +1,3 @@
-# GUI ELEMENTS
-# from napari.resources import build_icons # Contains .SVGPATH to all icons
-# for napari
-
 from qtpy.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -16,8 +12,8 @@ def add_combobox(
     layout,
     label,
     items,
-    row,
-    column=0,
+    row: int = 0,
+    column: int = 0,
     label_stack=False,
     callback=None,
     width=150,
@@ -50,8 +46,8 @@ def add_button(
     layout,
     connected_function,
     *,
-    row: int,
-    column: int,
+    row: int = 0,
+    column: int = 0,
     visibility=True,
     minimum_width=0,
     alignment="center",
@@ -71,7 +67,13 @@ def add_button(
     return button
 
 
-def add_checkbox(layout, default, label, row, column=0):
+def add_checkbox(
+    layout,
+    default,
+    label,
+    row: int = 0,
+    column: int = 0,
+):
     box = QCheckBox()
     box.setChecked(default)
     layout.addWidget(QLabel(label), row, column)
@@ -80,7 +82,14 @@ def add_checkbox(layout, default, label, row, column=0):
 
 
 def add_float_box(
-    layout, default, minimum, maximum, label, step, row, column=0
+    layout,
+    default,
+    minimum,
+    maximum,
+    label,
+    step,
+    row: int = 0,
+    column: int = 0,
 ):
     box = QDoubleSpinBox()
     box.setMinimum(minimum)
@@ -92,7 +101,15 @@ def add_float_box(
     return box
 
 
-def add_int_box(layout, default, minimum, maximum, label, row, column=0):
+def add_int_box(
+    layout,
+    default,
+    minimum,
+    maximum,
+    label,
+    row: int = 0,
+    column: int = 0,
+):
     box = QSpinBox()
     box.setMinimum(minimum)
     box.setMaximum(maximum)
