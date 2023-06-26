@@ -149,7 +149,8 @@ class TrackSeg(QGroupBox):
             row=2,
             tooltip="How closely or not to fit the points "
             "(lower numbers fit more closely, for "
-            "a less smooth interpolation).",        )
+            "a less smooth interpolation).",
+        )
 
         self.spline_points = add_int_box(
             track_layout,

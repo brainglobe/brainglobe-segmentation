@@ -75,12 +75,7 @@ def add_button(
 
 
 def add_checkbox(
-    layout,
-    default,
-    label,
-    row: int = 0,
-    column: int = 0,
-    tooltip=None
+    layout, default, label, row: int = 0, column: int = 0, tooltip=None
 ):
     box = QCheckBox()
     box.setChecked(default)
@@ -100,8 +95,7 @@ def add_float_box(
     step,
     row: int = 0,
     column: int = 0,
-    tooltip=None
-
+    tooltip=None,
 ):
     box = QDoubleSpinBox()
     box.setMinimum(minimum)
@@ -123,8 +117,7 @@ def add_int_box(
     label,
     row: int = 0,
     column: int = 0,
-    tooltip=None
-
+    tooltip=None,
 ):
     box = QSpinBox()
     box.setMinimum(minimum)
