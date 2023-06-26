@@ -91,7 +91,7 @@ class RegionSeg(QGroupBox):
             region_layout,
             self.calculate_volumes_default,
             "Calculate volumes",
-            0,
+            row=0,
             tooltip="Calculate and save the volume of each "
             "brain region included in the segmented "
             "region.",
@@ -101,7 +101,7 @@ class RegionSeg(QGroupBox):
             region_layout,
             self.summarise_volumes_default,
             "Summarise volumes",
-            1,
+            row=1,
             tooltip="Summarise each segmented region "
             "(e.g. center, volume etc.).",
         )

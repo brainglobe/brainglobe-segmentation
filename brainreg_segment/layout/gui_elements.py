@@ -1,7 +1,3 @@
-# GUI ELEMENTS
-# from napari.resources import build_icons # Contains .SVGPATH to all icons
-# for napari
-
 from qtpy.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -16,8 +12,8 @@ def add_combobox(
     layout,
     label,
     items,
-    row,
-    column=0,
+    row: int = 0,
+    column: int = 0,
     label_stack=False,
     callback=None,
     width=150,
@@ -53,8 +49,8 @@ def add_button(
     layout,
     connected_function,
     *,
-    row: int,
-    column: int,
+    row: int = 0,
+    column: int = 0,
     visibility=True,
     minimum_width=0,
     alignment="center",
@@ -78,55 +74,9 @@ def add_button(
     return button
 
 
-# def add_radiobutton(
-#     label,
-#     layout,
-#     connected_function,
-#     row,
-#     column,
-#     visibility=True,
-#     minimum_width=0,
-#     alignment="center",
-# ):
-#     button = QRadioButton(label)
-#     if alignment == "center":
-#         pass
-#     elif alignment == "left":
-#         button.setStyleSheet(
-#             "QRadioButton { text-align: left; padding: 0; spacing: 30px;}"
-#         )
-#     elif alignment == "right":
-#         button.setStyleSheet(
-#             "QRadioButton { text-align: right; padding: 0; spacing: 30px;}"
-#         )
-
-#     # Too change indicator button ... needs to dynamically retrieve icon
-#     # from Napari.
-#     # Icons are saved as .svg files under napari.resources SVGPATH
-#     # "QRadioButton::indicator"
-#     # "{"
-#     # "width:16px;"
-#     # "height:16px;"
-#     # "}"
-#     # "QRadioButton::indicator::unchecked"
-#     # "{"
-#     # "image: url(build_icons.SVGPATH/visibility_off.svg);"
-#     # "}"
-#     # "QRadioButton::indicator::checked"
-#     # "{"
-#     # "image: url(/opt/miniconda3/envs/analysis/lib/python3.6/site-packages/
-#                   napari/resources/icons/visibility.svg);"
-#     # "}"
-#     # )
-
-#     button.setVisible(visibility)
-#     button.setMinimumWidth(minimum_width)
-#     layout.addWidget(button, row, column)
-#     button.clicked.connect(connected_function)
-#     return button
-
-
-def add_checkbox(layout, default, label, row, column=0, tooltip=None):
+def add_checkbox(
+    layout, default, label, row: int = 0, column: int = 0, tooltip=None
+):
     box = QCheckBox()
     box.setChecked(default)
     if tooltip:
@@ -137,7 +87,15 @@ def add_checkbox(layout, default, label, row, column=0, tooltip=None):
 
 
 def add_float_box(
-    layout, default, minimum, maximum, label, step, row, column=0, tooltip=None
+    layout,
+    default,
+    minimum,
+    maximum,
+    label,
+    step,
+    row: int = 0,
+    column: int = 0,
+    tooltip=None,
 ):
     box = QDoubleSpinBox()
     box.setMinimum(minimum)
@@ -152,7 +110,14 @@ def add_float_box(
 
 
 def add_int_box(
-    layout, default, minimum, maximum, label, row, column=0, tooltip=None
+    layout,
+    default,
+    minimum,
+    maximum,
+    label,
+    row: int = 0,
+    column: int = 0,
+    tooltip=None,
 ):
     box = QSpinBox()
     box.setMinimum(minimum)

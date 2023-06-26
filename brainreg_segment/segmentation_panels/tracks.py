@@ -135,7 +135,7 @@ class TrackSeg(QGroupBox):
             1,
             5,
             "Fit degree",
-            1,
+            row=1,
             tooltip="Degree of polynomial to fit to the track.",
         )
 
@@ -146,7 +146,7 @@ class TrackSeg(QGroupBox):
             1,
             "Spline smoothing",
             0.1,
-            2,
+            row=2,
             tooltip="How closely or not to fit the points "
             "(lower numbers fit more closely, for "
             "a less smooth interpolation).",
@@ -158,7 +158,7 @@ class TrackSeg(QGroupBox):
             1,
             10000,
             "Spline points",
-            3,
+            row=3,
             tooltip="How many points are sampled from the "
             "interpolation (used for the summary).",
         )
