@@ -21,6 +21,7 @@ def add_combobox(
     label_stack=False,
     callback=None,
     width=150,
+    tooltip=None,
 ):
     if label_stack:
         combobox_row = row + 1
@@ -41,6 +42,8 @@ def add_combobox(
     else:
         combobox_label = None
 
+    if tooltip:
+        combobox.setToolTip(tooltip)
     layout.addWidget(combobox, combobox_row, combobox_column)
     return combobox, combobox_label
 
@@ -55,6 +58,7 @@ def add_button(
     visibility=True,
     minimum_width=0,
     alignment="center",
+    tooltip=None,
 ):
     button = QPushButton(label)
     if alignment == "center":
@@ -66,6 +70,9 @@ def add_button(
 
     button.setVisible(visibility)
     button.setMinimumWidth(minimum_width)
+
+    if tooltip:
+        button.setToolTip(tooltip)
     layout.addWidget(button, row, column)
     button.clicked.connect(connected_function)
     return button
@@ -119,33 +126,41 @@ def add_button(
 #     return button
 
 
-def add_checkbox(layout, default, label, row, column=0):
+def add_checkbox(layout, default, label, row, column=0, tooltip=None):
     box = QCheckBox()
     box.setChecked(default)
+    if tooltip:
+        box.setToolTip(tooltip)
     layout.addWidget(QLabel(label), row, column)
     layout.addWidget(box, row, column + 1)
     return box
 
 
 def add_float_box(
-    layout, default, minimum, maximum, label, step, row, column=0
+    layout, default, minimum, maximum, label, step, row, column=0, tooltip=None
 ):
     box = QDoubleSpinBox()
     box.setMinimum(minimum)
     box.setMaximum(maximum)
     box.setValue(default)
     box.setSingleStep(step)
+    if tooltip:
+        box.setToolTip(tooltip)
     layout.addWidget(QLabel(label), row, column)
     layout.addWidget(box, row, column + 1)
     return box
 
 
-def add_int_box(layout, default, minimum, maximum, label, row, column=0):
+def add_int_box(
+    layout, default, minimum, maximum, label, row, column=0, tooltip=None
+):
     box = QSpinBox()
     box.setMinimum(minimum)
     box.setMaximum(maximum)
     # Not always set if not after min & max
     box.setValue(default)
+    if tooltip:
+        box.setToolTip(tooltip)
     layout.addWidget(QLabel(label), row, column)
     layout.addWidget(box, row, column + 1)
     return box

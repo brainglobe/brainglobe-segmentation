@@ -80,6 +80,8 @@ class TrackSeg(QGroupBox):
             self.add_track,
             row=5,
             column=0,
+            tooltip="Create a new empty segmentation layer "
+            "to manually annotate a new track.",
         )
 
         add_button(
@@ -88,6 +90,9 @@ class TrackSeg(QGroupBox):
             self.run_track_analysis,
             row=5,
             column=1,
+            tooltip="Join up the points using a spline fit "
+            "and save the distribution of the track in "
+            "the brain.",
         )
 
         add_button(
@@ -96,6 +101,10 @@ class TrackSeg(QGroupBox):
             self.add_track_from_existing_layer,
             row=6,
             column=0,
+            tooltip="Adds a track from a selected points layer (e.g. "
+            "from another plugin). Make sure this track "
+            "was segmented from the currently loaded "
+            "brainreg result (i.e. atlas/sample space)! ",
         )
 
         add_button(
@@ -104,13 +113,20 @@ class TrackSeg(QGroupBox):
             self.add_surface_points,
             row=6,
             column=1,
+            tooltip="Add an additional first point at the surface of the "
+            "brain. Selecting this option will add an additional "
+            "point at the closest part of the brain surface to the "
+            "first point, so that the track starts there.",
         )
 
         self.summarise_track_checkbox = add_checkbox(
             track_layout,
             self.summarise_track_default,
             "Summarise",
-            0,
+            row=0,
+            tooltip="Save a csv file, showing the brain area for "
+            "each part of the interpolated track "
+            "(determined by the number of spline points). ",
         )
 
         self.fit_degree = add_int_box(
@@ -120,6 +136,7 @@ class TrackSeg(QGroupBox):
             5,
             "Fit degree",
             1,
+            tooltip="Degree of polynomial to fit to the track.",
         )
 
         self.spline_smoothing = add_float_box(
@@ -130,6 +147,9 @@ class TrackSeg(QGroupBox):
             "Spline smoothing",
             0.1,
             2,
+            tooltip="How closely or not to fit the points "
+            "(lower numbers fit more closely, for "
+            "a less smooth interpolation).",
         )
 
         self.spline_points = add_int_box(
@@ -139,6 +159,8 @@ class TrackSeg(QGroupBox):
             10000,
             "Spline points",
             3,
+            tooltip="How many points are sampled from the "
+            "interpolation (used for the summary).",
         )
 
         track_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)
