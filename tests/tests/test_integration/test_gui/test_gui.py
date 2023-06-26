@@ -4,25 +4,10 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import pytest
-
-from brainreg_segment.segment import SegmentationWidget
 
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
 
 ATLAS_NAME = "example_mouse_100um"
-
-
-@pytest.fixture
-def segmentation_widget(make_napari_viewer):
-    """
-    Create a viewer, add the curation widget, and return the widget.
-    The viewer can be accessed using ``widget.viewer``.
-    """
-    viewer = make_napari_viewer()
-    widget = SegmentationWidget(viewer)
-    viewer.window.add_dock_widget(widget)
-    return widget
 
 
 def test_load_sample_space(segmentation_widget):

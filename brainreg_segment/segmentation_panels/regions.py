@@ -196,6 +196,8 @@ class RegionSeg(QGroupBox):
                 choice = display_warning(
                     self.parent,
                     "About to analyse regions",
+                    "Please ensure the regions were segmented in the same "
+                    "reference space as the currently open image. "
                     "Existing files will be will be deleted. Proceed?",
                 )
             else:
@@ -203,18 +205,43 @@ class RegionSeg(QGroupBox):
 
             if choice:
                 print("Running region analysis")
-                worker = region_analysis(
+
+                if check_segmentation_in_correct_space(
                     self.parent.label_layers,
                     self.parent.annotations_layer.data,
-                    self.parent.atlas,
-                    self.parent.hemispheres_data,
-                    self.parent.paths.regions_directory,
-                    output_csv_file=self.parent.paths.region_summary_csv,
-                    volumes=self.calculate_volumes_checkbox.isChecked(),
-                    summarise=self.summarise_volumes_checkbox.isChecked(),
-                )
-                worker.start()
+                ):
+                    worker = region_analysis(
+                        self.parent.label_layers,
+                        self.parent.annotations_layer.data,
+                        self.parent.atlas,
+                        self.parent.hemispheres_data,
+                        self.parent.paths.regions_directory,
+                        output_csv_file=self.parent.paths.region_summary_csv,
+                        volumes=self.calculate_volumes_checkbox.isChecked(),
+                        summarise=self.summarise_volumes_checkbox.isChecked(),
+                    )
+                    worker.start()
+                else:
+                    display_incorrect_space_warning(self.parent)
+                    return
             else:
                 print("Preventing analysis as user chose 'Cancel'")
         else:
             print("No regions found")
+
+
+def check_segmentation_in_correct_space(label_layers, annotations_layer_image):
+    for label_layer in label_layers:
+        if label_layer.data.shape != annotations_layer_image.shape:
+            return False
+    return True
+
+
+def display_incorrect_space_warning(widget):
+    display_info(
+        widget,
+        "Incorrect coordinate space",
+        "One or more of the segmented images are not of the same size "
+        "as the registered image. Please ensure you segmented your "
+        "data in the same coordinate space as you wish to analyse it in. ",
+    )

@@ -286,6 +286,8 @@ class TrackSeg(QGroupBox):
                 choice = display_warning(
                     self.parent,
                     "About to analyse tracks",
+                    "Please ensure the tracks were defined in the same "
+                    "reference space as the currently open image. "
                     "Existing files will be will be deleted. Proceed?",
                 )
             else:
