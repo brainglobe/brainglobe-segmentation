@@ -17,7 +17,7 @@ def allen_mouse_50um_atlas():
 @pytest.fixture
 def segmentation_widget(make_napari_viewer):
     """
-    Create a viewer, add the curation widget, and return the widget.
+    Create a viewer, add the segmentation widget, and return the widget.
     The viewer can be accessed using ``widget.viewer``.
     """
     viewer = make_napari_viewer()
