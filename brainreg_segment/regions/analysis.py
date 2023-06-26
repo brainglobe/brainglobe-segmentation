@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
-from imlib.general.list import unique_elements_lists
-from imlib.pandas.misc import initialise_df
+from brainglobe_utils.general.list import unique_elements_lists
+from brainglobe_utils.pandas.misc import initialise_df
 from napari.qt.threading import thread_worker
 from skimage.measure import regionprops_table
 

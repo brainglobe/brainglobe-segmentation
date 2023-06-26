@@ -154,6 +154,8 @@ class SegmentationWidget(QWidget):
             column=1,
             minimum_width=COLUMN_WIDTH,
             alignment=SEGM_METHODS_PANEL_ALIGN,
+            tooltip="Segment a 1D structure (e.g. an axon "
+            "or implanted electrode)",
         )
         self.show_trackseg_button.setEnabled(False)
 
@@ -165,6 +167,7 @@ class SegmentationWidget(QWidget):
             column=1,
             minimum_width=COLUMN_WIDTH,
             alignment=SEGM_METHODS_PANEL_ALIGN,
+            tooltip="Segment a 2/3D structure (e.g. a brain region)",
         )
         self.show_regionseg_button.setEnabled(False)
 
@@ -196,6 +199,10 @@ class SegmentationWidget(QWidget):
             visibility=False,
             minimum_width=COLUMN_WIDTH,
             alignment=LOADING_PANEL_ALIGN,
+            tooltip="Load a brainreg project in the coordinate "
+            "space of your raw data (i.e., not warped to the atlas "
+            "space).  N.B. the data will have been reoriented to "
+            "the orientation of your chosen atlas.",
         )
 
         self.load_button_standard = add_button(
@@ -207,6 +214,8 @@ class SegmentationWidget(QWidget):
             visibility=False,
             minimum_width=COLUMN_WIDTH,
             alignment=LOADING_PANEL_ALIGN,
+            tooltip="Load a brainreg project warped to the coordinate "
+            "space of the atlas.",
         )
 
         self.add_atlas_menu(self.load_data_layout)
@@ -236,6 +245,9 @@ class SegmentationWidget(QWidget):
             row=0,
             column=0,
             visibility=False,
+            tooltip="Export the segmentation to brainrender "
+            "(only works if the segmentation was "
+            "performed in atlas space.",
         )
         self.save_button = add_button(
             "Save",
@@ -244,6 +256,7 @@ class SegmentationWidget(QWidget):
             row=0,
             column=1,
             visibility=False,
+            tooltip="Save the segmentation to disk to " "be reloaded later.",
         )
 
         self.save_data_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)
@@ -269,6 +282,9 @@ class SegmentationWidget(QWidget):
                 label_stack=True,
                 callback=self.initialise_atlas,
                 width=COLUMN_WIDTH,
+                tooltip="Load a BrainGlobe atlas if you don't have "
+                "a brainreg project to load. Useful for creating "
+                "illustrations or testing the software.",
             )
 
         self.atlas_menu = atlas_menu
