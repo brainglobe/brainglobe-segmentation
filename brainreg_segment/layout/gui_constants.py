@@ -14,6 +14,8 @@ SEGM_METHODS_PANEL_ALIGN = (
     "left"  # Alignment of text in pushbuttons in methods chooser panel
 )
 
+SAVE_DEFAULT = False
+
 POINT_SIZE = 100
 SPLINE_SIZE = 50
 NUM_COLORS = 10

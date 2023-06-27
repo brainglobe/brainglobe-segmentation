@@ -9,6 +9,7 @@ from brainreg_segment.layout.gui_constants import (
     COLUMN_WIDTH,
     FIT_DEGREE_DEFAULT,
     POINT_SIZE,
+    SAVE_DEFAULT,
     SEGM_METHODS_PANEL_ALIGN,
     SPLINE_POINTS_DEFAULT,
     SPLINE_SIZE,
@@ -47,6 +48,7 @@ class TrackSeg(QGroupBox):
         spline_smoothing_default=SPLINE_SMOOTHING_DEFAULT,
         fit_degree_default=FIT_DEGREE_DEFAULT,
         summarise_track_default=SUMMARISE_TRACK_DEFAULT,
+        save_default=SAVE_DEFAULT,
     ):
         super(TrackSeg, self).__init__()
         self.parent = parent
@@ -62,6 +64,7 @@ class TrackSeg(QGroupBox):
         self.spline_size = spline_size  # Initialise
         self.spline_smoothing_default = spline_smoothing_default
         self.fit_degree_default = fit_degree_default
+        self.save_default = save_default
 
         # File formats
         self.track_file_extension = track_file_extension
@@ -78,7 +81,7 @@ class TrackSeg(QGroupBox):
             "Add track",
             track_layout,
             self.add_track,
-            row=5,
+            row=6,
             column=0,
             tooltip="Create a new empty segmentation layer "
             "to manually annotate a new track.",
@@ -88,7 +91,7 @@ class TrackSeg(QGroupBox):
             "Trace tracks",
             track_layout,
             self.run_track_analysis,
-            row=5,
+            row=6,
             column=1,
             tooltip="Join up the points using a spline fit "
             "and save the distribution of the track in "
@@ -99,7 +102,7 @@ class TrackSeg(QGroupBox):
             "Add track from selected layer",
             track_layout,
             self.add_track_from_existing_layer,
-            row=6,
+            row=7,
             column=0,
             tooltip="Adds a track from a selected points layer (e.g. "
             "from another plugin). Make sure this track "
@@ -111,7 +114,7 @@ class TrackSeg(QGroupBox):
             "Add surface points",
             track_layout,
             self.add_surface_points,
-            row=6,
+            row=7,
             column=1,
             tooltip="Add an additional first point at the surface of the "
             "brain. Selecting this option will add an additional "
@@ -128,14 +131,21 @@ class TrackSeg(QGroupBox):
             "each part of the interpolated track "
             "(determined by the number of spline points). ",
         )
+        self.save_checkbox = add_checkbox(
+            track_layout,
+            self.save_default,
+            "Save tracing",
+            row=1,
+            tooltip="Save the traced layers during analysis.",
+        )
 
         self.fit_degree = add_int_box(
             track_layout,
             self.fit_degree_default,
-            1,
+            2,
             5,
             "Fit degree",
-            row=1,
+            row=2,
             tooltip="Degree of polynomial to fit to the track.",
         )
 
@@ -146,7 +156,7 @@ class TrackSeg(QGroupBox):
             1,
             "Spline smoothing",
             0.1,
-            row=2,
+            row=3,
             tooltip="How closely or not to fit the points "
             "(lower numbers fit more closely, for "
             "a less smooth interpolation).",
@@ -158,7 +168,7 @@ class TrackSeg(QGroupBox):
             1,
             10000,
             "Spline points",
-            row=3,
+            row=4,
             tooltip="How many points are sampled from the "
             "interpolation (used for the summary).",
         )
@@ -294,6 +304,9 @@ class TrackSeg(QGroupBox):
                 choice = True  # for debugging
 
             if choice:
+                if self.save_checkbox.isChecked():
+                    self.parent.run_save()
+
                 print("Running track analysis")
                 self.splines, self.spline_names = track_analysis(
                     self.parent.viewer,

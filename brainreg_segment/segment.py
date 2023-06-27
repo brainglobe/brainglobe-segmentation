@@ -568,17 +568,20 @@ class SegmentationWidget(QWidget):
             else:
                 choice = True  # for debugging
             if choice:
-                print("Saving")
-                worker = save_all(
-                    self.paths.regions_directory,
-                    self.paths.tracks_directory,
-                    self.label_layers,
-                    self.track_layers,
-                    track_file_extension=TRACK_FILE_EXT,
-                )
-                worker.start()
+                self.run_save()
             else:
                 print('Not saving because user chose "Cancel" \n')
+
+    def run_save(self):
+        print("Saving")
+        worker = save_all(
+            self.paths.regions_directory,
+            self.paths.tracks_directory,
+            self.label_layers,
+            self.track_layers,
+            track_file_extension=TRACK_FILE_EXT,
+        )
+        worker.start()
 
     def export_to_brainrender(self, override=False):
         if not override:
