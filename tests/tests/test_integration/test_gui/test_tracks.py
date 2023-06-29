@@ -72,24 +72,40 @@ def test_add_surface_point(
     )
 
 
-def test_track_analysis(
+def test_track_analysis_without_save(
     segmentation_widget_with_data_atlas_space, test_tracks_dir
 ):
+    segmentation_widget_with_data_atlas_space.track_seg.save_checkbox.setChecked(
+        False
+    )
+
     segmentation_widget_with_data_atlas_space.track_seg.run_track_analysis(
         override=True
     )
-    regions_validate = pd.read_csv(validate_tracks_dir / "test_track.csv")
-    regions_test = pd.read_csv(test_tracks_dir / "test_track.csv")
-    pd.testing.assert_frame_equal(regions_validate, regions_test)
+    # check saving didn't happen
+    assert (test_tracks_dir / "test_track.points").exists() is False
+
+    check_analysis(test_tracks_dir, validate_tracks_dir)
+
+
+def test_track_analysis_with_save(
+    segmentation_widget_with_data_atlas_space, test_tracks_dir, rtol=1e-10
+):
+    segmentation_widget_with_data_atlas_space.track_seg.save_checkbox.setChecked(
+        True
+    )
+    segmentation_widget_with_data_atlas_space.track_seg.run_track_analysis(
+        override=True
+    )
+
+    check_analysis(test_tracks_dir, validate_tracks_dir)
+    check_saving(test_tracks_dir, validate_tracks_dir, rtol)
 
 
 def test_track_save(
     segmentation_widget_with_data_atlas_space, test_tracks_dir, rtol=1e-10
 ):
-    segmentation_widget_with_data_atlas_space.save(override=True)
-    points_validate = pd.read_hdf(validate_tracks_dir / "test_track.points")
-    points_test = pd.read_hdf(test_tracks_dir / "test_track.points")
-    np.testing.assert_allclose(points_validate, points_test, rtol=rtol)
+    check_saving(test_tracks_dir, validate_tracks_dir, rtol)
 
 
 def test_track_export(
@@ -101,3 +117,15 @@ def test_track_export(
     spline_validate = pd.read_hdf(validate_tracks_dir / "test_track.h5")
     spline_test = pd.read_hdf(test_tracks_dir / "test_track.h5")
     pd.testing.assert_frame_equal(spline_test, spline_validate)
+
+
+def check_analysis(test_tracks_dir, validate_tracks_dir):
+    regions_validate = pd.read_csv(validate_tracks_dir / "test_track.csv")
+    regions_test = pd.read_csv(test_tracks_dir / "test_track.csv")
+    pd.testing.assert_frame_equal(regions_validate, regions_test)
+
+
+def check_saving(test_tracks_dir, validate_tracks_dir, rtol):
+    points_validate = pd.read_hdf(validate_tracks_dir / "test_track.points")
+    points_test = pd.read_hdf(test_tracks_dir / "test_track.points")
+    np.testing.assert_allclose(points_validate, points_test, rtol=rtol)
