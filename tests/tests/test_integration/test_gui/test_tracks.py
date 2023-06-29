@@ -57,7 +57,7 @@ def test_add_existing_track(
         points, name="test_track2"
     )
     segmentation_widget.viewer.layers.selection.select_only(test_layer)
-    segmentation_widget.track_seg.add_track_from_existing_layer(overrride=True)
+    segmentation_widget.track_seg.add_track_from_existing_layer(override=True)
     assert len(segmentation_widget.viewer.layers) == 5
     assert len(segmentation_widget.track_layers) == 2
 
