@@ -75,15 +75,13 @@ def test_add_surface_point(
 def test_track_analysis_without_save(
     segmentation_widget_with_data_atlas_space, test_tracks_dir
 ):
-    segmentation_widget_with_data_atlas_space.track_seg.save_checkbox.setChecked(
-        False
-    )
-
+    test_saved_track = Path(test_tracks_dir / "test_track.points")
+    test_saved_track.unlink()
     segmentation_widget_with_data_atlas_space.track_seg.run_track_analysis(
         override=True
     )
-    # check saving didn't happen
-    assert (test_tracks_dir / "test_track.points").exists() is False
+    # check saving didn't happen (default)
+    assert (test_saved_track).exists() is False
 
     check_analysis(test_tracks_dir, validate_tracks_dir)
 
@@ -91,6 +89,8 @@ def test_track_analysis_without_save(
 def test_track_analysis_with_save(
     segmentation_widget_with_data_atlas_space, test_tracks_dir, rtol=1e-10
 ):
+    test_saved_track = Path(test_tracks_dir / "test_track.points")
+    test_saved_track.unlink()
     segmentation_widget_with_data_atlas_space.track_seg.save_checkbox.setChecked(
         True
     )
