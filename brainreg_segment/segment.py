@@ -451,10 +451,9 @@ class SegmentationWidget(QWidget):
             ]
             self.hemispheres_data = self.hemispheres_layer.data
 
-        self.prevent_layer_edit()
-
         self.initialise_segmentation_interface()
         self.status_label.setText("Ready")
+        self.prevent_layer_edit()
 
     def collate_widget_layers(self):
         """
@@ -486,6 +485,7 @@ class SegmentationWidget(QWidget):
         ]
 
     def prevent_layer_edit(self):
+        print("Preventing layer edit")
         self.collate_widget_layers()
         for layer in self.non_editable_widget_layers:
             layer.editable = False
