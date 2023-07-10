@@ -1,4 +1,5 @@
 from pathlib import Path
+from time import sleep
 
 import numpy as np
 import pandas as pd
@@ -115,6 +116,8 @@ def test_track_export(
         override=True
     )
 
+    # ensure data is saved before it is loaded again
+    sleep(1)
     spline_validate = np.load(validate_tracks_dir / "test_track.npy")
     spline_test = np.load(test_tracks_dir / "test_track.npy")
     np.testing.assert_equal(spline_validate, spline_test)

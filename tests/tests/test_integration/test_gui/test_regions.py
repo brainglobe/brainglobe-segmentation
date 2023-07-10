@@ -1,5 +1,6 @@
 from filecmp import cmp
 from pathlib import Path
+from time import sleep
 
 import pandas as pd
 import pytest
@@ -73,6 +74,9 @@ def test_region_analysis(
         override=True
     )
 
+    # ensure data is saved before it is loaded again
+    sleep(1)
+
     region_csv_validate = pd.read_csv(validate_regions_dir / "test_region.csv")
     region_csv_test = pd.read_csv(test_regions_dir / "test_region.csv")
     pd.testing.assert_frame_equal(region_csv_test, region_csv_validate)
@@ -92,6 +96,9 @@ def test_region_export(
     segmentation_widget_with_data_atlas_space.export_to_brainrender(
         override=True
     )
+
+    # ensure data is saved before it is loaded again
+    sleep(1)
     cmp(
         validate_regions_dir / "test_region.obj",
         test_regions_dir / "test_region.obj",
