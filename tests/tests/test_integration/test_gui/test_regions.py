@@ -11,8 +11,8 @@ validate_regions_dir = (
 
 
 @pytest.fixture
-def test_regions_dir(tmpdir):
-    tmp_input_dir = tmpdir / "brainreg_output"
+def test_regions_dir(tmp_path):
+    tmp_input_dir = tmp_path / "brainreg_output"
     test_regions_dir = (
         tmp_input_dir / "manual_segmentation" / "standard_space" / "regions"
     )
@@ -62,9 +62,17 @@ def test_add_existing_region(
 def test_region_analysis(
     segmentation_widget_with_data_atlas_space, test_regions_dir
 ):
+    segmentation_widget_with_data_atlas_space.region_seg.calculate_volumes_checkbox.setChecked(
+        True
+    )
+    segmentation_widget_with_data_atlas_space.region_seg.summarise_volumes_checkbox.setChecked(
+        True
+    )
+
     segmentation_widget_with_data_atlas_space.region_seg.run_region_analysis(
         override=True
     )
+
     region_csv_validate = pd.read_csv(validate_regions_dir / "test_region.csv")
     region_csv_test = pd.read_csv(test_regions_dir / "test_region.csv")
     pd.testing.assert_frame_equal(region_csv_test, region_csv_validate)
