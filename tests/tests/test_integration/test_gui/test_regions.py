@@ -2,8 +2,10 @@ from filecmp import cmp
 from pathlib import Path
 from time import sleep
 
+import numpy as np
 import pandas as pd
 import pytest
+from tifffile import imread
 
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
 validate_regions_dir = (
@@ -60,7 +62,7 @@ def test_add_existing_region(
     assert len(segmentation_widget_with_data_atlas_space.label_layers) == 2
 
 
-def test_region_analysis(
+def test_region_analysis_without_save(
     segmentation_widget_with_data_atlas_space, test_regions_dir
 ):
     segmentation_widget_with_data_atlas_space.region_seg.calculate_volumes_checkbox.setChecked(
@@ -69,25 +71,48 @@ def test_region_analysis(
     segmentation_widget_with_data_atlas_space.region_seg.summarise_volumes_checkbox.setChecked(
         True
     )
-
     segmentation_widget_with_data_atlas_space.region_seg.run_region_analysis(
         override=True
     )
 
     # ensure data is saved before it is loaded again
     sleep(1)
+    check_analysis(test_regions_dir, validate_regions_dir)
 
-    region_csv_validate = pd.read_csv(validate_regions_dir / "test_region.csv")
-    region_csv_test = pd.read_csv(test_regions_dir / "test_region.csv")
-    pd.testing.assert_frame_equal(region_csv_test, region_csv_validate)
-
-    summary_csv_validate = pd.read_csv(validate_regions_dir / "summary.csv")
-    summary_csv_test = pd.read_csv(test_regions_dir / "summary.csv")
-    pd.testing.assert_frame_equal(summary_csv_test, summary_csv_validate)
+    # check saving didn't happen (default)
+    test_saved_region = Path(test_regions_dir / "test_region.tiff")
+    assert test_saved_region.exists() is False
 
 
-def test_region_save(segmentation_widget_with_data_atlas_space):
+def test_region_analysis_with_save(
+    segmentation_widget_with_data_atlas_space, test_regions_dir
+):
+    segmentation_widget_with_data_atlas_space.region_seg.calculate_volumes_checkbox.setChecked(
+        True
+    )
+    segmentation_widget_with_data_atlas_space.region_seg.summarise_volumes_checkbox.setChecked(
+        True
+    )
+    segmentation_widget_with_data_atlas_space.region_seg.save_checkbox.setChecked(
+        True
+    )
+    segmentation_widget_with_data_atlas_space.region_seg.run_region_analysis(
+        override=True
+    )
+
+    # ensure data is saved before it is loaded again
+    sleep(1)
+    check_analysis(test_regions_dir, validate_regions_dir)
+    check_saving(test_regions_dir, validate_regions_dir)
+
+
+def test_region_save(
+    segmentation_widget_with_data_atlas_space, test_regions_dir
+):
     segmentation_widget_with_data_atlas_space.save(override=True)
+    # ensure data is saved before it is loaded again
+    sleep(1)
+    check_saving(test_regions_dir, validate_regions_dir)
 
 
 def test_region_export(
@@ -103,3 +128,19 @@ def test_region_export(
         validate_regions_dir / "test_region.obj",
         test_regions_dir / "test_region.obj",
     )
+
+
+def check_analysis(test_regions_dir, validate_regions_dir):
+    region_csv_validate = pd.read_csv(validate_regions_dir / "test_region.csv")
+    region_csv_test = pd.read_csv(test_regions_dir / "test_region.csv")
+    pd.testing.assert_frame_equal(region_csv_test, region_csv_validate)
+
+    summary_csv_validate = pd.read_csv(validate_regions_dir / "summary.csv")
+    summary_csv_test = pd.read_csv(test_regions_dir / "summary.csv")
+    pd.testing.assert_frame_equal(summary_csv_test, summary_csv_validate)
+
+
+def check_saving(test_regions_dir, validate_regions_dir):
+    image_validate = imread(validate_regions_dir / "test_region.tiff")
+    image_test = imread(test_regions_dir / "test_region.tiff")
+    np.testing.assert_array_equal(image_test, image_validate)
