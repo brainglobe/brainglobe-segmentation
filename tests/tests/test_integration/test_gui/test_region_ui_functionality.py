@@ -76,7 +76,7 @@ def test_region_analysis_without_save(
     )
 
     # ensure data is saved before it is loaded again
-    sleep(3)
+    sleep(5)
     check_analysis(test_regions_dir, validate_regions_dir)
 
     # check saving didn't happen (default)
@@ -101,7 +101,7 @@ def test_region_analysis_with_save(
     )
 
     # ensure data is saved before it is loaded again
-    sleep(3)
+    sleep(5)
     check_analysis(test_regions_dir, validate_regions_dir)
     check_saving(test_regions_dir, validate_regions_dir)
 
@@ -111,7 +111,7 @@ def test_region_save(
 ):
     segmentation_widget_with_data_atlas_space.save(override=True)
     # ensure data is saved before it is loaded again
-    sleep(3)
+    sleep(5)
     check_saving(test_regions_dir, validate_regions_dir)
 
 
@@ -123,7 +123,7 @@ def test_region_export(
     )
 
     # ensure data is saved before it is loaded again
-    sleep(3)
+    sleep(5)
     cmp(
         validate_regions_dir / "test_region.obj",
         test_regions_dir / "test_region.obj",
