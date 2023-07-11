@@ -451,10 +451,9 @@ class SegmentationWidget(QWidget):
             ]
             self.hemispheres_data = self.hemispheres_layer.data
 
-        self.prevent_layer_edit()
-
         self.initialise_segmentation_interface()
         self.status_label.setText("Ready")
+        self.prevent_layer_edit()
 
     def collate_widget_layers(self):
         """
@@ -486,6 +485,7 @@ class SegmentationWidget(QWidget):
         ]
 
     def prevent_layer_edit(self):
+        print("Preventing layer edit")
         self.collate_widget_layers()
         for layer in self.non_editable_widget_layers:
             layer.editable = False
@@ -568,17 +568,20 @@ class SegmentationWidget(QWidget):
             else:
                 choice = True  # for debugging
             if choice:
-                print("Saving")
-                worker = save_all(
-                    self.paths.regions_directory,
-                    self.paths.tracks_directory,
-                    self.label_layers,
-                    self.track_layers,
-                    track_file_extension=TRACK_FILE_EXT,
-                )
-                worker.start()
+                self.run_save()
             else:
                 print('Not saving because user chose "Cancel" \n')
+
+    def run_save(self):
+        print("Saving")
+        worker = save_all(
+            self.paths.regions_directory,
+            self.paths.tracks_directory,
+            self.label_layers,
+            self.track_layers,
+            track_file_extension=TRACK_FILE_EXT,
+        )
+        worker.start()
 
     def export_to_brainrender(self, override=False):
         if not override:

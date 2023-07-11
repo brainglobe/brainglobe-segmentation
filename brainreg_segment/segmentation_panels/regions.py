@@ -7,6 +7,7 @@ from brainreg_segment.layout.gui_constants import (
     COLUMN_WIDTH,
     IMAGE_FILE_EXT,
     NUM_COLORS,
+    SAVE_DEFAULT,
     SEGM_METHODS_PANEL_ALIGN,
     SUMMARIZE_VOLUMES_DEFAULT,
 )
@@ -34,6 +35,7 @@ class RegionSeg(QGroupBox):
         parent,
         calculate_volumes_default=CALCULATE_VOLUMES_DEFAULT,
         summarise_volumes_default=SUMMARIZE_VOLUMES_DEFAULT,
+        save_default=SAVE_DEFAULT,
         brush_size=BRUSH_SIZE,
         image_file_extension=IMAGE_FILE_EXT,
         num_colors=NUM_COLORS,
@@ -43,6 +45,7 @@ class RegionSeg(QGroupBox):
 
         self.calculate_volumes_default = calculate_volumes_default
         self.summarise_volumes_default = summarise_volumes_default
+        self.save_default = save_default
 
         # Brushes / ...
         self.brush_size_default = BRUSH_SIZE  # Keep track of default
@@ -60,7 +63,7 @@ class RegionSeg(QGroupBox):
             "Add new region",
             region_layout,
             self.add_new_region,
-            row=2,
+            row=3,
             column=0,
             tooltip="Create a new empty segmentation layer "
             "to manually segment a new region.",
@@ -70,7 +73,7 @@ class RegionSeg(QGroupBox):
             "Analyse regions",
             region_layout,
             self.run_region_analysis,
-            row=2,
+            row=3,
             column=1,
             tooltip="Analyse the spatial distribution of the "
             "segmented regions.",
@@ -79,7 +82,7 @@ class RegionSeg(QGroupBox):
             "Add region from selected layer",
             region_layout,
             self.add_region_from_existing_layer,
-            row=3,
+            row=4,
             column=0,
             tooltip="Adds a region from a selected labels layer (e.g. "
             "from another plugin). Make sure this region "
@@ -104,6 +107,13 @@ class RegionSeg(QGroupBox):
             row=1,
             tooltip="Summarise each segmented region "
             "(e.g. center, volume etc.).",
+        )
+        self.save_checkbox = add_checkbox(
+            region_layout,
+            self.save_default,
+            "Save segmentation",
+            row=2,
+            tooltip="Save the segmentation layers during analysis.",
         )
 
         region_layout.setColumnMinimumWidth(1, COLUMN_WIDTH)
@@ -204,6 +214,9 @@ class RegionSeg(QGroupBox):
                 choice = True  # for debugging
 
             if choice:
+                if self.save_checkbox.isChecked():
+                    self.parent.run_save()
+
                 print("Running region analysis")
 
                 if check_segmentation_in_correct_space(
