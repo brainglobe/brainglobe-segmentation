@@ -106,7 +106,7 @@ def test_track_save(
     segmentation_widget_with_data_atlas_space.save(override=True)
 
     # ensure data is saved before it is loaded again
-    sleep(5)
+    sleep(8)
     check_saving(test_tracks_dir, validate_tracks_dir, rtol)
 
 
@@ -121,7 +121,7 @@ def test_track_export(
     )
 
     # ensure data is saved before it is loaded again
-    sleep(5)
+    sleep(8)
     spline_validate = np.load(validate_tracks_dir / "test_track.npy")
     spline_test = np.load(test_tracks_dir / "test_track.npy")
     np.testing.assert_equal(spline_validate, spline_test)
