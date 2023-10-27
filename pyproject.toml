@@ -19,7 +19,7 @@ classifiers = [
 ]
 requires-python = ">=3.7"
 dependencies = [
-    "brainglobe-napari-io",
+    "brainglobe-napari-io >= 0.3.0",
     "dask >= 2.15.0",
     "imio",
     "brainglobe-utils",
