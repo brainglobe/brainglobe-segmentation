@@ -1,0 +1,11 @@
+name: brainreg-segment
+schema_version: 0.1.0
+contributions:
+  commands:
+  - id: brainreg-segment.SegmentationWidget
+    title: Open segmentation widget
+    python_name: brainreg_segment.segment:SegmentationWidget
+
+  widgets:
+  - command: brainreg-segment.SegmentationWidget
+    display_name: Region/track segmentation
