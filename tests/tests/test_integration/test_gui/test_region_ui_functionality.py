@@ -9,7 +9,7 @@ from tifffile import imread
 
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
 validate_regions_dir = (
-    brainreg_dir / "manual_segmentation" / "standard_space" / "regions"
+    brainreg_dir / "manual_segmentation" / "atlas_space" / "regions"
 )
 
 
@@ -17,7 +17,7 @@ validate_regions_dir = (
 def test_regions_dir(tmp_path):
     tmp_input_dir = tmp_path / "brainreg_output"
     test_regions_dir = (
-        tmp_input_dir / "manual_segmentation" / "standard_space" / "regions"
+        tmp_input_dir / "manual_segmentation" / "atlas_space" / "regions"
     )
     return test_regions_dir
 

@@ -8,23 +8,23 @@ ATLAS_NAME = "example_mouse_100um"
 
 
 def test_load_sample_space(segmentation_widget):
-    segmentation_widget.standard_space = False
+    segmentation_widget.atlas_space = False
     segmentation_widget.plugin = "brainglobe-napari-io.brainreg_read_dir"
     segmentation_widget.directory = brainreg_dir
     segmentation_widget.load_brainreg_directory()
     check_loaded_layers(segmentation_widget, 7)
-    check_not_editable(segmentation_widget, standard_space=False)
+    check_not_editable(segmentation_widget, atlas_space=False)
 
 
-def test_load_standard_space(segmentation_widget):
-    segmentation_widget.standard_space = True
+def test_load_atlas_space(segmentation_widget):
+    segmentation_widget.atlas_space = True
     segmentation_widget.plugin = (
-        "brainglobe-napari-io.brainreg_read_dir_standard_space"
+        "brainglobe-napari-io.brainreg_read_dir_atlas_space"
     )
     segmentation_widget.directory = brainreg_dir
     segmentation_widget.load_brainreg_directory()
     check_loaded_layers(segmentation_widget, 4)
-    check_not_editable(segmentation_widget, standard_space=True)
+    check_not_editable(segmentation_widget, atlas_space=True)
 
 
 def test_layer_deletion(segmentation_widget):
@@ -35,7 +35,7 @@ def test_layer_deletion(segmentation_widget):
     assert len(segmentation_widget.viewer.layers) == 0
     segmentation_widget.viewer.add_points(np.array([[1, 1], [2, 2]]))
     assert len(segmentation_widget.viewer.layers) == 1
-    segmentation_widget.standard_space = False
+    segmentation_widget.atlas_space = False
     segmentation_widget.plugin = "brainglobe-napari-io.brainreg_read_dir"
     segmentation_widget.directory = brainreg_dir
     segmentation_widget.load_brainreg_directory()
@@ -51,10 +51,10 @@ def check_loaded_layers(widget, num_layers):
     assert widget.annotations_layer.name == widget.atlas.atlas_name
 
 
-def check_not_editable(widget, standard_space=False):
+def check_not_editable(widget, atlas_space=False):
     assert widget.base_layer.editable is False
     assert widget.annotations_layer.editable is False
-    if not standard_space:
+    if not atlas_space:
         assert widget.viewer.layers["Hemispheres"].editable is False
 
 
@@ -72,9 +72,9 @@ def test_load_atlas(segmentation_widget, tmp_path):
 
 
 def test_general(segmentation_widget):
-    segmentation_widget.standard_space = True
+    segmentation_widget.atlas_space = True
     segmentation_widget.plugin = (
-        "brainglobe-napari-io.brainreg_read_dir_standard_space"
+        "brainglobe-napari-io.brainreg_read_dir_atlas_space"
     )
     segmentation_widget.directory = brainreg_dir
     segmentation_widget.load_brainreg_directory()
@@ -104,23 +104,23 @@ def check_paths(widget):
 
     assert (
         widget.paths.segmentation_directory
-        == brainreg_dir / "manual_segmentation" / "standard_space"
+        == brainreg_dir / "manual_segmentation" / "atlas_space"
     )
 
     assert (
         widget.paths.regions_directory
-        == brainreg_dir / "manual_segmentation" / "standard_space" / "regions"
+        == brainreg_dir / "manual_segmentation" / "atlas_space" / "regions"
     )
 
     assert (
         widget.paths.region_summary_csv
         == brainreg_dir
         / "manual_segmentation"
-        / "standard_space"
+        / "atlas_space"
         / "regions"
         / "summary.csv"
     )
     assert (
         widget.paths.tracks_directory
-        == brainreg_dir / "manual_segmentation" / "standard_space" / "tracks"
+        == brainreg_dir / "manual_segmentation" / "atlas_space" / "tracks"
     )
