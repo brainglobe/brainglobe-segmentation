@@ -52,6 +52,8 @@ dev = [
     "napari-time-slicer" # to test non ndarray-types
 ]
 
+[project.entry-points."napari.manifest"]
+cellfinder-napari = "brainreg_segment:napari.yaml"
 
 [project.scripts]
 brainreg-segment = "brainreg_segment.segment:main"
