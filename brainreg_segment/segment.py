@@ -193,7 +193,7 @@ class SegmentationWidget(QWidget):
         self.load_button = add_button(
             "Load project (sample space)",
             self.load_data_layout,
-            self.load_brainreg_directory_sample,
+            self.load_brainreg_directory_sample_space,
             row=0,
             column=0,
             visibility=False,
@@ -205,10 +205,10 @@ class SegmentationWidget(QWidget):
             "the orientation of your chosen atlas.",
         )
 
-        self.load_button_standard = add_button(
+        self.load_button_atlas_space = add_button(
             "Load project (atlas space)",
             self.load_data_layout,
-            self.load_brainreg_directory_standard,
+            self.load_brainreg_directory_atlas_space,
             row=1,
             column=0,
             visibility=False,
@@ -229,7 +229,7 @@ class SegmentationWidget(QWidget):
         #  buttons made visible after adding to main widget, preventing them
         # from briefly appearing in a separate window
         self.load_button.setVisible(True)
-        self.load_button_standard.setVisible(True)
+        self.load_button_atlas_space.setVisible(True)
 
     def add_saving_panel(self, row):
         """
@@ -349,7 +349,7 @@ class SegmentationWidget(QWidget):
             opacity=0.3,
             visible=False,
         )
-        self.standard_space = True
+        self.atlas_space = True
         self.prevent_layer_edit()
 
     def reset_atlas_menu(self):
@@ -360,25 +360,23 @@ class SegmentationWidget(QWidget):
 
     # BRAINREG INTERACTION #################################################
 
-    def load_brainreg_directory_sample(self):
-        self.get_brainreg_directory(standard_space=False)
+    def load_brainreg_directory_sample_space(self):
+        self.get_brainreg_directory(atlas_space=False)
 
-    def load_brainreg_directory_standard(self):
-        self.get_brainreg_directory(standard_space=True)
+    def load_brainreg_directory_atlas_space(self):
+        self.get_brainreg_directory(atlas_space=True)
 
-    def get_brainreg_directory(self, standard_space):
+    def get_brainreg_directory(self, atlas_space):
         """
         Shows file dialog to choose output directory
         and sets global directory info
         """
-        if standard_space:
-            self.plugin = (
-                "brainglobe-napari-io.brainreg_read_dir_standard_space"
-            )
-            self.standard_space = True
+        if atlas_space:
+            self.plugin = "brainglobe-napari-io.brainreg_read_dir_atlas_space"
+            self.atlas_space = True
         else:
             self.plugin = "brainglobe-napari-io.brainreg_read_dir"
-            self.standard_space = False
+            self.atlas_space = False
 
         self.status_label.setText("Loading...")
         options = QFileDialog.Options()
@@ -415,7 +413,7 @@ class SegmentationWidget(QWidget):
             self.viewer.open(str(self.directory), plugin=self.plugin)
             self.paths = Paths(
                 self.directory,
-                standard_space=self.standard_space,
+                atlas_space=self.atlas_space,
             )
             self.initialise_loaded_data()
         except ValueError:
@@ -443,7 +441,7 @@ class SegmentationWidget(QWidget):
         self.metadata = self.base_layer.metadata
         self.atlas = self.metadata["atlas_class"]
         self.annotations_layer = self.viewer.layers[self.metadata["atlas"]]
-        if self.standard_space:
+        if self.atlas_space:
             self.hemispheres_data = self.atlas.hemispheres
         else:
             self.hemispheres_layer = self.viewer.layers[
@@ -497,7 +495,7 @@ class SegmentationWidget(QWidget):
         self.initialise_image_view()
         self.save_data_panel.setVisible(True)
         self.save_button.setVisible(True)
-        self.export_button.setVisible(self.standard_space)
+        self.export_button.setVisible(self.atlas_space)
         self.show_regionseg_button.setEnabled(True)
         self.show_trackseg_button.setEnabled(True)
         self.status_label.setText("Ready")

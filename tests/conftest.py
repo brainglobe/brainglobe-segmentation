@@ -38,9 +38,9 @@ def segmentation_widget_with_data_atlas_space(tmp_path, segmentation_widget):
     """
     tmp_input_dir = tmp_path / "brainreg_output"
     shutil.copytree(brainreg_dir, tmp_input_dir)
-    segmentation_widget.standard_space = True
+    segmentation_widget.atlas_space = True
     segmentation_widget.plugin = (
-        "brainglobe-napari-io.brainreg_read_dir_standard_space"
+        "brainglobe-napari-io.brainreg_read_dir_atlas_space"
     )
     segmentation_widget.directory = Path(tmp_input_dir)
     segmentation_widget.load_brainreg_directory()
