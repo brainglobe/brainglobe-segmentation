@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from brainglobe_utils.general.list import unique_elements_lists
-from brainglobe_utils.pandas.misc import initialise_df
+from brainglobe_utils.pandas.misc import initialise_df, safe_pandas_concat
 from napari.qt.threading import thread_worker
 from skimage.measure import regionprops_table
 
@@ -248,7 +248,7 @@ def add_structure_volume_to_df(
     }
 
     df_to_append = pd.DataFrame(data_to_append)
-    df = pd.concat([df, df_to_append], ignore_index=True)
+    df = safe_pandas_concat(df, df_to_append)
     return df
 
 
