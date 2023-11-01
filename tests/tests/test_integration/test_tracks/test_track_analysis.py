@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from brainreg_segment.tracks.analysis import run_track_analysis
+from brainglobe_segmentation.tracks.analysis import run_track_analysis
 
 tracks_dir = Path.cwd() / "tests" / "data" / "tracks"
 

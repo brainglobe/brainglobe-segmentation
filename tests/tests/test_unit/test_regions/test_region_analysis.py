@@ -6,7 +6,7 @@ import pytest
 import tifffile
 from napari.layers import Labels
 
-from brainreg_segment.regions.analysis import (
+from brainglobe_segmentation.regions.analysis import (
     check_list_only_nones,
     summarise_brain_regions,
     summarise_single_brain_region,

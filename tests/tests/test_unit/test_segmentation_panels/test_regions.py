@@ -1,7 +1,7 @@
 import numpy as np
 from napari.layers import Labels
 
-from brainreg_segment.segmentation_panels.regions import (
+from brainglobe_segmentation.segmentation_panels.regions import (
     check_segmentation_in_correct_space,
 )
 
