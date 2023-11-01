@@ -30,7 +30,7 @@ def test_load_atlas_space(segmentation_widget):
 def test_layer_deletion(segmentation_widget):
     """
     Check that remove_layers() doesn't remove any layers that were present
-    before brainreg-segment added layers
+    before brainglobe-segmentation added layers
     """
     assert len(segmentation_widget.viewer.layers) == 0
     segmentation_widget.viewer.add_points(np.array([[1, 1], [2, 2]]))
