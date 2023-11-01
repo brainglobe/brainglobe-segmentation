@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from brainreg_segment.tracks.fit import spline_fit
+from brainglobe_segmentation.tracks.fit import spline_fit
 
 
 def track_analysis(

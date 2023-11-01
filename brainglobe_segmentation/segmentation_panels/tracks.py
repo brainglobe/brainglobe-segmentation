@@ -4,8 +4,8 @@ from glob import glob
 import numpy as np
 from qtpy.QtWidgets import QGridLayout, QGroupBox
 
-from brainreg_segment.image.utils import create_KDTree_from_image
-from brainreg_segment.layout.gui_constants import (
+from brainglobe_segmentation.image.utils import create_KDTree_from_image
+from brainglobe_segmentation.layout.gui_constants import (
     COLUMN_WIDTH,
     FIT_DEGREE_DEFAULT,
     POINT_SIZE,
@@ -17,15 +17,15 @@ from brainreg_segment.layout.gui_constants import (
     SUMMARISE_TRACK_DEFAULT,
     TRACK_FILE_EXT,
 )
-from brainreg_segment.layout.gui_elements import (
+from brainglobe_segmentation.layout.gui_elements import (
     add_button,
     add_checkbox,
     add_float_box,
     add_int_box,
 )
-from brainreg_segment.layout.utils import display_info, display_warning
-from brainreg_segment.tracks.analysis import track_analysis
-from brainreg_segment.tracks.layers import (
+from brainglobe_segmentation.layout.utils import display_info, display_warning
+from brainglobe_segmentation.tracks.analysis import track_analysis
+from brainglobe_segmentation.tracks.layers import (
     add_existing_track_layers,
     add_new_track_layer,
     add_track_from_existing_layer,

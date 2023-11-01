@@ -1,7 +1,7 @@
 # RegionSeg
 from qtpy.QtWidgets import QGridLayout, QGroupBox
 
-from brainreg_segment.layout.gui_constants import (
+from brainglobe_segmentation.layout.gui_constants import (
     BRUSH_SIZE,
     CALCULATE_VOLUMES_DEFAULT,
     COLUMN_WIDTH,
@@ -11,13 +11,13 @@ from brainreg_segment.layout.gui_constants import (
     SEGM_METHODS_PANEL_ALIGN,
     SUMMARIZE_VOLUMES_DEFAULT,
 )
-from brainreg_segment.layout.gui_elements import (
+from brainglobe_segmentation.layout.gui_elements import (
     add_button,
     add_checkbox,
 )
-from brainreg_segment.layout.utils import display_info, display_warning
-from brainreg_segment.regions.analysis import region_analysis
-from brainreg_segment.regions.layers import (
+from brainglobe_segmentation.layout.utils import display_info, display_warning
+from brainglobe_segmentation.regions.analysis import region_analysis
+from brainglobe_segmentation.regions.layers import (
     add_existing_region_segmentation,
     add_new_region_layer,
     add_region_from_existing_layer,
