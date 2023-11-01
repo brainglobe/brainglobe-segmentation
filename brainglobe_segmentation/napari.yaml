@@ -1,0 +1,11 @@
+name: brainglobe-segmentation
+schema_version: 0.1.0
+contributions:
+  commands:
+  - id: brainglobe-segmentation.SegmentationWidget
+    title: Open segmentation widget
+    python_name: brainglobe_segmentation.segment:SegmentationWidget
+
+  widgets:
+  - command: brainglobe-segmentation.SegmentationWidget
+    display_name: Region/track segmentation
