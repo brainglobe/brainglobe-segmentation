@@ -3,7 +3,7 @@ name = "brainreg-segment"
 description = "Manual segmentation of 3D brain structures in a common anatomical space"
 readme = "README.md"
 authors = [
-    {name = "Adam Tyson, Horst Obenhaus", email = "code@adamltyson.com"},
+    { name = "Adam Tyson, Horst Obenhaus", email = "code@adamltyson.com" },
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -17,12 +17,12 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 dependencies = [
     "brainglobe-napari-io >= 0.3.0",
     "dask >= 2.15.0",
     "imio",
-    "brainglobe-utils",
+    "brainglobe-utils >=  0.2.7",
     "napari-plugin-engine >= 0.1.4",
     "napari>=0.4.5",
     "numpy",
@@ -30,7 +30,7 @@ dependencies = [
     "scikit-image",
     "tables",
 ]
-license = {text = "BSD-3-Clause"}
+license = { text = "BSD-3-Clause" }
 dynamic = ["version"]
 
 [project.urls]
@@ -49,7 +49,7 @@ dev = [
     "coverage",
     "pytest-cov",
     "pytest-qt",
-    "napari-time-slicer" # to test non ndarray-types
+    "napari-time-slicer", # to test non ndarray-types
 ]
 
 [project.entry-points."napari.manifest"]
@@ -62,11 +62,7 @@ brainreg-segment = "brainreg_segment.segment:main"
 brainreg-segment = "brainreg_segment.plugins"
 
 [build-system]
-requires = [
-    "setuptools>=45",
-    "wheel",
-    "setuptools_scm[toml]>=6.2",
-]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
@@ -94,7 +90,7 @@ filterwarnings = [
     # Warning comes from vispy - fixed in vispy 0.12.0. napari 0.5.0 will bump
     # vispy to 0.5.0, so this filter should be removed when napari 0.5.0
     # is released
-    "ignore:distutils Version classes are deprecated:DeprecationWarning"
+    "ignore:distutils Version classes are deprecated:DeprecationWarning",
 ]
 
 [tool.black]
@@ -104,6 +100,6 @@ line-length = 79
 
 [tool.ruff]
 line-length = 79
-exclude = ["__init__.py","build",".eggs"]
+exclude = ["__init__.py", "build", ".eggs"]
 select = ["I", "E", "F"]
 fix = true
