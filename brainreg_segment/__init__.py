@@ -1,10 +1,3 @@
-import warnings
-
-warnings.warn(
-    "brainreg-segment is deprecated. Please use brainglobe-segmentation instead: https://github.com/brainglobe/brainglobe-segmentation",
-    DeprecationWarning,
-)
-
 from importlib.metadata import PackageNotFoundError, version
 from . import *
 
