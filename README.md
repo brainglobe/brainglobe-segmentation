@@ -1,3 +1,11 @@
+# This package is deprecated!
+
+Please use [`brainglobe-segmentation` instead](https://github.com/brainglobe/brainglobe-segmentation).
+
+The old README can be found below.
+
+---
+
 [![Python Version](https://img.shields.io/pypi/pyversions/brainreg-segment.svg)](https://pypi.org/project/brainreg-segment)
 [![PyPI](https://img.shields.io/pypi/v/brainreg-segment.svg)](https://pypi.org/project/brainreg-segment)
 [![Wheel](https://img.shields.io/pypi/wheel/brainreg-segment.svg)](https://pypi.org/project/brainreg-segment)
