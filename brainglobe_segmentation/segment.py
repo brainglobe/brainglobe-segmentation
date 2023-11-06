@@ -8,11 +8,11 @@ from napari.qt.threading import thread_worker
 from qtpy import QtCore
 from qtpy.QtWidgets import QFileDialog, QGridLayout, QGroupBox, QLabel, QWidget
 
-from brainreg_segment.atlas.utils import (
+from brainglobe_segmentation.atlas.utils import (
     get_available_atlases,
     structure_from_viewer,
 )
-from brainreg_segment.layout.gui_constants import (
+from brainglobe_segmentation.layout.gui_constants import (
     BOUNDARIES_STRING,
     COLUMN_WIDTH,
     DISPLAY_REGION_INFO,
@@ -23,15 +23,21 @@ from brainreg_segment.layout.gui_constants import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
 )
-from brainreg_segment.layout.gui_elements import add_button, add_combobox
-from brainreg_segment.layout.utils import display_warning
-from brainreg_segment.paths import Paths
-from brainreg_segment.regions.IO import export_label_layers, save_label_layers
+from brainglobe_segmentation.layout.gui_elements import (
+    add_button,
+    add_combobox,
+)
+from brainglobe_segmentation.layout.utils import display_warning
+from brainglobe_segmentation.paths import Paths
+from brainglobe_segmentation.regions.IO import (
+    export_label_layers,
+    save_label_layers,
+)
 
 ### SEGMENTATION
-from brainreg_segment.segmentation_panels.regions import RegionSeg
-from brainreg_segment.segmentation_panels.tracks import TrackSeg
-from brainreg_segment.tracks.IO import export_splines, save_track_layers
+from brainglobe_segmentation.segmentation_panels.regions import RegionSeg
+from brainglobe_segmentation.segmentation_panels.tracks import TrackSeg
+from brainglobe_segmentation.tracks.IO import export_splines, save_track_layers
 
 ### LAYOUT HELPERS
 

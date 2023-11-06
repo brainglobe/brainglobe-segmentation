@@ -3,7 +3,7 @@ from pathlib import Path
 
 import tifffile
 
-from brainreg_segment.regions import IO as region_IO
+from brainglobe_segmentation.regions import IO as region_IO
 
 regions_dir = Path.cwd() / "tests" / "data" / "regions"
 VOXEL_SIZE = 100

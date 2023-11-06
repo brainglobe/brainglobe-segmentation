@@ -1,6 +1,6 @@
 import numpy as np
 
-from brainreg_segment.atlas import utils as atlas_utils
+from brainglobe_segmentation.atlas import utils as atlas_utils
 
 atlas_name = "allen_mouse_50um"
 

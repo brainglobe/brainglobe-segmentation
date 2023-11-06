@@ -1,6 +1,6 @@
 import numpy as np
 
-from brainreg_segment.image.utils import create_KDTree_from_image
+from brainglobe_segmentation.image.utils import create_KDTree_from_image
 
 image = np.array(
     (

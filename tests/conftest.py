@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 from bg_atlasapi import BrainGlobeAtlas
 
-from brainreg_segment.segment import SegmentationWidget
+from brainglobe_segmentation.segment import SegmentationWidget
 
 atlas_name = "allen_mouse_50um"
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"

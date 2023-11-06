@@ -1,5 +1,5 @@
 [project]
-name = "brainreg-segment"
+name = "brainglobe-segmentation"
 description = "Manual segmentation of 3D brain structures in a common anatomical space"
 readme = "README.md"
 authors = [
@@ -35,9 +35,9 @@ dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://brainglobe.info/"
-"Source Code" = "https://github.com/brainglobe/brainreg-segment"
-"Bug Tracker" = "https://github.com/brainglobe/brainreg-segment/issues"
-Documentation = "https://docs.brainglobe.info/brainreg-segment"
+"Source Code" = "https://github.com/brainglobe/brainglobe-segmentation"
+"Bug Tracker" = "https://github.com/brainglobe/brainglobe-segmentation/issues"
+Documentation = "https://docs.brainglobe.info/brainglobe-segmentation"
 "User Support" = "https://forum.image.sc/tag/brainglobe"
 
 [project.optional-dependencies]
@@ -53,13 +53,13 @@ dev = [
 ]
 
 [project.entry-points."napari.manifest"]
-cellfinder-napari = "brainreg_segment:napari.yaml"
+cellfinder-napari = "brainglobe_segmentation:napari.yaml"
 
 [project.scripts]
-brainreg-segment = "brainreg_segment.segment:main"
+brainglobe-segmentation = "brainglobe_segmentation.segment:main"
 
 [project.entry-points."napari.plugin"]
-brainreg-segment = "brainreg_segment.plugins"
+brainglobe-segmentation = "brainglobe_segmentation.plugins"
 
 [build-system]
 requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
@@ -69,7 +69,7 @@ build-backend = "setuptools.build_meta"
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["brainreg_segment*"]
+include = ["brainglobe_segmentation*"]
 
 [tool.setuptools_scm]
 

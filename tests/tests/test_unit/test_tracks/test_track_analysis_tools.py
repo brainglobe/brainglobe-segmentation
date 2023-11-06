@@ -2,7 +2,10 @@ import numpy as np
 import pytest
 from pandas import read_csv
 
-from brainreg_segment.tracks.analysis import analyse_track_anatomy, spline_fit
+from brainglobe_segmentation.tracks.analysis import (
+    analyse_track_anatomy,
+    spline_fit,
+)
 
 
 @pytest.fixture

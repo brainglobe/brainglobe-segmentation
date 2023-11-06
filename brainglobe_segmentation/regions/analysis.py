@@ -5,7 +5,7 @@ from brainglobe_utils.pandas.misc import initialise_df, safe_pandas_concat
 from napari.qt.threading import thread_worker
 from skimage.measure import regionprops_table
 
-from brainreg_segment.atlas.utils import lateralise_atlas_image
+from brainglobe_segmentation.atlas.utils import lateralise_atlas_image
 
 
 @thread_worker
