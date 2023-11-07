@@ -26,11 +26,10 @@ dependencies = [
     "napari >=0.4.5",
     "npe2",
     "numpy",
-    "pandas",
+    "pandas[hdf5]",
     "qtpy",
     "scikit-image",
     "scipy",
-    "tables",                       # Needed for pandas imports to succeed.
     "tifffile",
 ]
 license = { text = "BSD-3-Clause" }
