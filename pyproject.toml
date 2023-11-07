@@ -24,7 +24,6 @@ dependencies = [
     "brainglobe-utils >=0.2.7",
     "imio",
     "napari >=0.4.5",
-    "npe2",
     "numpy",
     "pandas[hdf5]",
     "qtpy",
