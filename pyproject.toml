@@ -25,7 +25,6 @@ dependencies = [
     "dask >= 2.15.0",
     "imio",
     "napari >=0.4.5",
-    "napari-plugin-engine >= 0.1.4",
     "npe2",
     "numpy",
     "pandas",
