@@ -19,16 +19,17 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "brainglobe-napari-io >= 0.3.0",
-    "dask >= 2.15.0",
+    "bg-atlasapi",
+    "brainglobe-napari-io >=0.3.0",
+    "brainglobe-utils >=0.2.7",
     "imio",
-    "brainglobe-utils >=  0.2.7",
-    "napari-plugin-engine >= 0.1.4",
-    "napari>=0.4.5",
+    "napari >=0.4.5",
     "numpy",
-    "pandas",
+    "pandas[hdf5]",
+    "qtpy",
     "scikit-image",
-    "tables",
+    "scipy",
+    "tifffile",
 ]
 license = { text = "BSD-3-Clause" }
 dynamic = ["version"]
