@@ -22,7 +22,6 @@ dependencies = [
     "bg-atlasapi",
     "brainglobe-napari-io >=0.3.0",
     "brainglobe-utils >=0.2.7",
-    "dask >= 2.15.0",
     "imio",
     "napari >=0.4.5",
     "npe2",
@@ -31,7 +30,7 @@ dependencies = [
     "qtpy",
     "scikit-image",
     "scipy",
-    "tables",
+    "tables",                       # Needed for pandas imports to succeed.
     "tifffile",
 ]
 license = { text = "BSD-3-Clause" }
