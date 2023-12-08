@@ -11,7 +11,9 @@
 
 Segmentation of 1/2/3D brain structures in a common anatomical space
 
-`brainglobe-segmentation` is a companion to [`brainreg`](https://github.com/brainglobe/brainreg) allowing manual segmentation of regions/objects within the brain (e.g. injection sites, probes etc.) allowing for automated analysis of brain region distribution, and visualisation (e.g. in [brainrender](https://github.com/brainglobe/brainrender)).
+`brainglobe-segmentation` is a companion to [`brainreg`](https://github.com/brainglobe/brainreg) allowing segmentation
+of regions/objects within the brain (e.g. injection sites, probes etc.) allowing for automated analysis of brain
+region distribution, and visualisation (e.g. in [brainrender](https://github.com/brainglobe/brainrender)).
 `brainglobe-segmentation` is the successor to [`brainreg-segment`](https://github.com/brainglobe/brainreg-segmentation).
 
 `brainglobe-segmentation` and `brainreg` were developed by [Adam Tyson](https://github.com/adamltyson) and [Charly Rousseau](https://github.com/crousseau) in the [Margrie Lab](https://www.sainsburywellcome.org/web/groups/margrie-lab), based on [aMAP](https://doi.org/10.1038/ncomms11879) by [Christian Niedworok](https://github.com/cniedwor). The work was generously supported by the [Sainsbury Wellcome Centre](https://www.sainsburywellcome.org/web/).

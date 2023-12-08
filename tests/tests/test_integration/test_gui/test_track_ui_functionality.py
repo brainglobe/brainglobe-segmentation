@@ -6,17 +6,13 @@ import pandas as pd
 import pytest
 
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
-validate_tracks_dir = (
-    brainreg_dir / "manual_segmentation" / "atlas_space" / "tracks"
-)
+validate_tracks_dir = brainreg_dir / "segmentation" / "atlas_space" / "tracks"
 
 
 @pytest.fixture
 def test_tracks_dir(tmp_path):
     tmp_input_dir = tmp_path / "brainreg_output"
-    test_tracks_dir = (
-        tmp_input_dir / "manual_segmentation" / "atlas_space" / "tracks"
-    )
+    test_tracks_dir = tmp_input_dir / "segmentation" / "atlas_space" / "tracks"
     return test_tracks_dir
 
 

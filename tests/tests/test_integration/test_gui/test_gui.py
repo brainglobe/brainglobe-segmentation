@@ -100,27 +100,27 @@ def check_defaults(widget):
 
 
 def check_paths(widget):
-    assert widget.paths.main_directory == brainreg_dir / "manual_segmentation"
+    assert widget.paths.main_directory == brainreg_dir / "segmentation"
 
     assert (
         widget.paths.segmentation_directory
-        == brainreg_dir / "manual_segmentation" / "atlas_space"
+        == brainreg_dir / "segmentation" / "atlas_space"
     )
 
     assert (
         widget.paths.regions_directory
-        == brainreg_dir / "manual_segmentation" / "atlas_space" / "regions"
+        == brainreg_dir / "segmentation" / "atlas_space" / "regions"
     )
 
     assert (
         widget.paths.region_summary_csv
         == brainreg_dir
-        / "manual_segmentation"
+        / "segmentation"
         / "atlas_space"
         / "regions"
         / "summary.csv"
     )
     assert (
         widget.paths.tracks_directory
-        == brainreg_dir / "manual_segmentation" / "atlas_space" / "tracks"
+        == brainreg_dir / "segmentation" / "atlas_space" / "tracks"
     )
