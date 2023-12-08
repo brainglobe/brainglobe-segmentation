@@ -13,7 +13,7 @@ from brainglobe_segmentation.regions.analysis import (
 )
 
 region_image_path = Path(
-    "tests/data/brainreg_output/manual_segmentation/"
+    "tests/data/brainreg_output/segmentation/"
     "sample_space/regions/region_0.tiff"
 )
 atlas_resolution = (50, 50, 50)

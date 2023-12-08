@@ -5,7 +5,7 @@ class Paths:
 
     def __init__(self, brainreg_directory, atlas_space=False):
         self.brainreg_directory = brainreg_directory
-        self.main_directory = self.brainreg_directory / "manual_segmentation"
+        self.main_directory = self.brainreg_directory / "segmentation"
 
         if atlas_space:
             self.segmentation_directory = self.main_directory / "atlas_space"

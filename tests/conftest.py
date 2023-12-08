@@ -33,7 +33,7 @@ def segmentation_widget_with_data_atlas_space(tmp_path, segmentation_widget):
     Fixture to load a brainreg directory into the segmentation widget.
     Data is copied to tmpdir so that when it's loaded, so all the paths
     are set correctly.
-    The manual segmentation data is then deleted so that saving/export
+    The segmentation data is then deleted so that saving/export
     can be properly tested
     """
     tmp_input_dir = tmp_path / "brainreg_output"
@@ -44,6 +44,6 @@ def segmentation_widget_with_data_atlas_space(tmp_path, segmentation_widget):
     )
     segmentation_widget.directory = Path(tmp_input_dir)
     segmentation_widget.load_brainreg_directory()
-    # delete manual segmentation data to ensure it's saved correctly in tests
+    # delete segmentation data to ensure it's saved correctly in tests
     shutil.rmtree(segmentation_widget.paths.main_directory)
     return segmentation_widget

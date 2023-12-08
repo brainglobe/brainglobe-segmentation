@@ -1,6 +1,6 @@
 [project]
 name = "brainglobe-segmentation"
-description = "Manual segmentation of 3D brain structures in a common anatomical space"
+description = "Segmentation of anatomical structures in a common coordinate space"
 readme = "README.md"
 authors = [
     { name = "Adam Tyson, Horst Obenhaus", email = "code@adamltyson.com" },
