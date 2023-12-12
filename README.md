@@ -10,7 +10,7 @@
 # brainglobe-segmentation
 
 Segmentation of anatomical structures in a common coordinate space
- 
+
 ## Installation
 **PyPI**
 ```
@@ -22,7 +22,7 @@ pip install brainglobe-segmentation
 conda install brainglobe-segmentation -c conda-forge
 ```
 
-N.B. Your data will need to be registered to an anatomical atlas first. 
+N.B. Your data will need to be registered to an anatomical atlas first.
 ## Usage
 
 See [user guide](https://brainglobe.info/documentation/brainglobe-segmentation/index.html).
