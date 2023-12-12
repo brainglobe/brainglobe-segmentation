@@ -19,7 +19,7 @@ pip install brainglobe-segmentation
 
 **conda**
 ```
-conda install brainglobe-segmentation -c conda-forge
+conda install -c conda-forge brainglobe-segmentation
 ```
 
 N.B. Your data will need to be registered to an anatomical atlas first.
