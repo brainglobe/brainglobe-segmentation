@@ -7,7 +7,6 @@ authors = [
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
-    "Framework :: napari",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Operating System :: Microsoft :: Windows :: Windows 10",
