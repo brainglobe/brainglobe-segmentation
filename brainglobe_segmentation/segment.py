@@ -331,12 +331,9 @@ class SegmentationWidget(QWidget):
 
     def set_output_directory(self):
         self.status_label.setText("Loading...")
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
         self.directory = QFileDialog.getExistingDirectory(
             self,
             "Select output directory",
-            options=options,
         )
         if self.directory != "":
             self.directory = Path(self.directory)
@@ -385,12 +382,9 @@ class SegmentationWidget(QWidget):
             self.atlas_space = False
 
         self.status_label.setText("Loading...")
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
         brainreg_directory = QFileDialog.getExistingDirectory(
             self,
             "Select brainreg directory",
-            options=options,
         )
 
         if not brainreg_directory:
