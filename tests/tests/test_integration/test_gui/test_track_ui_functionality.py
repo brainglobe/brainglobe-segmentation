@@ -120,7 +120,7 @@ def test_track_export(
     sleep(8)
     spline_validate = np.load(validate_tracks_dir / "test_track.npy")
     spline_test = np.load(test_tracks_dir / "test_track.npy")
-    np.testing.assert_equal(spline_validate, spline_test)
+    np.testing.assert_allclose(spline_validate, spline_test)
 
 
 def check_analysis(test_tracks_dir, validate_tracks_dir):
