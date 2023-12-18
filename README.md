@@ -3,7 +3,7 @@
 [![Wheel](https://img.shields.io/pypi/wheel/brainglobe-segmentation.svg)](https://pypi.org/project/brainglobe-segmentation)
 [![Development Status](https://img.shields.io/pypi/status/brainglobe-segmentation.svg)](https://github.com/brainglobe/brainglobe-segmentation)
 [![Tests](https://img.shields.io/github/workflow/status/brainglobe/brainglobe-segmentation/tests)](https://github.com/brainglobe/brainglobe-segmentation/actions)
-[![codecov](https://codecov.io/gh/brainglobe/brainglobe-segmentation/graph/badge.svg)](https://codecov.io/gh/brainglobe/brainglobe-segmentation)
+[![codecov](https://codecov.io/gh/brainglobe/brainglobe-segmentation/graph/badge.svg?token=WP9KTPZE5R)](https://codecov.io/gh/brainglobe/brainglobe-segmentation)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 [![Twitter](https://img.shields.io/twitter/follow/brain_globe?style=social)](https://twitter.com/brain_globe)
 
