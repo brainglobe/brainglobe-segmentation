@@ -1,47 +1,10 @@
 from qtpy.QtWidgets import (
     QCheckBox,
-    QComboBox,
     QDoubleSpinBox,
     QLabel,
     QPushButton,
     QSpinBox,
 )
-
-
-def add_combobox(
-    layout,
-    label,
-    items,
-    row: int = 0,
-    column: int = 0,
-    label_stack=False,
-    callback=None,
-    width=150,
-    tooltip=None,
-):
-    if label_stack:
-        combobox_row = row + 1
-        combobox_column = column
-    else:
-        combobox_row = row
-        combobox_column = column + 1
-    combobox = QComboBox()
-    combobox.addItems(items)
-    if callback:
-        combobox.currentIndexChanged.connect(callback)
-    combobox.setMaximumWidth = width
-
-    if label is not None:
-        combobox_label = QLabel(label)
-        combobox_label.setMaximumWidth = width
-        layout.addWidget(combobox_label, row, column)
-    else:
-        combobox_label = None
-
-    if tooltip:
-        combobox.setToolTip(tooltip)
-    layout.addWidget(combobox, combobox_row, combobox_column)
-    return combobox, combobox_label
 
 
 def add_button(

@@ -58,19 +58,6 @@ def check_not_editable(widget, atlas_space=False):
         assert widget.viewer.layers["Hemispheres"].editable is False
 
 
-def test_load_atlas(segmentation_widget, tmp_path):
-    segmentation_widget.directory = tmp_path
-    segmentation_widget.current_atlas_name = ATLAS_NAME
-    segmentation_widget.load_atlas()
-    assert len(segmentation_widget.viewer.layers) == 2
-    assert segmentation_widget.base_layer.name == "Reference"
-    assert segmentation_widget.atlas.atlas_name == ATLAS_NAME
-    assert (
-        segmentation_widget.annotations_layer.name
-        == segmentation_widget.atlas.atlas_name
-    )
-
-
 def test_general(segmentation_widget):
     segmentation_widget.atlas_space = True
     segmentation_widget.plugin = (
