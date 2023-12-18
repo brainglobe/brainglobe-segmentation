@@ -121,9 +121,6 @@ class RegionSeg(QGroupBox):
         self.region_panel.setVisible(False)
 
     def toggle_region_panel(self):
-        # TODO: Change color scheme directly when theme is switched
-        # TODO: "text-align" property should follow constant
-        # SEGM_METHODS_PANEL_ALIGN
         if self.region_panel.isVisible():
             self.region_panel.setVisible(False)
             if self.parent.viewer.theme == "dark":
