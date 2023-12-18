@@ -32,7 +32,7 @@ def test_run_track_analysis(allen_mouse_50um_atlas, tmp_path, rtol=1e-10):
 
     np.testing.assert_allclose(spline_test, spline_validate, rtol=rtol)
 
-    regions_validate = pd.read_csv(tracks_dir / "track.csv")
-    regions_test = pd.read_csv(tmp_path / "track.csv")
+    tracks_validate = pd.read_csv(tracks_dir / "track.csv")
+    tracks_test = pd.read_csv(tmp_path / "track.csv")
 
-    pd.testing.assert_frame_equal(regions_test, regions_validate)
+    pd.testing.assert_frame_equal(tracks_test, tracks_validate)

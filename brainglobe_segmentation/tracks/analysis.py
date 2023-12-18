@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from scipy.spatial.distance import euclidean
 
 from brainglobe_segmentation.tracks.fit import spline_fit
 
@@ -103,6 +104,17 @@ def run_track_analysis(
     return spline
 
 
+def get_distances(spline, voxel_size=10):
+    """
+    For a given spline, calculate the distance between each point
+    """
+    distances = [0]
+    for i in range(len(spline) - 1):
+        distance = round(euclidean(spline[i], spline[i + 1]) * voxel_size, 3)
+        distances.append(distances[i] + distance)
+    return distances
+
+
 def analyse_track_anatomy(annotations_layer_image, atlas, spline, file_path):
     """
     For a given spline, find the atlas region that each
@@ -124,8 +136,16 @@ def analyse_track_anatomy(annotations_layer_image, atlas, spline, file_path):
         except KeyError:
             spline_regions.append(None)
 
+    distances = get_distances(spline, voxel_size=atlas.resolution[0])
+
     df = pd.DataFrame(
-        columns=["Position", "Region ID", "Region acronym", "Region name"]
+        columns=[
+            "Index",
+            "Distance from first position [um]",
+            "Region ID",
+            "Region acronym",
+            "Region name",
+        ]
     )
     for idx, spline_region in enumerate(spline_regions):
         if spline_region is None:
@@ -135,7 +155,10 @@ def analyse_track_anatomy(annotations_layer_image, atlas, spline, file_path):
                     pd.DataFrame(
                         [
                             {
-                                "Position": idx,
+                                "Index": idx,
+                                "Distance from first position [um]": distances[
+                                    idx
+                                ],
                                 "Region ID": "Not found in brain",
                                 "Region acronym": "Not found in brain",
                                 "Region name": "Not found in brain",
@@ -152,7 +175,10 @@ def analyse_track_anatomy(annotations_layer_image, atlas, spline, file_path):
                     pd.DataFrame(
                         [
                             {
-                                "Position": idx,
+                                "Index": idx,
+                                "Distance from first position [um]": distances[
+                                    idx
+                                ],
                                 "Region ID": spline_region["id"],
                                 "Region acronym": spline_region["acronym"],
                                 "Region name": spline_region["name"],

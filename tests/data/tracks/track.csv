@@ -1,11 +1,11 @@
-Position,Region ID,Region acronym,Region name
-0,974,SSp-m5,"Primary somatosensory area, mouth, layer 5"
-1,1102,SSp-m6a,"Primary somatosensory area, mouth, layer 6a"
-2,672,CP,Caudoputamen
-3,672,CP,Caudoputamen
-4,672,CP,Caudoputamen
-5,672,CP,Caudoputamen
-6,351,BST,Bed nuclei of the stria terminalis
-7,72,ADP,Anterodorsal preoptic nucleus
-8,523,MPO,Medial preoptic area
-9,523,MPO,Medial preoptic area
+Index,Distance from first position [um],Region ID,Region acronym,Region name
+0,0,974,SSp-m5,"Primary somatosensory area, mouth, layer 5"
+1,590.62,1102,SSp-m6a,"Primary somatosensory area, mouth, layer 6a"
+2,1181.2060000000001,672,CP,Caudoputamen
+3,1771.788,672,CP,Caudoputamen
+4,2362.375,672,CP,Caudoputamen
+5,2952.965,672,CP,Caudoputamen
+6,3543.552,351,BST,Bed nuclei of the stria terminalis
+7,4134.134,72,ADP,Anterodorsal preoptic nucleus
+8,4724.72,523,MPO,Medial preoptic area
+9,5315.34,523,MPO,Medial preoptic area
