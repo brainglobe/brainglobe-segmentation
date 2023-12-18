@@ -1,6 +1,3 @@
-from bg_atlasapi.list_atlases import descriptors, utils
-
-
 def lateralise_atlas_image(
     masked_atlas_annotations,
     hemispheres,
@@ -22,18 +19,6 @@ def lateralise_atlas_image(
         hemispheres == right_hemisphere_value
     ]
     return annotation_left, annotation_right
-
-
-def get_available_atlases():
-    """
-    Get the available brainglobe atlases
-    :return: Dict of available atlases (["name":version])
-    """
-    available_atlases = utils.conf_from_url(
-        descriptors.remote_url_base.format("last_versions.conf")
-    )
-    available_atlases = dict(available_atlases["atlases"])
-    return available_atlases
 
 
 def structure_from_viewer(coordinates, atlas_layer, atlas):

@@ -2,18 +2,6 @@ import numpy as np
 
 from brainglobe_segmentation.atlas import utils as atlas_utils
 
-atlas_name = "allen_mouse_50um"
-
-
-def test_get_available_atlases():
-    atlases = atlas_utils.get_available_atlases()
-
-    # arbitrary selection of atlases
-    assert float(atlases["allen_mouse_10um"]) >= 0.3
-    assert float(atlases["allen_mouse_25um"]) >= 0.3
-    assert float(atlases["allen_mouse_50um"]) >= 0.3
-    assert float(atlases["mpin_zfish_1um"]) >= 0.4
-
 
 def test_lateralise_atlas_image(allen_mouse_50um_atlas):
     atlas = allen_mouse_50um_atlas

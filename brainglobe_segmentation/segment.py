@@ -3,15 +3,11 @@ from typing import List, Optional
 
 import napari
 import numpy as np
-from bg_atlasapi import BrainGlobeAtlas
 from napari.qt.threading import thread_worker
 from qtpy import QtCore
 from qtpy.QtWidgets import QFileDialog, QGridLayout, QGroupBox, QLabel, QWidget
 
-from brainglobe_segmentation.atlas.utils import (
-    get_available_atlases,
-    structure_from_viewer,
-)
+from brainglobe_segmentation.atlas.utils import structure_from_viewer
 from brainglobe_segmentation.layout.gui_constants import (
     BOUNDARIES_STRING,
     COLUMN_WIDTH,
@@ -23,10 +19,7 @@ from brainglobe_segmentation.layout.gui_constants import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
 )
-from brainglobe_segmentation.layout.gui_elements import (
-    add_button,
-    add_combobox,
-)
+from brainglobe_segmentation.layout.gui_elements import add_button
 from brainglobe_segmentation.layout.utils import display_warning
 from brainglobe_segmentation.paths import Paths
 from brainglobe_segmentation.regions.IO import (
@@ -224,8 +217,6 @@ class SegmentationWidget(QWidget):
             "space of the atlas.",
         )
 
-        self.add_atlas_menu(self.load_data_layout)
-
         self.load_data_layout.setColumnMinimumWidth(0, COLUMN_WIDTH)
         self.load_data_panel.setLayout(self.load_data_layout)
         self.load_data_panel.setVisible(True)
@@ -270,96 +261,6 @@ class SegmentationWidget(QWidget):
         self.layout.addWidget(self.save_data_panel, row, 0, 1, 2)
 
         self.save_data_panel.setVisible(False)
-
-    # ATLAS INTERACTION ###################################################
-
-    def add_atlas_menu(self, layout):
-        list_of_atlasses = ["Load atlas"]
-        available_atlases = get_available_atlases()
-        for atlas in available_atlases.keys():
-            atlas_desc = f"{atlas} v{available_atlases[atlas]}"
-            list_of_atlasses.append(atlas_desc)
-            atlas_menu, _ = add_combobox(
-                layout,
-                None,
-                list_of_atlasses,
-                row=2,
-                column=0,
-                label_stack=True,
-                callback=self.initialise_atlas,
-                width=COLUMN_WIDTH,
-                tooltip="Load a BrainGlobe atlas if you don't have "
-                "a brainreg project to load. Useful for creating "
-                "illustrations or testing the software.",
-            )
-
-        self.atlas_menu = atlas_menu
-
-    def initialise_atlas(self):
-        atlas_string = self.atlas_menu.currentText()
-        atlas_name = atlas_string.split(" ")[0].strip()
-        if atlas_name != self.current_atlas_name:
-            status = self.remove_layers()
-            if not status:  # Something prevented deletion
-                self.reset_atlas_menu()
-                return
-        else:
-            print(f"{atlas_string} already selected for segmentation.")
-            self.reset_atlas_menu()
-            return
-
-        # Get / set output directory
-        self.set_output_directory()
-        if not self.directory:
-            self.reset_atlas_menu()
-            return
-
-        self.current_atlas_name = atlas_name
-        # Instantiate atlas layers
-        self.load_atlas()
-
-        self.directory = self.directory / atlas_name
-        self.paths = Paths(self.directory, atlas_space=True)
-
-        self.status_label.setText("Ready")
-        # Set window title
-        self.initialise_segmentation_interface()
-        # Check / load previous regions and tracks
-        self.region_seg.check_saved_region()
-        self.track_seg.check_saved_track()
-        self.reset_atlas_menu()
-
-    def set_output_directory(self):
-        self.status_label.setText("Loading...")
-        self.directory = QFileDialog.getExistingDirectory(
-            self,
-            "Select output directory",
-        )
-        if self.directory != "":
-            self.directory = Path(self.directory)
-
-    def load_atlas(self):
-        atlas = BrainGlobeAtlas(self.current_atlas_name)
-        self.atlas = atlas
-        self.base_layer = self.viewer.add_image(
-            self.atlas.reference,
-            name="Reference",
-        )
-        self.annotations_layer = self.viewer.add_labels(
-            self.atlas.annotation,
-            name=self.atlas.atlas_name,
-            blending="additive",
-            opacity=0.3,
-            visible=False,
-        )
-        self.atlas_space = True
-        self.prevent_layer_edit()
-
-    def reset_atlas_menu(self):
-        # Reset menu for atlas - show initial description
-        self.atlas_menu.blockSignals(True)
-        self.atlas_menu.setCurrentIndex(0)
-        self.atlas_menu.blockSignals(False)
 
     # BRAINREG INTERACTION #################################################
 
