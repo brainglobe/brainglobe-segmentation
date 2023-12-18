@@ -1,4 +1,3 @@
-# RegionSeg
 from qtpy.QtWidgets import QGridLayout, QGroupBox
 
 from brainglobe_segmentation.layout.gui_constants import (
