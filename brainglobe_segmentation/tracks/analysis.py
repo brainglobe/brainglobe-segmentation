@@ -106,7 +106,8 @@ def run_track_analysis(
 
 def get_distances(spline, voxel_size=10):
     """
-    For a given spline, calculate the distance between each point
+    For a given spline, calculate the distance between each point.
+    Assumes a customisable isotropic voxel size (default 10) in microns.
     """
     distances = [0]
     for i in range(len(spline) - 1):
