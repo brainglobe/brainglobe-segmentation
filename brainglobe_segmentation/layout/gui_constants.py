@@ -32,9 +32,3 @@ TRACK_FILE_EXT = ".points"
 IMAGE_FILE_EXT = ".tiff"
 BOUNDARIES_STRING = "Boundaries"
 HEMISPHERES_STRING = "Hemispheres"
-
-# ORIENTATIONS = [
-#     "asl",
-#     "lsa",
-#     "sla",
-# ]  # When rolling through orientations of the brain, adhere to this order
