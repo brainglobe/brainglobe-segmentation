@@ -37,7 +37,7 @@ dynamic = ["version"]
 Homepage = "https://brainglobe.info/"
 "Source Code" = "https://github.com/brainglobe/brainglobe-segmentation"
 "Bug Tracker" = "https://github.com/brainglobe/brainglobe-segmentation/issues"
-Documentation = "https://docs.brainglobe.info/brainglobe-segmentation"
+Documentation = "https://brainglobe.info/documentation/brainglobe-segmentation/index.html"
 "User Support" = "https://forum.image.sc/tag/brainglobe"
 
 [project.optional-dependencies]
