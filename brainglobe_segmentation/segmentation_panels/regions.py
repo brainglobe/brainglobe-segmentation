@@ -1,3 +1,5 @@
+from brainglobe_utils.qtpy.dialog import display_info, display_warning
+from brainglobe_utils.qtpy.interaction import add_button, add_checkbox
 from qtpy.QtWidgets import QGridLayout, QGroupBox
 
 from brainglobe_segmentation.layout.gui_constants import (
@@ -10,11 +12,6 @@ from brainglobe_segmentation.layout.gui_constants import (
     SEGM_METHODS_PANEL_ALIGN,
     SUMMARIZE_VOLUMES_DEFAULT,
 )
-from brainglobe_segmentation.layout.gui_elements import (
-    add_button,
-    add_checkbox,
-)
-from brainglobe_segmentation.layout.utils import display_info, display_warning
 from brainglobe_segmentation.regions.analysis import region_analysis
 from brainglobe_segmentation.regions.layers import (
     add_existing_region_segmentation,

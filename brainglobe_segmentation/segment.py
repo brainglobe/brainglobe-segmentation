@@ -3,6 +3,8 @@ from typing import List, Optional
 
 import napari
 import numpy as np
+from brainglobe_utils.qtpy.dialog import display_warning
+from brainglobe_utils.qtpy.interaction import add_button
 from napari.qt.threading import thread_worker
 from qtpy import QtCore
 from qtpy.QtWidgets import QFileDialog, QGridLayout, QGroupBox, QLabel, QWidget
@@ -19,8 +21,6 @@ from brainglobe_segmentation.layout.gui_constants import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
 )
-from brainglobe_segmentation.layout.gui_elements import add_button
-from brainglobe_segmentation.layout.utils import display_warning
 from brainglobe_segmentation.paths import Paths
 from brainglobe_segmentation.regions.IO import (
     export_label_layers,

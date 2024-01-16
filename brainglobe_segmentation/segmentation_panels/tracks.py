@@ -2,6 +2,13 @@
 from glob import glob
 
 import numpy as np
+from brainglobe_utils.qtpy.dialog import display_info, display_warning
+from brainglobe_utils.qtpy.interaction import (
+    add_button,
+    add_checkbox,
+    add_float_box,
+    add_int_box,
+)
 from qtpy.QtWidgets import QGridLayout, QGroupBox
 
 from brainglobe_segmentation.image.utils import create_KDTree_from_image
@@ -17,13 +24,6 @@ from brainglobe_segmentation.layout.gui_constants import (
     SUMMARISE_TRACK_DEFAULT,
     TRACK_FILE_EXT,
 )
-from brainglobe_segmentation.layout.gui_elements import (
-    add_button,
-    add_checkbox,
-    add_float_box,
-    add_int_box,
-)
-from brainglobe_segmentation.layout.utils import display_info, display_warning
 from brainglobe_segmentation.tracks.analysis import track_analysis
 from brainglobe_segmentation.tracks.layers import (
     add_existing_track_layers,
