@@ -83,3 +83,36 @@ line-length = 79
 exclude = ["__init__.py", "build", ".eggs"]
 select = ["I", "E", "F"]
 fix = true
+
+[tool.tox]
+legacy_tox_ini = """
+# For more information about tox, see https://tox.readthedocs.io/en/latest/
+[tox]
+envlist = py{38,39,310}
+
+[gh-actions]
+python =
+    3.8: py38
+    3.9: py39
+    3.10: py310
+
+[testenv]
+passenv =
+    CI
+    GITHUB_ACTIONS
+    DISPLAY
+    XAUTHORITY
+    NUMPY_EXPERIMENTAL_ARRAY_FUNCTION
+    PYVISTA_OFF_SCREEN
+deps =
+    pytest  # https://docs.pytest.org/en/latest/contents.html
+    pytest-cov  # https://pytest-cov.readthedocs.io/en/latest/
+    pytest-qt  # https://pytest-qt.readthedocs.io/en/latest/
+    coverage
+    napari
+    pyqt5
+    magicgui
+
+commands = pytest -v --color=yes --cov=brainglobe_segmentation --cov-report=xml
+
+"""
