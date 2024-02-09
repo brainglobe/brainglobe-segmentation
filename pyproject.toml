@@ -20,8 +20,7 @@ requires-python = ">=3.9"
 dependencies = [
     "bg-atlasapi",
     "brainglobe-napari-io >=0.3.0",
-    "brainglobe-utils >=0.2.7",
-    "imio",
+    "brainglobe-utils >=0.4.0",
     "napari >=0.4.5",
     "numpy",
     "pandas[hdf5]",
@@ -114,5 +113,4 @@ deps =
     magicgui
 
 commands = pytest -v --color=yes --cov=brainglobe_segmentation --cov-report=xml
-
 """
