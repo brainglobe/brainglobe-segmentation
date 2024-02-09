@@ -2,8 +2,8 @@ from pathlib import Path
 
 import numpy as np
 from brainglobe_utils.general.pathlib import append_to_pathlib_stem
-from brainglobe_utils.IO.surfaces import marching_cubes_to_obj
 from brainglobe_utils.image_io import to_tiff
+from brainglobe_utils.IO.surfaces import marching_cubes_to_obj
 from skimage import measure
 
 
