@@ -1,0 +1,60 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: brainglobe-segmentation
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Adam
+    family-names: Tyson
+    email: hello@brainglobe.info
+    affiliation: 'Sainsbury Wellcome Centre, University College London'
+  - given-names: Horst
+    family-names: Obenhaus
+  - given-names: BrainGlobe
+    family-names: Developers
+    email: hello@brainglobe.info
+repository-code: 'https://github.com/brainglobe/brainglobe-segmentation'
+url: 'https://brainglobe.info'
+abstract: >-
+  Segmentation of anatomical structures in a common
+  coordinate space.
+license: BSD-3-Clause
+date-released: '2024-01-16'
+year: 2024
+preferred-citation:
+  type: article
+  authors:
+  - given-names: Adam
+    family-names: Tyson
+    affiliation: 'Sainsbury Wellcome Centre, University College London'
+  - given-names: Mateo
+    family-names: Velez-Fort
+  - given-names: Charly V.
+    family-names: Rousseau
+  - given-names: Lee
+    family-names: Cossell
+  - given-names: Chryssanthi
+    family-names: Tsitoura
+  - given-names: Stephen C.
+    family-names: Lenzi
+  - given-names: Horst A.
+    family-names: Obenhaus
+  - given-names: Federico
+    family-names: Claudi
+  - given-names: Tiago
+    family-names: Branco
+  - given-names: Troy W.
+    family-names: Margrie
+  doi: "10.1038/s41598-021-04676-9"
+  url: "https://doi.org/10.1038/s41598-021-04676-9"
+  journal: "Scientific Reports"
+  month: 1
+  year: 2022
+  title: "Accurate determination of marker location within whole-brain microscopy images"
+  issue: 1
+  volume: 12
+citation-sentence: "This project makes use of the brainglobe-segmentation plugin for segmentation of objects and regions of the brain."
