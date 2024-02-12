@@ -1,8 +1,8 @@
 from pathlib import Path
 
-import imio
 import numpy as np
 from brainglobe_utils.general.pathlib import append_to_pathlib_stem
+from brainglobe_utils.image_io import to_tiff
 from brainglobe_utils.IO.surfaces import marching_cubes_to_obj
 from skimage import measure
 
@@ -97,7 +97,7 @@ def save_regions_to_file(
     name = label_layer.name
 
     filename = destination_directory / (name + image_extension)
-    imio.to_tiff(data.astype(np.int16), filename)
+    to_tiff(data.astype(np.int16), filename)
 
 
 def export_regions_to_file(image, filename, voxel_size, ignore_empty=True):
