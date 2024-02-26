@@ -18,7 +18,7 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "bg-atlasapi",
+    "brainglobe-atlasapi >=2.0.1",
     "brainglobe-napari-io >=0.3.0",
     "brainglobe-utils >=0.4.0",
     "napari >=0.4.5",
@@ -80,8 +80,10 @@ line-length = 79
 [tool.ruff]
 line-length = 79
 exclude = ["__init__.py", "build", ".eggs"]
-select = ["I", "E", "F"]
 fix = true
+
+[tool.ruff.lint]
+select = ["I", "E", "F"]
 
 [tool.tox]
 legacy_tox_ini = """

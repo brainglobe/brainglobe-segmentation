@@ -2,7 +2,7 @@ import shutil
 from pathlib import Path
 
 import pytest
-from bg_atlasapi import BrainGlobeAtlas
+from brainglobe_atlasapi import BrainGlobeAtlas
 
 from brainglobe_segmentation.segment import SegmentationWidget
 
