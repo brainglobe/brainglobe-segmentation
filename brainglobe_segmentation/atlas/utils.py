@@ -36,7 +36,7 @@ def structure_from_viewer(coordinates, atlas_layer, atlas):
                     Layer, which contains the annotation / region
                     information for every structure in the (registered)
                     atlas
-    atlas         : Brainglobe atlas 
+    atlas         : Brainglobe atlas
                     (brainglobe_atlasapi.bg_atlas.BrainGlobeAtlas)
 
     Returns
