@@ -51,6 +51,7 @@ jobs:
       - uses: neuroinformatics-unit/actions/test@v2
         with:
           python-version: ${{ matrix.python-version }}
+          secret-codecov-token: ${{ secrets.CODECOV_TOKEN }}
           use-xvfb: true
 
   build_sdist_wheels:
