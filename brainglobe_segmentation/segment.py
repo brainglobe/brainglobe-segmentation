@@ -5,6 +5,7 @@ import napari
 import numpy as np
 from brainglobe_utils.qtpy.dialog import display_warning
 from brainglobe_utils.qtpy.interaction import add_button
+from brainglobe_utils.qtpy.logo import header_widget
 from napari.qt.threading import thread_worker
 from qtpy import QtCore
 from qtpy.QtWidgets import QFileDialog, QGridLayout, QGroupBox, QLabel, QWidget
@@ -112,12 +113,13 @@ class SegmentationWidget(QWidget):
         self.layout.setAlignment(QtCore.Qt.AlignTop)
         self.layout.setSpacing(4)
 
-        # 3 Steps:
+        # 4 Steps:
+        # - header
         # - Loading panel
         # - Segmentation methods panel
         # -> Individual segmentation methods (which are invisible at first)
         # - Saving panel
-
+        self.add_header()
         self.add_loading_panel(1)
         self.add_segmentation_methods_panel(1)
         self.track_seg.add_track_panel(2)  # Track segmentation subpanel
@@ -132,6 +134,22 @@ class SegmentationWidget(QWidget):
         self.setLayout(self.layout)
 
     # PANELS ###############################################################
+
+    def add_header(self):
+        """
+        Header including brainglobe logo and documentation links.
+        """
+        # <br> is included in the package_name to make the label under the logo
+        # more compact, by splitting it onto two lines
+        header = header_widget(
+            package_name="brainglobe-<br>segmentation",
+            package_tagline="Segmentation of anatomical structures",
+            documentation_path="brainglobe-segmentation/user-guide/index.html",
+            github_repo_name="brainglobe-segmentation",
+            citation_doi="https://doi.org/10.1038/s41598-021-04676-9",
+            help_text="For help, hover the cursor over each parameter.",
+        )
+        self.layout.addWidget(header, 0, 0, 1, 2)
 
     def add_segmentation_methods_panel(self, row, column=1):
         """
