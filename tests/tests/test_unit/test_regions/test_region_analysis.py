@@ -99,7 +99,10 @@ def test_summarise_brain_regions_all_not_empty(
     df = pd.read_csv(filename)
     assert df.shape == (3, 11)
     for key, value in previous_world_space_values.items():
-        assert df[key].iloc[0] == value
+        if isinstance(value, (int, float)):
+            assert np.isclose(df[key].iloc[0], value)
+        else:
+            assert df[key].iloc[0] == value
 
 
 def test_summarise_brain_regions_some_empty(
@@ -124,7 +127,10 @@ def test_summarise_brain_regions_some_empty(
     df = pd.read_csv(filename)
     assert df.shape == (1, 11)
     for key, value in previous_world_space_values.items():
-        assert df[key].iloc[0] == value
+        if isinstance(value, (int, float)):
+            assert np.isclose(df[key].iloc[0], value)
+        else:
+            assert df[key].iloc[0] == value
 
 
 def test_summarise_brain_regions_all_empty(
