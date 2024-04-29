@@ -132,6 +132,7 @@ def test_summarise_brain_regions_some_empty(
         else:
             assert df[key].iloc[0] == value
 
+
 def test_summarise_brain_regions_all_empty(
     labels_layer, empty_labels_layer, tmp_path
 ):
