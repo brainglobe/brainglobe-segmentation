@@ -20,7 +20,7 @@ requires-python = ">=3.9"
 dependencies = [
     "brainglobe-atlasapi >=2.0.1",
     "brainglobe-napari-io >=0.3.0",
-    "brainglobe-utils >=0.4.3",
+    "brainglobe-utils >=0.5.0",
     "napari >=0.4.5",
     "numpy",
     "pandas[hdf5]",
