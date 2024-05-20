@@ -40,10 +40,12 @@ jobs:
           python-version: "3.9"
 
     steps:
-      - name: Cache atlases
+      - name: Cache brainglobe directory
         uses: actions/cache@v3
         with:
-          path: ~/.brainglobe
+          path: | # ensure we don't cache any interrupted atlas download and extraction, if e.g. we cancel the workflow manually
+            ~/.brainglobe
+            !~/.brainglobe/atlas.tar.gz
           key: bg-atlases
       - name: install HDF5 libs on ARM Mac
         if: matrix.os == 'macos-latest'
