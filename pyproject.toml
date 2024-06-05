@@ -12,11 +12,12 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "brainglobe-atlasapi >=2.0.1",
     "brainglobe-napari-io >=0.3.0",
@@ -73,7 +74,7 @@ include = ["brainglobe_segmentation*"]
 [tool.setuptools_scm]
 
 [tool.black]
-target-version = ['py39', 'py310', 'py311']
+target-version = ['py310','py311', 'py312']
 skip-string-normalization = false
 line-length = 79
 
@@ -89,13 +90,13 @@ select = ["I", "E", "F"]
 legacy_tox_ini = """
 # For more information about tox, see https://tox.readthedocs.io/en/latest/
 [tox]
-envlist = py{38,39,310}
+envlist = py{310,311,312}
 
 [gh-actions]
 python =
-    3.8: py38
-    3.9: py39
     3.10: py310
+    3.11: py311
+    3.12: py312
 
 [testenv]
 passenv =
