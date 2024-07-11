@@ -23,17 +23,14 @@ conda install -c conda-forge brainglobe-segmentation
 ```
 
 N.B. Your data will need to be registered to an anatomical atlas first.
-## Usage
 
+## Usage
 See [user guide](https://brainglobe.info/documentation/brainglobe-segmentation/index.html).
 
-If you have any questions, head over to the [image.sc forum](https://forum.image.sc/tag/brainglobe).
+## Seeking help or contributing
+We are always happy to help users of our tools, and welcome any contributions. If you would like to get in contact with us for any reason, please see the [contact page of our website](https://brainglobe.info/contact.html).
 
-## Contributing
-
-Contributions are very welcome. Please see the [developers guide](https://brainglobe.info/community/developers/index.html).
-
-### Citing brainglobe-segmentation
+## Citing brainglobe-segmentation
 
 If you find brainglobe-segmentation useful, and use it in your research, please let us know and also cite the paper:
 
