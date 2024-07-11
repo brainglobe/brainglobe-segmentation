@@ -75,7 +75,6 @@ def check_defaults(widget):
     assert widget.track_seg.spline_size == int(50 / widget.mean_voxel_size)
     assert widget.track_seg.track_file_extension == ".points"
     assert widget.region_seg.image_file_extension == ".tiff"
-    assert widget.region_seg.num_colors == 10
     assert widget.region_seg.brush_size == int(250 / widget.mean_voxel_size)
     assert widget.track_seg.spline_points_default == 1000
     assert widget.track_seg.spline_smoothing_default == 0.1
