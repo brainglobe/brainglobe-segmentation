@@ -45,7 +45,7 @@ def track_analysis(
             viewer.add_points(
                 spline,
                 size=napari_spline_size,
-                edge_color="cyan",
+                border_color="cyan",
                 face_color="cyan",
                 blending="additive",
                 opacity=0.7,

@@ -7,7 +7,6 @@ from brainglobe_segmentation.layout.gui_constants import (
     CALCULATE_VOLUMES_DEFAULT,
     COLUMN_WIDTH,
     IMAGE_FILE_EXT,
-    NUM_COLORS,
     SAVE_DEFAULT,
     SEGM_METHODS_PANEL_ALIGN,
     SUMMARIZE_VOLUMES_DEFAULT,
@@ -34,7 +33,6 @@ class RegionSeg(QGroupBox):
         save_default=SAVE_DEFAULT,
         brush_size=BRUSH_SIZE,
         image_file_extension=IMAGE_FILE_EXT,
-        num_colors=NUM_COLORS,
     ):
         super(RegionSeg, self).__init__()
         self.parent = parent
@@ -46,7 +44,6 @@ class RegionSeg(QGroupBox):
         # Brushes / ...
         self.brush_size_default = BRUSH_SIZE  # Keep track of default
         self.brush_size = brush_size  # Initialise
-        self.num_colors = num_colors
 
         # File formats
         self.image_file_extension = image_file_extension
@@ -168,7 +165,6 @@ class RegionSeg(QGroupBox):
             self.parent.label_layers,
             self.parent.base_layer.data,
             self.brush_size,
-            self.num_colors,
         )
 
     def add_region_from_existing_layer(self, override=False):
