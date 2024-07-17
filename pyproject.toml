@@ -53,13 +53,7 @@ dev = [
 ]
 
 [project.entry-points."napari.manifest"]
-cellfinder-napari = "brainglobe_segmentation:napari.yaml"
-
-[project.scripts]
-brainglobe-segmentation = "brainglobe_segmentation.segment:main"
-
-[project.entry-points."napari.plugin"]
-brainglobe-segmentation = "brainglobe_segmentation.plugins"
+brainglobe-segmentation = "brainglobe_segmentation:napari.yaml"
 
 [build-system]
 requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]

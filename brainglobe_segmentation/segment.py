@@ -19,8 +19,6 @@ from brainglobe_segmentation.layout.gui_constants import (
     LOADING_PANEL_ALIGN,
     SEGM_METHODS_PANEL_ALIGN,
     TRACK_FILE_EXT,
-    WINDOW_HEIGHT,
-    WINDOW_WIDTH,
 )
 from brainglobe_segmentation.paths import Paths
 from brainglobe_segmentation.regions.IO import (
@@ -560,16 +558,3 @@ def save_all(
             track_file_extension=track_file_extension,
         )
     print("Finished!\n")
-
-
-def main():
-    print("Loading segmentation GUI.\n ")
-    with napari.gui_qt():
-        viewer = napari.Viewer()  # title="Segmentation GUI")
-        viewer.window.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
-        widget = SegmentationWidget(viewer)
-        viewer.window.add_dock_widget(widget, name="General", area="right")
-
-
-if __name__ == "__main__":
-    main()
