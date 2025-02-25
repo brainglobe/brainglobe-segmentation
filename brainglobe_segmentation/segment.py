@@ -3,10 +3,10 @@ from typing import List, Optional
 
 import napari
 import numpy as np
-from brainglobe_utils.qtpy.dialog import display_warning
-from brainglobe_utils.qtpy.interaction import add_button
 from brainglobe_utils.qtpy.logo import header_widget
 from napari.qt.threading import thread_worker
+from qt_niu.dialog import display_warning
+from qt_niu.interaction import add_button
 from qtpy import QtCore
 from qtpy.QtWidgets import QFileDialog, QGridLayout, QGroupBox, QLabel, QWidget
 

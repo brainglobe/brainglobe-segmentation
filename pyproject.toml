@@ -29,6 +29,7 @@ dependencies = [
     "scikit-image",
     "scipy",
     "tifffile",
+    "qt-niu"
 ]
 license = { text = "BSD-3-Clause" }
 dynamic = ["version"]
