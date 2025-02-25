@@ -2,8 +2,8 @@
 from glob import glob
 
 import numpy as np
-from brainglobe_utils.qtpy.dialog import display_info, display_warning
-from brainglobe_utils.qtpy.interaction import (
+from qt_niu.dialog import display_info, display_warning
+from qt_niu.interaction import (
     add_button,
     add_checkbox,
     add_float_box,
