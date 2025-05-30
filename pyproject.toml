@@ -101,7 +101,7 @@ passenv =
     XAUTHORITY
     NUMPY_EXPERIMENTAL_ARRAY_FUNCTION
     PYVISTA_OFF_SCREEN
-extras = 
+extras =
     dev
 commands = pytest -v --color=yes --cov=brainglobe_segmentation --cov-report=xml
 deps =
