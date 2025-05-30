@@ -50,6 +50,7 @@ dev = [
     "coverage",
     "pytest-cov",
     "pytest-qt",
+    "pyqt5",
     "napari-time-slicer", # to test non ndarray-types
 ]
 
@@ -85,7 +86,7 @@ select = ["I", "E", "F"]
 legacy_tox_ini = """
 # For more information about tox, see https://tox.readthedocs.io/en/latest/
 [tox]
-envlist = py{311,312,313}
+envlist = py{311,312,313}, napari-dev
 
 [gh-actions]
 python =
@@ -101,14 +102,9 @@ passenv =
     XAUTHORITY
     NUMPY_EXPERIMENTAL_ARRAY_FUNCTION
     PYVISTA_OFF_SCREEN
-deps =
-    pytest  # https://docs.pytest.org/en/latest/contents.html
-    pytest-cov  # https://pytest-cov.readthedocs.io/en/latest/
-    pytest-qt  # https://pytest-qt.readthedocs.io/en/latest/
-    coverage
-    napari
-    pyqt5
-    magicgui
-
+extras =
+    dev
 commands = pytest -v --color=yes --cov=brainglobe_segmentation --cov-report=xml
+deps =
+    napari-dev: git+https://github.com/napari/napari
 """
