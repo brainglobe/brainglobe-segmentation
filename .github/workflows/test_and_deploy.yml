@@ -73,6 +73,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           secret-codecov-token: ${{ secrets.CODECOV_TOKEN }}
           tox-args: '-e napari-dev'
+use-xvfb: true
 
       - name: Notify slack on scheduled failure
         if: failure() && github.event_name == 'schedule'
