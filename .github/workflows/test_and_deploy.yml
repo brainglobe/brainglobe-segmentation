@@ -57,7 +57,7 @@ jobs:
       # Setup pyqt libraries
       - uses: tlambert03/setup-qt-libs@v1
       # Helps set up VTK with a headless display
-      - uses: pyvista/setup-headless-display-action@v3
+      - uses: pyvista/setup-headless-display-action@latest
       # Run tests
       - uses: neuroinformatics-unit/actions/test@v2
         with:
