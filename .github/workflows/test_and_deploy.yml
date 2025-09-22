@@ -54,10 +54,10 @@ jobs:
       - name: install HDF5 libs on ARM Mac
         if: matrix.os == 'macos-latest'
         run: brew install hdf5
-      # Setup pyqt libraries
-      - uses: tlambert03/setup-qt-libs@v1
       # Helps set up VTK with a headless display
-      - uses: pyvista/setup-headless-display-action@v3
+      - uses: pyvista/setup-headless-display-action@v4
+        with:
+          qt: true
       # Run tests
       - uses: neuroinformatics-unit/actions/test@v2
         with:
