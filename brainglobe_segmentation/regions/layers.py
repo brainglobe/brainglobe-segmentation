@@ -24,7 +24,7 @@ def add_new_label_layer(
     :param int brush_size: Default size of the label brush
     :return label_layer: napari labels layer
     """
-    labels = np.zeros(base_image.shape)
+    labels = np.zeros(base_image.shape, dtype=np.uint16)
     label_layer = viewer.add_labels(labels, name=name)
     label_layer.n_dimensional = True
     label_layer.selected_label = selected_label
