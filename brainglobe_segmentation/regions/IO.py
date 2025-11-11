@@ -4,8 +4,8 @@ import numpy as np
 from brainglobe_utils.general.pathlib import append_to_pathlib_stem
 from brainglobe_utils.IO.image.save import to_tiff
 from brainglobe_utils.IO.surfaces import marching_cubes_to_obj
-from skimage import measure
 from napari.utils.notifications import show_info
+from skimage import measure
 
 
 def convert_obj_to_br(verts, faces, voxel_size):

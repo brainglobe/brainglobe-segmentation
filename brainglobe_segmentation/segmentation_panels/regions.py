@@ -1,7 +1,7 @@
+from napari.utils.notifications import show_info
 from qt_niu.dialog import display_info, display_warning
 from qt_niu.interaction import add_button, add_checkbox
 from qtpy.QtWidgets import QGridLayout, QGroupBox
-from napari.utils.notifications import show_info
 
 from brainglobe_segmentation.layout.gui_constants import (
     BRUSH_SIZE,

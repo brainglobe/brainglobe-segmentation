@@ -1,8 +1,8 @@
 # TrackSeg
 from glob import glob
-from napari.utils.notifications import show_info
 
 import numpy as np
+from napari.utils.notifications import show_info
 from qt_niu.dialog import display_info, display_warning
 from qt_niu.interaction import (
     add_button,

@@ -3,8 +3,8 @@ import pandas as pd
 from brainglobe_utils.general.list import unique_elements_lists
 from brainglobe_utils.pandas.misc import initialise_df, safe_pandas_concat
 from napari.qt.threading import thread_worker
-from skimage.measure import regionprops_table
 from napari.utils.notifications import show_info
+from skimage.measure import regionprops_table
 
 from brainglobe_segmentation.atlas.utils import lateralise_atlas_image
 
