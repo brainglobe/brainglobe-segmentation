@@ -1,6 +1,7 @@
 from qt_niu.dialog import display_info, display_warning
 from qt_niu.interaction import add_button, add_checkbox
 from qtpy.QtWidgets import QGridLayout, QGroupBox
+from napari.utils.notifications import show_info
 
 from brainglobe_segmentation.layout.gui_constants import (
     BRUSH_SIZE,
@@ -158,7 +159,7 @@ class RegionSeg(QGroupBox):
         )
 
     def add_new_region(self):
-        print("Adding a new region\n")
+        show_info("Adding a new region\n")
         self.region_panel.setVisible(True)  # Should be visible by default!
         add_new_region_layer(
             self.parent.viewer,
@@ -168,7 +169,7 @@ class RegionSeg(QGroupBox):
         )
 
     def add_region_from_existing_layer(self, override=False):
-        print("Adding region from existing layer\n")
+        show_info("Adding region from existing layer\n")
         selected_layer = self.parent.viewer.layers.selection.active
         try:
             add_region_from_existing_layer(
@@ -206,7 +207,7 @@ class RegionSeg(QGroupBox):
                 if self.save_checkbox.isChecked():
                     self.parent.run_save()
 
-                print("Running region analysis")
+                show_info("Running region analysis")
 
                 if check_segmentation_in_correct_space(
                     self.parent.label_layers,
@@ -227,9 +228,9 @@ class RegionSeg(QGroupBox):
                     display_incorrect_space_warning(self.parent)
                     return
             else:
-                print("Preventing analysis as user chose 'Cancel'")
+                show_info("Preventing analysis as user chose 'Cancel'")
         else:
-            print("No regions found")
+            show_info("No regions found")
 
 
 def check_segmentation_in_correct_space(label_layers, annotations_layer_image):
