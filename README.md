@@ -5,7 +5,6 @@
 [![Tests](https://img.shields.io/github/actions/workflow/status/brainglobe/brainglobe-segmentation/test_and_deploy.yml?branch=main)](https://github.com/brainglobe/brainglobe-segmentation/actions)
 [![codecov](https://codecov.io/gh/brainglobe/brainglobe-segmentation/graph/badge.svg?token=WP9KTPZE5R)](https://codecov.io/gh/brainglobe/brainglobe-segmentation)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
-[![Twitter](https://img.shields.io/twitter/follow/brain_globe?style=social)](https://twitter.com/brain_globe)
 
 # brainglobe-segmentation
 
