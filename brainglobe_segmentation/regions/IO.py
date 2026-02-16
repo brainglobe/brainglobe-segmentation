@@ -4,6 +4,7 @@ import numpy as np
 from brainglobe_utils.general.pathlib import append_to_pathlib_stem
 from brainglobe_utils.IO.image.save import to_tiff
 from brainglobe_utils.IO.surfaces import marching_cubes_to_obj
+from napari.utils.notifications import show_info
 from skimage import measure
 
 
@@ -60,7 +61,7 @@ def volume_to_vector_array_to_obj_file(
 
 
 def save_label_layers(regions_directory, label_layers):
-    print(f"Saving regions to: {regions_directory}")
+    show_info(f"Saving regions to: {regions_directory}")
     regions_directory.mkdir(parents=True, exist_ok=True)
     for label_layer in label_layers:
         save_regions_to_file(label_layer, regions_directory)
@@ -69,7 +70,7 @@ def save_label_layers(regions_directory, label_layers):
 def export_label_layers(
     regions_directory, label_layers, voxel_size, obj_ext=".obj"
 ):
-    print(f"Exporting regions to: {regions_directory}")
+    show_info(f"Exporting regions to: {regions_directory}")
     regions_directory.mkdir(parents=True, exist_ok=True)
     for label_layer in label_layers:
         filename = regions_directory / (label_layer.name + obj_ext)

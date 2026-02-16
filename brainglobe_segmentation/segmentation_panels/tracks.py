@@ -2,6 +2,7 @@
 from glob import glob
 
 import numpy as np
+from napari.utils.notifications import show_info
 from qt_niu.dialog import display_info, display_warning
 from qt_niu.interaction import (
     add_button,
@@ -233,7 +234,7 @@ class TrackSeg(QGroupBox):
                 )
 
     def add_track(self):
-        print("Adding a new track\n")
+        show_info("Adding a new track\n")
         self.splines = None
         self.spline_names = None
         self.track_panel.setVisible(True)  # Should be visible by default!
@@ -244,7 +245,7 @@ class TrackSeg(QGroupBox):
         )
 
     def add_track_from_existing_layer(self, override=False):
-        print("Adding track from existing layer\n")
+        show_info("Adding track from existing layer\n")
         selected_layer = self.parent.viewer.layers.selection.active
         try:
             add_track_from_existing_layer(
@@ -267,7 +268,7 @@ class TrackSeg(QGroupBox):
 
     def add_surface_points(self):
         if self.parent.track_layers:
-            print("Adding surface points (this may take a while)")
+            show_info("Adding surface points (this may take a while)")
             if self.tree is None:
                 self.create_brain_surface_tree()
 
@@ -275,15 +276,15 @@ class TrackSeg(QGroupBox):
                 try:
                     _, index = self.tree.query(track_layer.data[0])
                 except IndexError:
-                    print(
+                    show_info(
                         f"{track_layer.name} does not appear to hold any data"
                     )
                     continue
                 surface_point = self.tree.data[index]
                 track_layer.data = np.vstack((surface_point, track_layer.data))
-            print("Finished!\n")
+            show_info("Finished!\n")
         else:
-            print("No tracks found.")
+            show_info("No tracks found.")
 
     def create_brain_surface_tree(self):
         self.tree = create_KDTree_from_image(
@@ -307,7 +308,7 @@ class TrackSeg(QGroupBox):
                 if self.save_checkbox.isChecked():
                     self.parent.run_save()
 
-                print("Running track analysis")
+                show_info("Running track analysis")
                 self.splines, self.spline_names = track_analysis(
                     self.parent.viewer,
                     self.parent.annotations_layer.data,
@@ -320,8 +321,8 @@ class TrackSeg(QGroupBox):
                     spline_smoothing=self.spline_smoothing.value(),
                     summarise_track=self.summarise_track_checkbox.isChecked(),
                 )
-                print("Finished!\n")
+                show_info("Finished!\n")
             else:
-                print("Preventing analysis as user chose 'Cancel'")
+                show_info("Preventing analysis as user chose 'Cancel'")
         else:
-            print("No tracks found.")
+            show_info("No tracks found.")

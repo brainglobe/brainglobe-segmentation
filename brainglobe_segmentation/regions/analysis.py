@@ -3,6 +3,7 @@ import pandas as pd
 from brainglobe_utils.general.list import unique_elements_lists
 from brainglobe_utils.pandas.misc import initialise_df, safe_pandas_concat
 from napari.qt.threading import thread_worker
+from napari.utils.notifications import show_info
 from skimage.measure import regionprops_table
 
 from brainglobe_segmentation.atlas.utils import lateralise_atlas_image
@@ -21,8 +22,8 @@ def region_analysis(
 ):
     regions_directory.mkdir(parents=True, exist_ok=True)
     if volumes:
-        print("Calculating region volume distribution")
-        print(f"Saving summary volumes to: {regions_directory}")
+        show_info("Calculating region volume distribution")
+        show_info(f"Saving summary volumes to: {regions_directory}")
         for label_layer in label_layers:
             analyse_region_brain_areas(
                 label_layer,
@@ -33,12 +34,12 @@ def region_analysis(
             )
     if summarise:
         if output_csv_file is not None:
-            print("Summarising regions")
+            show_info("Summarising regions")
             summarise_brain_regions(
                 label_layers, output_csv_file, atlas.resolution
             )
 
-    print("Finished!\n")
+    show_info("Finished!\n")
 
 
 def summarise_brain_regions(label_layers, filename, atlas_resolution):
@@ -47,7 +48,7 @@ def summarise_brain_regions(label_layers, filename, atlas_resolution):
         summaries.append(summarise_single_brain_region(label_layer))
 
     if check_list_only_nones(summaries):
-        print("No regions to summarise")
+        show_info("No regions to summarise")
         return
 
     result = pd.concat(summaries)
@@ -180,7 +181,7 @@ def analyse_region_brain_areas(
                 )
 
             except KeyError:
-                print(
+                show_info(
                     f"Value: {atlas_value} is not in the atlas structure"
                     f" reference file. Not calculating the volume"
                 )
