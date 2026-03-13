@@ -234,7 +234,7 @@ class TrackSeg(QGroupBox):
                 )
 
     def add_track(self):
-        show_info("Adding a new track\n")
+        show_info("Adding a new track")
         self.splines = None
         self.spline_names = None
         self.track_panel.setVisible(True)  # Should be visible by default!
@@ -245,7 +245,7 @@ class TrackSeg(QGroupBox):
         )
 
     def add_track_from_existing_layer(self, override=False):
-        show_info("Adding track from existing layer\n")
+        show_info("Adding track from existing layer")
         selected_layer = self.parent.viewer.layers.selection.active
         try:
             add_track_from_existing_layer(
@@ -282,7 +282,7 @@ class TrackSeg(QGroupBox):
                     continue
                 surface_point = self.tree.data[index]
                 track_layer.data = np.vstack((surface_point, track_layer.data))
-            show_info("Finished!\n")
+            show_info("Finished!")
         else:
             show_info("No tracks found.")
 
@@ -321,7 +321,7 @@ class TrackSeg(QGroupBox):
                     spline_smoothing=self.spline_smoothing.value(),
                     summarise_track=self.summarise_track_checkbox.isChecked(),
                 )
-                show_info("Finished!\n")
+                show_info("Finished!")
             else:
                 show_info("Preventing analysis as user chose 'Cancel'")
         else:

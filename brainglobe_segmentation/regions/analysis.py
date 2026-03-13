@@ -39,7 +39,7 @@ def region_analysis(
                 label_layers, output_csv_file, atlas.resolution
             )
 
-    show_info("Finished!\n")
+    show_info("Finished!")
 
 
 def summarise_brain_regions(label_layers, filename, atlas_resolution):

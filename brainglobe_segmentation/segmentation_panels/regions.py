@@ -159,7 +159,7 @@ class RegionSeg(QGroupBox):
         )
 
     def add_new_region(self):
-        show_info("Adding a new region\n")
+        show_info("Adding a new region")
         self.region_panel.setVisible(True)  # Should be visible by default!
         add_new_region_layer(
             self.parent.viewer,
@@ -169,7 +169,7 @@ class RegionSeg(QGroupBox):
         )
 
     def add_region_from_existing_layer(self, override=False):
-        show_info("Adding region from existing layer\n")
+        show_info("Adding region from existing layer")
         selected_layer = self.parent.viewer.layers.selection.active
         try:
             add_region_from_existing_layer(
