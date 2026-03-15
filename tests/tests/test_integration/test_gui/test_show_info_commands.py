@@ -275,7 +275,7 @@ def test_summarise_brain_regions_no_regions_show_info(
         mock_show_info.assert_called_once_with("No regions to summarise")
 
 
-def test_analyse_region_brain_areas_show_info(
+def test_analyse_region_brain_areas_show_info_on_missing_structure(
     segmentation_widget_with_data_atlas_space, tmp_path
 ):
     widget = segmentation_widget_with_data_atlas_space
