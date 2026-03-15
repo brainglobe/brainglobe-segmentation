@@ -285,6 +285,7 @@ def test_analyse_region_brain_areas_show_info_on_missing_structure(
         patch(
             "brainglobe_segmentation.regions.analysis.show_info"
         ) as mock_show_info,
+        # mock missing structure by raising KeyError
         patch(
             "brainglobe_segmentation.regions.analysis.add_structure_volume_to_df",
             side_effect=KeyError,
