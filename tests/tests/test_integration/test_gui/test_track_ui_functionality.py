@@ -93,6 +93,8 @@ def test_track_analysis_with_save(
     )
 
     check_analysis(test_tracks_dir, validate_tracks_dir)
+    # ensure data is saved before it is loaded again
+    sleep(8)
     check_saving(test_tracks_dir, validate_tracks_dir, rtol)
 
 
