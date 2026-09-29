@@ -17,7 +17,7 @@
 
 Segmentation of anatomical structures in a common coordinate space
 
-## Installation 
+## Installation
 **PyPI**
 ```
 pip install brainglobe-segmentation
