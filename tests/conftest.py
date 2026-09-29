@@ -8,12 +8,11 @@ from brainglobe_segmentation.segment import SegmentationWidget
 
 atlas_name = "allen_mouse_50um"
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
-atlas_ver = 3.0
 
 
 @pytest.fixture
 def allen_mouse_50um_atlas():
-    return BrainGlobeAtlas(atlas_name, version=atlas_ver)
+    return BrainGlobeAtlas(atlas_name)
 
 
 @pytest.fixture
