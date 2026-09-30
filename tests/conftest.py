@@ -8,7 +8,7 @@ from brainglobe_segmentation.segment import SegmentationWidget
 
 atlas_name = "allen_mouse_50um"
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
-atlas_ver = 3.0
+atlas_ver = 3.1
 
 
 @pytest.fixture
