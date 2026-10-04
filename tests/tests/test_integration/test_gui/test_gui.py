@@ -1,4 +1,5 @@
 from pathlib import Path
+from unittest.mock import patch
 
 import numpy as np
 
@@ -25,6 +26,19 @@ def test_load_atlas_space(segmentation_widget):
     segmentation_widget.load_brainreg_directory()
     check_loaded_layers(segmentation_widget, 4)
     check_not_editable(segmentation_widget, atlas_space=True)
+
+
+def test_initialise_loaded_data_no_hemispheres(
+    segmentation_widget_with_data_atlas_space,
+):
+    widget = segmentation_widget_with_data_atlas_space
+    widget.atlas_space = False
+
+    with patch.object(type(widget.atlas), "hemispheres", None):
+        widget.initialise_loaded_data()
+
+    assert widget.hemispheres_layer is None
+    assert widget.hemispheres_data is None
 
 
 def test_layer_deletion(segmentation_widget):

@@ -358,7 +358,8 @@ class SegmentationWidget(QWidget):
         self.metadata = self.base_layer.metadata
         self.atlas = self.metadata["atlas_class"]
         self.annotations_layer = self.viewer.layers[self.metadata["atlas"]]
-        if self.atlas_space:
+        if self.atlas_space or self.atlas.hemispheres is None:
+            self.hemispheres_layer = None
             self.hemispheres_data = self.atlas.hemispheres
         else:
             self.hemispheres_layer = self.viewer.layers[

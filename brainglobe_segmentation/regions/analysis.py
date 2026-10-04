@@ -133,12 +133,18 @@ def analyse_region_brain_areas(
 
     masked_annotations = data.astype(bool) * annotations_layer_image
 
-    annotations_left, annotations_right = lateralise_atlas_image(
-        masked_annotations,
-        hemispheres,
-        left_hemisphere_value=atlas.left_hemisphere_value,
-        right_hemisphere_value=atlas.right_hemisphere_value,
-    )
+    if hemispheres is None:
+        # No hemisphere information, so count every voxel once (as "left")
+        # and only report whole-brain volumes
+        annotations_left = masked_annotations
+        annotations_right = np.array([], dtype=masked_annotations.dtype)
+    else:
+        annotations_left, annotations_right = lateralise_atlas_image(
+            masked_annotations,
+            hemispheres,
+            left_hemisphere_value=atlas.left_hemisphere_value,
+            right_hemisphere_value=atlas.right_hemisphere_value,
+        )
 
     unique_vals_left, counts_left = np.unique(
         annotations_left, return_counts=True
@@ -185,6 +191,9 @@ def analyse_region_brain_areas(
                     f"Value: {atlas_value} is not in the atlas structure"
                     f" reference file. Not calculating the volume"
                 )
+    if hemispheres is None:
+        df = df[["structure_name", "total_volume_mm3", "percentage_of_total"]]
+
     filename = destination_directory / (name + extension)
     df.to_csv(filename, index=False)
 
@@ -195,15 +204,11 @@ def get_total_volume_regions(
     counts_left,
     counts_right,
 ):
-    zero_index_left = np.where(unique_vals_left == 0)[0][0]
-    counts_left = list(counts_left)
-    counts_left.pop(zero_index_left)
-
-    zero_index_right = np.where(unique_vals_right == 0)[0][0]
-    counts_right = list(counts_right)
-    counts_right.pop(zero_index_right)
-
-    return sum(counts_left + counts_right)
+    # Exclude the null (0) region, which may be absent (e.g. an empty
+    # hemisphere, or a region that fills a whole hemisphere)
+    counts_left = np.asarray(counts_left)[np.asarray(unique_vals_left) != 0]
+    counts_right = np.asarray(counts_right)[np.asarray(unique_vals_right) != 0]
+    return int(counts_left.sum() + counts_right.sum())
 
 
 def add_structure_volume_to_df(

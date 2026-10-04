@@ -7,6 +7,8 @@ import pandas as pd
 import pytest
 from tifffile import imread
 
+from brainglobe_segmentation.regions.analysis import analyse_region_brain_areas
+
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
 validate_regions_dir = (
     brainreg_dir / "segmentation" / "atlas_space" / "regions"
@@ -104,6 +106,26 @@ def test_region_analysis_with_save(
     sleep(8)
     check_analysis(test_regions_dir, validate_regions_dir)
     check_saving(test_regions_dir, validate_regions_dir)
+
+
+def test_region_analysis_no_hemispheres(
+    segmentation_widget_with_data_atlas_space, tmp_path
+):
+    widget = segmentation_widget_with_data_atlas_space
+    analyse_region_brain_areas(
+        label_layer=widget.label_layers[0],
+        annotations_layer_image=widget.annotations_layer.data,
+        hemispheres=None,
+        destination_directory=tmp_path,
+        atlas=widget.atlas,
+    )
+
+    region_csv_validate = pd.read_csv(validate_regions_dir / "test_region.csv")
+    region_csv_test = pd.read_csv(tmp_path / "test_region.csv")
+    columns = ["structure_name", "total_volume_mm3", "percentage_of_total"]
+    pd.testing.assert_frame_equal(
+        region_csv_test, region_csv_validate[columns]
+    )
 
 
 def test_region_save(
