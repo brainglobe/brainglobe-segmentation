@@ -1,7 +1,9 @@
+import shutil
 from pathlib import Path
 from unittest.mock import patch
 
 import numpy as np
+from tifffile import imread
 
 brainreg_dir = Path.cwd() / "tests" / "data" / "brainreg_output"
 
@@ -28,17 +30,35 @@ def test_load_atlas_space(segmentation_widget):
     check_not_editable(segmentation_widget, atlas_space=True)
 
 
-def test_initialise_loaded_data_no_hemispheres(
-    segmentation_widget_with_data_atlas_space,
+def test_load_sample_space_no_hemispheres(
+    segmentation_widget,
+    allen_mouse_50um_atlas,
+    tmp_path,
 ):
-    widget = segmentation_widget_with_data_atlas_space
+    directory = tmp_path / "brainreg_output"
+    shutil.copytree(brainreg_dir, directory)
+    hemispheres_file = directory / "registered_hemispheres.tiff"
+    hemispheres_file.unlink()
+    widget = segmentation_widget
     widget.atlas_space = False
+    widget.plugin = "brainglobe-napari-io.brainreg_read_dir"
+    widget.directory = directory
 
-    with patch.object(type(widget.atlas), "hemispheres", None):
-        widget.initialise_loaded_data()
+    with patch.object(type(allen_mouse_50um_atlas), "hemispheres", None):
+        widget.load_brainreg_directory()
 
+    check_loaded_layers(widget, 6)
+    assert widget.status_label.text() == "Ready"
+    assert widget.base_layer.editable is False
+    assert widget.annotations_layer.editable is False
     assert widget.hemispheres_layer is None
     assert widget.hemispheres_data is None
+    assert "Hemispheres" not in widget.viewer.layers
+    assert not hemispheres_file.exists()
+    np.testing.assert_array_equal(
+        widget.annotations_layer.data,
+        imread(directory / "registered_atlas.tiff"),
+    )
 
 
 def test_layer_deletion(segmentation_widget):
