@@ -76,10 +76,13 @@ def structure_from_viewer(coordinates, atlas_layer, atlas):
     region_info = []
     for struct in structure.split(","):
         region_info.append(struct.strip().capitalize())
-    hemisphere = atlas.hemisphere_from_coords(
-        coord_list, as_string=True
-    ).capitalize()
-    region_info.append(hemisphere)
+    if atlas.hemispheres is None:
+        hemisphere = None
+    else:
+        hemisphere = atlas.hemisphere_from_coords(
+            coord_list, as_string=True
+        ).capitalize()
+        region_info.append(hemisphere)
     region_info = " | ".join(region_info)
 
     return structure_no, structure, hemisphere, region_info
